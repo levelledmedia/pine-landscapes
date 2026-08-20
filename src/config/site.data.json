@@ -615,6 +615,19 @@
     }
   ],
   "content": {
+    "services": {
+      "svc-fencing": {
+        "introText": "When you need to secure your property, enhance privacy or add a decorative touch, the right fencing makes all the difference. As trusted fencing contractors in Hitchin and the surrounding areas, we supply and fit fences to the highest standards, and we're on hand for fence repairs whenever you need us.",
+        "whyText": "Whether it's a residential garden or a commercial property, we offer a wide range of styles to suit your needs, from traditional close board and Venetian fences through to classic larch lap designs. Every project starts with a conversation about what you actually want, and we plan, design and install with an eye for detail and a commitment to doing it right the first time.",
+        "includedHeading": "Types of fencing we offer:",
+        "includedListHtml": "<li>Decorative Fences &mdash; Venetian and wrought iron styles tailored to match your landscape</li><li>Privacy Fences &mdash; larch lap, traditional close board and overlap panel fencing built with no gaps for maximum privacy</li><li>Palisade &amp; Security Fencing &mdash; robust vertical stake and mesh fencing for commercial and industrial properties</li><li>Chain Link &amp; Weldmesh Fencing &mdash; durable, weather and vandal resistant options for secure boundaries</li><li>Post and Rail Fencing &mdash; classic rural design often used on farms and larger properties</li><li>Composite &amp; PVC Fencing &mdash; low-maintenance alternatives with the look of timber</li><li>Picket, Trellis &amp; Feather Edge Fences &mdash; timeless designs for front gardens and climbing plants</li><li>Modern/Contemporary Fences &mdash; sleek designs using up-to-date materials and layouts</li><li>Bamboo Fencing &mdash; an eco-friendly, natural-looking option for decorative use</li>",
+        "builtHeading": "Gates We Supply &amp; Fit",
+        "builtText": "As well as fencing, we supply and install a full range of gates &mdash; from entrance and driveway gates, including automatic and electric options, to garden, pedestrian, security and farm-style gates. Every gate is built to match your property and boundary fencing, giving you a secure, cohesive finish.",
+        "setsApartHeading": "About Pine Landscapes",
+        "setsApartListHtml": "<li><strong>Family-Run Business</strong> &mdash; decades of honest, quality workmanship across Hitchin and the surrounding areas</li><li><strong>30+ Years' Experience</strong> &mdash; hundreds of satisfied fencing customers</li><li><strong>Tailored Approach</strong> &mdash; every job, big or small, handled with the same care and craftsmanship</li><li><strong>Free, Honest Quotes</strong> &mdash; competitive pricing with no obligation</li>",
+        "finalCta": "Let us show you why we're a trusted choice for fencing in Hitchin. <strong>Get your free quote now.</strong>"
+      }
+    },
     "quoteForm": {
       "embedCode": "<iframe\n    src=\"https://api.leadconnectorhq.com/widget/form/ASYFn1VqvAewRwLdtKoe\"\n    style=\"width:100%;height:100%;border:none;border-radius:8px\"\n    id=\"inline-ASYFn1VqvAewRwLdtKoe\" \n    data-layout=\"{'id':'INLINE'}\"\n    data-trigger-type=\"alwaysShow\"\n    data-trigger-value=\"\"\n    data-activation-type=\"alwaysActivated\"\n    data-activation-value=\"\"\n    data-deactivation-type=\"neverDeactivate\"\n    data-deactivation-value=\"\"\n    data-form-name=\"Form\"\n    data-height=\"537\"\n    data-layout-iframe-id=\"inline-ASYFn1VqvAewRwLdtKoe\"\n    data-form-id=\"ASYFn1VqvAewRwLdtKoe\"\n    title=\"Form\"\n    \n        >\n</iframe>\n<script src=\"https://link.msgsndr.com/js/form_embed.js\"></script>"
     },

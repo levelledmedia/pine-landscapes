@@ -84,7 +84,7 @@ const workSlots = [0, 1, 2].map((i) => {
       <div style="flex:1 1 400px;">
         <h2 style="font-family:var(--font-heading);font-weight:700;font-size:28px;margin:0 0 16px;color:var(--color-ink);">{label} Done Right</h2>
         <h3 style="font-family:var(--font-heading);font-weight:600;font-size:18px;margin:0 0 12px;color:var(--color-ink);">Looking for {label.toLowerCase()}?</h3>
-        <p class="svc-p">Our experienced team delivers {label.toLowerCase()} built around how you actually use your outdoor space — quality materials, careful planning, and craftsmanship that holds up for years to come.</p>
+        <p class="svc-p">{serviceContent.introText ?? `Our experienced team delivers ${label.toLowerCase()} built around how you actually use your outdoor space — quality materials, careful planning, and craftsmanship that holds up for years to come.`}</p>
         <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="btn-accent" href={withBase("/#contact")} global />
       </div>
       <ImageSlot id={id} shape="rect" class="svc-intro-image" style="flex:1 1 400px;" />
@@ -93,29 +93,37 @@ const workSlots = [0, 1, 2].map((i) => {
 
   <div class="svc-body" style="max-width:900px;margin:0 auto;">
     <h2 class="svc-h" style="margin-top:0;">Why Choose Us for {label}</h2>
-    <p class="svc-p">Every project starts with a conversation about what you actually want from your outdoor space. From there, we plan, design, and build with an eye for detail and a commitment to doing it right the first time.</p>
+    <p class="svc-p">{serviceContent.whyText ?? "Every project starts with a conversation about what you actually want from your outdoor space. From there, we plan, design, and build with an eye for detail and a commitment to doing it right the first time."}</p>
 
-    <h3 class="svc-h3">What's included:</h3>
-    <ul class="svc-list">
-      <li>Initial consultation and design</li>
-      <li>Premium materials and equipment</li>
-      <li>Experienced, professional crews</li>
-      <li>Clear timelines and communication</li>
-      <li>Workmanship warranty on every project</li>
-    </ul>
+    <h3 class="svc-h3">{serviceContent.includedHeading ?? "What's included:"}</h3>
+    {serviceContent.includedListHtml ? (
+      <ul class="svc-list" set:html={serviceContent.includedListHtml} />
+    ) : (
+      <ul class="svc-list">
+        <li>Initial consultation and design</li>
+        <li>Premium materials and equipment</li>
+        <li>Experienced, professional crews</li>
+        <li>Clear timelines and communication</li>
+        <li>Workmanship warranty on every project</li>
+      </ul>
+    )}
     <p class="svc-p"><strong>Ready to get started? Schedule your free quote today.</strong></p>
 
-    <h2 class="svc-h">Built to Last</h2>
-    <p class="svc-p">We don't cut corners. Every project is built on solid fundamentals — proper preparation, quality materials, and attention to detail — so it looks great and holds up for years.</p>
+    <h2 class="svc-h" set:html={serviceContent.builtHeading ?? "Built to Last"} />
+    <p class="svc-p" set:html={serviceContent.builtText ?? "We don't cut corners. Every project is built on solid fundamentals — proper preparation, quality materials, and attention to detail — so it looks great and holds up for years."} />
 
-    <h2 class="svc-h">What Sets Us Apart</h2>
-    <ul class="svc-list">
-      <li><strong>Expert Team</strong> — no rushed work or shortcuts</li>
-      <li><strong>Quality Materials</strong> — we only use products we trust</li>
-      <li><strong>Local Knowledge</strong> — we know what your yard needs to thrive</li>
-      <li><strong>5-Star Reputation</strong> — backed by reviews and referrals</li>
-    </ul>
-    <p class="svc-p">We treat your yard like it's our own. <strong>Get your free quote now.</strong></p>
+    <h2 class="svc-h" set:html={serviceContent.setsApartHeading ?? "What Sets Us Apart"} />
+    {serviceContent.setsApartListHtml ? (
+      <ul class="svc-list" set:html={serviceContent.setsApartListHtml} />
+    ) : (
+      <ul class="svc-list">
+        <li><strong>Expert Team</strong> — no rushed work or shortcuts</li>
+        <li><strong>Quality Materials</strong> — we only use products we trust</li>
+        <li><strong>Local Knowledge</strong> — we know what your yard needs to thrive</li>
+        <li><strong>5-Star Reputation</strong> — backed by reviews and referrals</li>
+      </ul>
+    )}
+    <p class="svc-p" set:html={serviceContent.finalCta ?? "We treat your yard like it's our own. <strong>Get your free quote now.</strong>"} />
   </div>
 
   <div class="svc-gallery-section" style="max-width:var(--container-width);margin:0 auto;">
