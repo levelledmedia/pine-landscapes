@@ -44,14 +44,14 @@
     "roundnessPresetId": "round",
     "iconStyle": "triangle",
     "buttonRoundness": 10,
-    "typographyScale": "old",
+    "typographyScale": "new",
     "typographySizes": {
-      "h1": 52,
-      "h2": 36,
-      "h3": 20,
-      "body": 16,
+      "h1": 56,
+      "h2": 38,
+      "h3": 22,
+      "body": 18,
       "small": 14,
-      "button": 16
+      "button": 18
     }
   },
   "heroVariant": "split",
@@ -82,7 +82,7 @@
     "heroBarVisible": "show",
     "whyChooseUsAlign": "center",
     "whyChooseUsCount": "3",
-    "previewLocked": "unlocked",
+    "previewLocked": "locked",
     "testimonialsCardBg": "white",
     "featuredProjectsBg": "primary",
     "heroOverlayColor": "black",
