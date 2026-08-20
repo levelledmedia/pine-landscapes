@@ -59,16 +59,25 @@ const PLATFORMS: { id: keyof Socials; label: string; icon: string }[] = [
 {PLATFORMS.map((p) => {
   const url = socials?.[p.id];
   return url ? (
-    <a href={url} aria-label={p.label} style={`display:flex;color:inherit;${style}`}>
+    <a href={url} aria-label={p.label} class="social-icon-link" style={`display:flex;color:inherit;${style}`}>
       <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true" set:html={p.icon} />
     </a>
   ) : null;
 })}
 {email && (
-  <a href={`mailto:${email}`} aria-label="Email" style={`display:flex;color:inherit;${style}`}>
+  <a href={`mailto:${email}`} aria-label="Email" class="social-icon-link" style={`display:flex;color:inherit;${style}`}>
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="2" y="4" width="20" height="16" rx="2"/>
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
     </svg>
   </a>
 )}
+
+<style>
+  .social-icon-link {
+    transition: opacity 0.15s ease;
+  }
+  .social-icon-link:hover {
+    opacity: 0.65;
+  }
+</style>

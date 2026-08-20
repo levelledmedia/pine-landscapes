@@ -53,11 +53,11 @@ const reasons = [
         />
         <EditableText editKey="about.reasons.cta" value={reasonsIntro.cta} class="btn-accent" href={withBase('/#contact')} style="--btn-bg:var(--color-primary);" />
       </div>
-      <div style="flex:1 1 480px;">
+      <div style="flex:1 1 480px;" data-accordion-group="about-reasons">
         {reasons.map((r, i) => (
           <details class="reason" open={i === 0}>
             <summary class="reason-bar">{r.title}</summary>
-            <div class="reason-body">{r.body}</div>
+            <div class="reason-body" data-accordion-body>{r.body}</div>
           </details>
         ))}
       </div>

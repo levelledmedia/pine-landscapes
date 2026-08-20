@@ -13,10 +13,21 @@ import { homeServices, gallery, images } from '../../config/site';
 const serviceTags = homeServices.flat().map((s) => ({ id: s.id, label: s.label }));
 const PROJECT_TAGS = [{ id: 'all', label: 'All Photos' }, ...serviceTags];
 
-// Newest upload first — reversed since new photos are appended to the end
-// of config.gallery. A photo whose file failed to land (or was since
+// config.gallery's own array order is the display order — drag-reordered
+// directly on this page (see initGalleryReorder in dev-edit.js), not
+// derived from upload time. A photo whose file failed to land (or was since
 // removed by hand) is skipped rather than rendering an empty tile.
-const photos = [...gallery].reverse().filter((p) => images[p.id]?.src);
+const photos = gallery.filter((p) => images[p.id]?.src);
+
+// A filter pill for a tag nothing is currently tagged with would just show
+// an empty grid on click — pointless (and confusing) for a real visitor, so
+// production never renders it at all. In dev it still renders (greyed, via
+// .filter-pill-empty below) so it stays a valid drop target for retagging a
+// photo into it, and locked preview hides it the same way production does
+// (see the shared lock-mode CSS in dev-edit.js) since locked is meant to
+// show exactly what a visitor would see.
+const tagsWithPhotos = new Set(photos.map((p) => p.tag).filter((t): t is string => !!t));
+const visibleTags = import.meta.env.DEV ? PROJECT_TAGS : PROJECT_TAGS.filter((t) => t.id === 'all' || tagsWithPhotos.has(t.id));
 ---
 
 <Layout title="Our Work | Crestline Landscapes">
@@ -27,8 +38,12 @@ const photos = [...gallery].reverse().filter((p) => images[p.id]?.src);
     <p style="font-size:15px;color:oklch(0.4 0.02 255);margin:0 0 28px;">Browse our latest work, or filter by project type.</p>
 
     <div id="filter-pills" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;">
-      {PROJECT_TAGS.map((t) => (
-        <button class={`filter-pill ${t.id === 'all' ? 'active' : ''}`} data-id={t.id}>{t.label}</button>
+      {visibleTags.map((t) => (
+        <button
+          class={`filter-pill ${t.id === 'all' ? 'active' : ''} ${t.id !== 'all' && !tagsWithPhotos.has(t.id) ? 'filter-pill-empty' : ''}`}
+          data-id={t.id}
+          title={t.id !== 'all' && !tagsWithPhotos.has(t.id) ? "No photos tagged yet — won't show on the live site" : undefined}
+        >{t.label}</button>
       ))}
     </div>
 
@@ -98,6 +113,11 @@ const photos = [...gallery].reverse().filter((p) => images[p.id]?.src);
     background: var(--color-primary);
     color: #fff;
   }
+  /* Dev-only state (see visibleTags above) — production never renders an
+     empty pill at all, so this class never ships. */
+  .filter-pill-empty {
+    opacity: 0.4;
+  }
 </style>
 
 <script>
@@ -105,6 +125,38 @@ const photos = [...gallery].reverse().filter((p) => images[p.id]?.src);
   const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
   const items = Array.from(document.querySelectorAll<HTMLElement>('.photo-item'));
   const loadMoreBtn = document.getElementById('load-more-btn')!;
+  const grid = document.getElementById('photo-grid')!;
+
+  // Click-to-zoom (see ImageSlot.astro's .image-slot-zoom-natural): a click
+  // arms/disarms zoom on that one photo — deliberately not hover-triggered,
+  // which used to zoom unexpectedly just from moving the mouse across the
+  // grid. Desktop-only ((hover: hover) and (pointer: fine), same gate the
+  // CSS cursor uses) since a touch device has no hover state to pan the
+  // zoomed image with afterward, and a tap there should just be a tap.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    grid.addEventListener('mousemove', (e) => {
+      const zoomEl = (e.target as HTMLElement).closest<HTMLElement>('.image-slot-zoom-natural.zoomed');
+      if (!zoomEl) return;
+      const rect = zoomEl.getBoundingClientRect();
+      zoomEl.style.setProperty('--zoom-x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+      zoomEl.style.setProperty('--zoom-y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+    });
+
+    grid.addEventListener('click', (e) => {
+      const zoomEl = (e.target as HTMLElement).closest<HTMLElement>('.image-slot-zoom-natural');
+      if (!zoomEl) return;
+      const wasZoomed = zoomEl.classList.contains('zoomed');
+      // Only one photo zoomed at a time — entering zoom on a new photo backs
+      // out of whichever one was already zoomed in.
+      grid.querySelectorAll('.image-slot-zoom-natural.zoomed').forEach((el) => el.classList.remove('zoomed'));
+      if (!wasZoomed) {
+        const rect = zoomEl.getBoundingClientRect();
+        zoomEl.style.setProperty('--zoom-x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+        zoomEl.style.setProperty('--zoom-y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
+        zoomEl.classList.add('zoomed');
+      }
+    });
+  }
 
   // Filter ids are internally "svc-decking" etc., which reads as clutter in a
   // shareable URL — the "svc-" prefix is stripped when writing to the URL and

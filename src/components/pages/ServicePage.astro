@@ -7,7 +7,7 @@ import Breadcrumb from '../Breadcrumb.astro';
 import ImageSlot from '../ImageSlot.astro';
 import EditableText from '../EditableText.astro';
 import ContactSection from '../home/ContactSection.astro';
-import { business, content, swaps } from '../../config/site';
+import { business, content, swaps, gallery, images } from '../../config/site';
 import { withBase } from '../../lib/base';
 import { pageHref } from '../../lib/pages';
 
@@ -22,6 +22,26 @@ const { id, label } = Astro.props;
 // PageHero.astro's non-home heroes — one value each, editable from any page.
 const { overlayOpacity = 0.4 } = content.home.hero;
 const pageHeroTall = swaps?.pageHeroTall ?? 'default';
+
+// "Examples of Our Work" pulls from whatever Our Work gallery photos are
+// tagged for this service, instead of its own separate set of uploads — one
+// pool of photos instead of two copies of the same work to keep in sync.
+// Same order as ProjectsPage — config.gallery's own array order, which is
+// what dragging a photo to reorder it on that page actually changes.
+const galleryPhotos = gallery.filter((g) => g.tag === id && images[g.id]?.src);
+const serviceContent = (content.services as Record<string, Record<string, string>> | undefined)?.[id] ?? {};
+// Each of the 3 tiles remembers which gallery photo it's showing (by id, via
+// the cycle arrows below) — falling back to a positional default (1st/2nd/
+// 3rd newest matching photo) until the owner picks otherwise. A saved pick
+// that no longer matches (photo deleted, or its tag changed) also falls
+// back rather than rendering nothing.
+const workSlots = [0, 1, 2].map((i) => {
+  const workKey = `work${i + 1}`;
+  const stored = serviceContent[workKey];
+  const selectedId = stored && galleryPhotos.some((g) => g.id === stored) ? stored : galleryPhotos[i]?.id;
+  const index = selectedId ? galleryPhotos.findIndex((g) => g.id === selectedId) : -1;
+  return { workKey, selectedId, index };
+});
 ---
 
 <Layout title={`${label} | ${business.legalName}`}>
@@ -104,10 +124,24 @@ const pageHeroTall = swaps?.pageHeroTall ?? 'default';
       <a class="btn-accent" href={withBase(pageHref('projects'))}>View Projects</a>
     </div>
     <div class="svc-gallery">
-      <ImageSlot id={`${id}-work-1`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
-      <ImageSlot id={`${id}-work-2`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
-      <ImageSlot id={`${id}-work-3`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
-      <ImageSlot id={`${id}-work-4`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+      {workSlots.map((slot, i) => (
+        slot.selectedId ? (
+          <div class="svc-gallery-tile" style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+            <ImageSlot id={slot.selectedId} shape="rounded" class="svc-gallery-image" style="width:100%;" editable={false} />
+            {import.meta.env.DEV && galleryPhotos.length > 1 && (
+              <div
+                class="dev-gallery-cycle"
+                data-cycle-work-key={`services.${id}.${slot.workKey}`}
+                data-cycle-ids={galleryPhotos.map((g) => g.id).join(',')}
+                data-cycle-current-index={slot.index}
+                style="position:absolute;bottom:8px;right:8px;z-index:9999;"
+              />
+            )}
+          </div>
+        ) : (
+          <ImageSlot id={`${id}-work-${i + 1}`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+        )
+      ))}
     </div>
   </div>
 
@@ -144,7 +178,7 @@ const pageHeroTall = swaps?.pageHeroTall ?? 'default';
   }
   .svc-gallery {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
   .svc-gallery-image {

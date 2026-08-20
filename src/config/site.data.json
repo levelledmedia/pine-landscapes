@@ -1,7 +1,7 @@
 {
   "business": {
     "tagline": "Family-owned landscaping company in Hitchin. Specialising in garden transformation and landscape design since 1996. Call today for a free, no-obligation quotation.",
-    "phone": "07891-172-482",
+    "phone": "07939-591-100",
     "email": "mark@pinelandscapes.co.uk",
     "address": "123 Main Street, Suite 100<br>Your City, ST 00000",
     "addressShort": "Maquis Hill, Shillington, Hitchin, ABC 123",
@@ -61,7 +61,7 @@
     "offerBar": "hide",
     "heroBarStyle": "trust",
     "headerHeight": "tall",
-    "testimonialsStyle": "embed",
+    "testimonialsStyle": "cards",
     "headerBackground": "white",
     "faqStyle": "accordion",
     "siteWidth": "default",
@@ -82,7 +82,7 @@
     "heroBarVisible": "show",
     "whyChooseUsAlign": "center",
     "whyChooseUsCount": "3",
-    "previewLocked": "locked",
+    "previewLocked": "unlocked",
     "testimonialsCardBg": "white",
     "featuredProjectsBg": "primary",
     "heroOverlayColor": "black",
@@ -106,8 +106,8 @@
     },
     {
       "key": "projects",
-      "label": "Our Work",
-      "href": "/our-work"
+      "label": "Gallery",
+      "href": "/gallery"
     },
     {
       "key": "about",
@@ -182,12 +182,6 @@
     ]
   ],
   "images": {
-    "hero": {
-      "src": "/images/hero.jpg?v=1785413671204",
-      "x": 50,
-      "y": 50,
-      "scale": 1
-    },
     "about-house": {
       "src": "/images/about-house.jpg?v=1785413966621",
       "x": 50,
@@ -289,9 +283,338 @@
       "x": 50,
       "y": 50,
       "scale": 1
+    },
+    "about-hero": {
+      "src": "/images/hero.jpg?v=1787220347424",
+      "x": 50,
+      "y": 50,
+      "scale": 1,
+      "inherited": true
+    },
+    "photos-hero": {
+      "src": "/images/hero.jpg?v=1787220347424",
+      "x": 50,
+      "y": 50,
+      "scale": 1,
+      "inherited": true
+    },
+    "contact-hero": {
+      "src": "/images/hero.jpg?v=1787220347424",
+      "x": 50,
+      "y": 50,
+      "scale": 1,
+      "inherited": true
+    },
+    "schedule-hero": {
+      "src": "/images/hero.jpg?v=1787220347424",
+      "x": 50,
+      "y": 50,
+      "scale": 1,
+      "inherited": true
+    },
+    "hero": {
+      "src": "/images/hero.jpg?v=1787220347424",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "driveways-1": {
+      "src": "/images/driveways-1.jpg?v=1787224391893"
+    },
+    "driveways-2": {
+      "src": "/images/driveways-2.jpg?v=1787224391999"
+    },
+    "driveways-3": {
+      "src": "/images/driveways-3.jpg?v=1787224392125"
+    },
+    "fencing-1": {
+      "src": "/images/fencing-1.jpg?v=1787224475087"
+    },
+    "fencing-2": {
+      "src": "/images/fencing-2.jpg?v=1787224481261"
+    },
+    "fencing-3": {
+      "src": "/images/fencing-3.jpg?v=1787224493266"
+    },
+    "fencing-4": {
+      "src": "/images/fencing-4.jpg?v=1787224501912"
+    },
+    "fencing-5": {
+      "src": "/images/fencing-5.jpg?v=1787224504838"
+    },
+    "msmsvk83-1": {
+      "src": "/images/msmsvk83-1.jpg?v=1787224553992"
+    },
+    "msmsvk83-2": {
+      "src": "/images/msmsvk83-2.jpg?v=1787224566966"
+    },
+    "msmsvk83-3": {
+      "src": "/images/msmsvk83-3.jpg?v=1787224570520"
+    },
+    "msmsvk83-4": {
+      "src": "/images/msmsvk83-4.jpg?v=1787224583733"
+    },
+    "driveways-4": {
+      "src": "/images/driveways-4.jpg?v=1787224610407"
+    },
+    "msoqs2p8-1": {
+      "src": "/images/msoqs2p8-1.jpg?v=1787224624533"
+    },
+    "turf-1": {
+      "src": "/images/turf-1.jpg?v=1787224633455"
+    },
+    "msmsvk83-5": {
+      "src": "/images/msmsvk83-5.jpg?v=1787224656342"
+    },
+    "mslifeu6-1": {
+      "src": "/images/mslifeu6-1.jpg?v=1787224727131"
+    },
+    "mslifeu6-2": {
+      "src": "/images/mslifeu6-2.jpg?v=1787224739906"
+    },
+    "mslifeu6-3": {
+      "src": "/images/mslifeu6-3.jpg?v=1787224765957"
+    },
+    "mslifeu6-4": {
+      "src": "/images/mslifeu6-4.jpg?v=1787224771140"
+    },
+    "mslifeu6-5": {
+      "src": "/images/mslifeu6-5.jpg?v=1787224779818"
+    },
+    "mslifeu6-6": {
+      "src": "/images/mslifeu6-6.jpg?v=1787224789600"
+    },
+    "mslifeu6-7": {
+      "src": "/images/mslifeu6-7.jpg?v=1787224797753"
+    },
+    "mslifeu6-8": {
+      "src": "/images/mslifeu6-8.jpg?v=1787224800025"
+    },
+    "mslifeu6-9": {
+      "src": "/images/mslifeu6-9.jpg?v=1787224802310"
+    },
+    "mslifeu6-10": {
+      "src": "/images/mslifeu6-10.jpg?v=1787224816140"
+    },
+    "mslifeu6-11": {
+      "src": "/images/mslifeu6-11.jpg?v=1787224830025"
+    },
+    "turf-2": {
+      "src": "/images/turf-2.jpg?v=1787224868294"
+    },
+    "turf-3": {
+      "src": "/images/turf-3.jpg?v=1787224875780"
+    },
+    "turf-4": {
+      "src": "/images/turf-4.jpg?v=1787224880093"
+    },
+    "turf-5": {
+      "src": "/images/turf-5.jpg?v=1787224889007"
+    },
+    "turf-6": {
+      "src": "/images/turf-6.jpg?v=1787224893812"
+    },
+    "turf-7": {
+      "src": "/images/turf-7.jpg?v=1787224907715"
+    },
+    "turf-8": {
+      "src": "/images/turf-8.jpg?v=1787224913686"
+    },
+    "turf-9": {
+      "src": "/images/turf-9.jpg?v=1787224925292"
+    },
+    "patios-1": {
+      "src": "/images/patios-1.jpg?v=1787224989775"
+    },
+    "patios-2": {
+      "src": "/images/patios-2.jpg?v=1787224995530"
+    },
+    "patios-3": {
+      "src": "/images/patios-3.jpg?v=1787225002267"
+    },
+    "mslifeu6-12": {
+      "src": "/images/mslifeu6-12.jpg?v=1787225034148"
+    },
+    "patios-4": {
+      "src": "/images/patios-4.jpg?v=1787225050207"
+    },
+    "patios-5": {
+      "src": "/images/patios-5.jpg?v=1787225052697"
+    },
+    "patios-6": {
+      "src": "/images/patios-6.jpg?v=1787225086220"
     }
   },
-  "gallery": [],
+  "gallery": [
+    {
+      "id": "patios-6",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "patios-5",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "patios-4",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "mslifeu6-12",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "patios-3",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "patios-2",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "patios-1",
+      "tag": "svc-patios"
+    },
+    {
+      "id": "turf-9",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-8",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-7",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-6",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-5",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-4",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-3",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "turf-2",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "mslifeu6-11",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-10",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-9",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-8",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-7",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-6",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-5",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-4",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-3",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-2",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "mslifeu6-1",
+      "tag": "svc-mslifeu6"
+    },
+    {
+      "id": "msmsvk83-5",
+      "tag": "svc-msmsvk83"
+    },
+    {
+      "id": "turf-1",
+      "tag": "svc-turf"
+    },
+    {
+      "id": "msoqs2p8-1",
+      "tag": "svc-msoqs2p8"
+    },
+    {
+      "id": "driveways-4",
+      "tag": "svc-driveways"
+    },
+    {
+      "id": "msmsvk83-4",
+      "tag": "svc-msmsvk83"
+    },
+    {
+      "id": "msmsvk83-3",
+      "tag": "svc-msmsvk83"
+    },
+    {
+      "id": "msmsvk83-2",
+      "tag": "svc-msmsvk83"
+    },
+    {
+      "id": "msmsvk83-1",
+      "tag": "svc-msmsvk83"
+    },
+    {
+      "id": "fencing-5",
+      "tag": "svc-fencing"
+    },
+    {
+      "id": "fencing-4",
+      "tag": "svc-fencing"
+    },
+    {
+      "id": "fencing-3",
+      "tag": "svc-fencing"
+    },
+    {
+      "id": "fencing-2",
+      "tag": "svc-fencing"
+    },
+    {
+      "id": "fencing-1",
+      "tag": "svc-fencing"
+    },
+    {
+      "id": "driveways-3",
+      "tag": "svc-driveways"
+    },
+    {
+      "id": "driveways-2",
+      "tag": "svc-driveways"
+    },
+    {
+      "id": "driveways-1",
+      "tag": "svc-driveways"
+    }
+  ],
   "content": {
     "quoteForm": {
       "embedCode": "<iframe\n    src=\"https://api.leadconnectorhq.com/widget/form/ASYFn1VqvAewRwLdtKoe\"\n    style=\"width:100%;height:100%;border:none;border-radius:8px\"\n    id=\"inline-ASYFn1VqvAewRwLdtKoe\" \n    data-layout=\"{'id':'INLINE'}\"\n    data-trigger-type=\"alwaysShow\"\n    data-trigger-value=\"\"\n    data-activation-type=\"alwaysActivated\"\n    data-activation-value=\"\"\n    data-deactivation-type=\"neverDeactivate\"\n    data-deactivation-value=\"\"\n    data-form-name=\"Form\"\n    data-height=\"537\"\n    data-layout-iframe-id=\"inline-ASYFn1VqvAewRwLdtKoe\"\n    data-form-id=\"ASYFn1VqvAewRwLdtKoe\"\n    title=\"Form\"\n    \n        >\n</iframe>\n<script src=\"https://link.msgsndr.com/js/form_embed.js\"></script>"
@@ -303,7 +626,7 @@
         "contactCta": "Request Call",
         "ctaBarText": "If it's outside, we're in",
         "overlayOpacity": 0.7,
-        "formHeading": "Get Your Free Quote Today",
+        "formHeading": "Get Your Free Quote",
         "badgeText": "Pine Landscapes",
         "trustBar": {
           "items": [
@@ -492,11 +815,11 @@
         ]
       },
       "contactCta": {
-        "badgeText": "FOOTER CTA",
+        "badgeText": "Get in touch",
         "heading": "Ready to Transform Your Outdoor Space?",
         "body": "Request a free, no-obligation quote and we'll get back to you with a clear estimate — no pressure, no guesswork."
       },
-      "credentialLogoSize": 132
+      "credentialLogoSize": 136
     },
     "about": {
       "mission": {

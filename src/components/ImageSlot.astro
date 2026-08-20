@@ -21,6 +21,12 @@ interface Props {
   // don't apply to a slot in this mode (there's no crop to adjust), so
   // dev-edit.js skips them for it — see the `data-image-natural` attribute.
   natural?: boolean;
+  // Suppresses the standard upload/reposition/delete overlay (dev-edit.js's
+  // initImageEditing, gated on `data-image-slot`) — for slots that show a
+  // photo picked from elsewhere rather than owning it directly (e.g. a
+  // service page's work photos, which read from the Our Work gallery and
+  // are changed via that tile's own cycle-arrow control instead).
+  editable?: boolean;
 }
 
 const {
@@ -32,6 +38,7 @@ const {
   style = '',
   class: className,
   natural = false,
+  editable = true,
 } = Astro.props;
 
 const image = images[id];
@@ -46,19 +53,29 @@ const borderRadius = shape === 'circle' ? '50%' : shape === 'rounded' ? 'var(--r
 ---
 
 <div
-  data-image-slot={import.meta.env.DEV ? id : undefined}
+  data-image-slot={import.meta.env.DEV && editable ? id : undefined}
   data-image-natural={import.meta.env.DEV && natural ? '1' : undefined}
   class={className}
   style={`position:relative;overflow:hidden;border-radius:${borderRadius};${style}`}
 >
   {
     resolvedSrc ? natural ? (
-      <img
-        src={withBase(resolvedSrc)}
-        alt={alt}
-        loading="lazy"
-        style="width:100%;height:auto;display:block;"
-      />
+      // Click-to-zoom in lieu of a lightbox (see Our Work gallery) — a click
+      // arms the .zoomed class (ProjectsPage.astro), not hover, so it never
+      // triggers just from moving the mouse across the grid. Overflow stays
+      // clipped by the outer wrapper, and the scaled-up image is re-centered
+      // under the pointer via the --zoom-x/--zoom-y custom properties a
+      // delegated mousemove listener keeps updated while zoomed, so the
+      // point under the cursor stays put as it magnifies instead of scaling
+      // from a fixed center.
+      <div class="image-slot-zoom-natural">
+        <img
+          src={withBase(resolvedSrc)}
+          alt={alt}
+          loading="lazy"
+          style="width:100%;height:auto;display:block;"
+        />
+      </div>
     ) : (
       // Separate wrapper for any hover-zoom effect a parent component wants
       // to apply (e.g. FeaturedProjects) — keeps that transform off this
@@ -74,11 +91,42 @@ const borderRadius = shape === 'circle' ? '50%' : shape === 'rounded' ? 'var(--r
         />
       </div>
     ) : (
-      <div
-        style="width:100%;height:100%;min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;background:oklch(0.9 0.01 255);border:1px dashed oklch(0.7 0.01 255);color:oklch(0.5 0.01 255);font-family:'Inter',sans-serif;font-size:12px;box-sizing:border-box;"
-      >
-        Add photo
-      </div>
+      // Editing instruction, not real page content — a shipped production
+      // build (or a locked "preview as visitor" pass) should never show a
+      // visitor "Add photo" text, so this only renders in dev at all, and
+      // still needs its own lock-hide class since DEV stays true while
+      // locked (see dev-edit.js's initLockMode).
+      import.meta.env.DEV && (
+        <div
+          class="dev-image-placeholder"
+          style="width:100%;height:100%;min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;background:oklch(0.9 0.01 255);border:1px dashed oklch(0.7 0.01 255);color:oklch(0.5 0.01 255);font-family:'Inter',sans-serif;font-size:12px;box-sizing:border-box;"
+        >
+          Add photo
+        </div>
+      )
     )
   }
 </div>
+
+<style>
+  .image-slot-zoom-natural {
+    overflow: hidden;
+  }
+  .image-slot-zoom-natural img {
+    transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+  }
+  .image-slot-zoom-natural.zoomed img {
+    transform: scale(1.5);
+  }
+  /* Click-to-zoom only makes sense with a real pointer to hover-track with
+     once zoomed — a touch device has no such thing, so the cursor (and the
+     click handler that arms it, see gallery-zoom.js) both stay off there. */
+  @media (hover: hover) and (pointer: fine) {
+    .image-slot-zoom-natural {
+      cursor: zoom-in;
+    }
+    .image-slot-zoom-natural.zoomed {
+      cursor: zoom-out;
+    }
+  }
+</style>
