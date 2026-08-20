@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+
+<Layout title="Ground Level Calculator | Pine Landscapes" description="Simple ground level calculator for rise, run, and area width.">
+  <PageHero imageId="schedule-hero" title="Ground Level Calculator" />
+  <Breadcrumb label="Ground Level Calculator" />
+
+  <div class="calc-page">
+    <div class="calc-shell">
+      <section class="calc-card">
+        <form id="ground-level-form" class="calc-form">
+          <div class="calc-field">
+            <label for="rise" class="calc-label">Rise (vertical distance)</label>
+            <input id="rise" name="rise" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0 inches" class="calc-input" />
+          </div>
+
+          <div class="calc-field">
+            <label for="run" class="calc-label">Run (horizontal distance)</label>
+            <input id="run" name="run" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0 feet" class="calc-input" />
+          </div>
+
+          <div class="calc-field">
+            <label for="width" class="calc-label">Width of Area</label>
+            <input id="width" name="width" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0 feet" class="calc-input" />
+          </div>
+
+          <button type="submit" class="btn-accent calc-submit" style="border:none;cursor:pointer;">Calculate Ground Level</button>
+        </form>
+
+        <div id="calc-error" class="calc-error" aria-live="polite"></div>
+
+        <div id="calc-results" class="calc-results" hidden>
+          <div class="calc-result">
+            <span class="calc-result-label">Grade</span>
+            <strong id="grade-result" class="calc-result-value">0%</strong>
+          </div>
+          <div class="calc-result">
+            <span class="calc-result-label">Angle of Elevation</span>
+            <strong id="angle-result" class="calc-result-value">0°</strong>
+          </div>
+          <div class="calc-result">
+            <span class="calc-result-label">Estimated Soil Volume</span>
+            <strong id="volume-result" class="calc-result-value">0 cubic feet</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="calc-copy">
+        <h2 class="calc-heading">Why Does Ground Level Matter?</h2>
+        <p class="calc-paragraph">If you're sprucing up your outdoor space through fencing, decking, turfing, paving, or even laying down a pool, getting the ground level right is a big deal. A levelled ground serves as a stable foundation for any outdoor project, ensuring longevity and aesthetic appeal.</p>
+        <p class="calc-paragraph">If you’re <a href="https://pinelandscapes.co.uk/fencing/hertfordshire/">installing a fence</a>, uneven ground can make the whole structure unstable and may require more materials than you initially planned, costing you extra money and time. The same goes for decking; a level ground ensures your deck is both functional and beautiful.</p>
+        <p class="calc-paragraph">When it comes to <a href="https://pinelandscapes.co.uk/turfing/hertfordshire/">laying turfing</a>, a sloping lawn can lead to water runoff, depriving some areas of much-needed moisture. And finally, when <a href="https://pinelandscapes.co.uk/paving/hertfordshire/">installing paving</a>, the last thing you want is a wobbly patio that can be a tripping hazard.</p>
+        <p class="calc-paragraph">Getting the ground level sorted first makes your project safer, better looking, and can even save you from unexpected expenses down the line.</p>
+
+        <h2 class="calc-heading">How Does the Calculator Work?</h2>
+        <p class="calc-paragraph">Our calculator makes it super simple to figure out the ground level you're dealing with. All you need to do is plug in a few numbers.</p>
+        <ul class="calc-list">
+          <li><strong>Rise</strong>: This is the vertical distance you measure, usually in inches. It indicates how much the ground level changes across the area you're interested in.</li>
+          <li><strong>Run</strong>: This is the horizontal distance, usually measured in feet. Think of it as the distance you'd walk across the ground you're measuring.</li>
+          <li><strong>Width of area</strong>: This is also measured in feet and tells us the width of the entire area you're working with.</li>
+        </ul>
+        <p class="calc-paragraph">With these values, the calculator can run some quick math. It calculates the grade, or the steepness of the slope, as a percentage. A higher percentage means a steeper slope, which may need more work to level.</p>
+        <p class="calc-paragraph">It also gives you the angle of elevation, measured in degrees. This helps you understand how steep the area actually is, which can be really handy for more technical projects. Lastly, we calculate the estimated soil volume in cubic feet. This gives you an idea of how much soil you'll need to either add or remove to get a level ground.</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('ground-level-form');
+    const errorEl = document.getElementById('calc-error');
+    const resultsEl = document.getElementById('calc-results');
+    const gradeEl = document.getElementById('grade-result');
+    const angleEl = document.getElementById('angle-result');
+    const volumeEl = document.getElementById('volume-result');
+
+    const formatNumber = (value, maximumFractionDigits = 2) =>
+      new Intl.NumberFormat('en-GB', {
+        maximumFractionDigits,
+      }).format(value);
+
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const rise = Number(formData.get('rise'));
+      const run = Number(formData.get('run'));
+      const width = Number(formData.get('width'));
+
+      errorEl.textContent = '';
+      resultsEl.hidden = true;
+
+      if (!(rise >= 0) || !(run > 0) || !(width > 0)) {
+        errorEl.textContent = 'Please enter a rise of 0 or more, and a run and width greater than 0.';
+        return;
+      }
+
+      const riseFeet = rise / 12;
+      const grade = (riseFeet / run) * 100;
+      const angle = Math.atan(riseFeet / run) * (180 / Math.PI);
+      const volume = 0.5 * riseFeet * run * width;
+
+      gradeEl.textContent = `${formatNumber(grade)}%`;
+      angleEl.textContent = `${formatNumber(angle)}°`;
+      volumeEl.textContent = `${formatNumber(volume)} cubic feet`;
+      resultsEl.hidden = false;
+    });
+  </script>
+</Layout>
+
+<style>
+  .calc-page {
+    padding: 100px 40px;
+  }
+
+  .calc-shell {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .calc-card {
+    background: #fff;
+    border: 1px solid oklch(0.9 0.01 255);
+    border-radius: var(--radius);
+    box-shadow: 0 18px 40px rgba(15, 20, 35, 0.06);
+    padding: 32px;
+    margin-bottom: 56px;
+  }
+
+  .calc-form {
+    display: grid;
+    gap: 24px;
+  }
+
+  .calc-field {
+    display: grid;
+    gap: 10px;
+  }
+
+  .calc-label {
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .calc-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px 18px;
+    border: 1px solid oklch(0.85 0.01 255);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 18px;
+  }
+
+  .calc-submit {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .calc-error {
+    margin-top: 18px;
+    color: #b42318;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .calc-results {
+    display: grid;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .calc-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--color-offwhite);
+  }
+
+  .calc-result-label {
+    color: oklch(0.4 0.02 255);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .calc-result-value {
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    text-align: right;
+  }
+
+  .calc-copy {
+    max-width: 900px;
+  }
+
+  .calc-heading {
+    margin: 0 0 14px;
+    color: var(--color-ink);
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .calc-paragraph {
+    margin: 0 0 16px;
+    color: oklch(0.4 0.02 255);
+    font-size: var(--fsBody, 17px);
+    line-height: 1.8;
+  }
+
+  .calc-list {
+    margin: 0 0 20px;
+    padding-left: 22px;
+    color: oklch(0.4 0.02 255);
+  }
+
+  .calc-list li {
+    margin: 0 0 12px;
+    font-size: var(--fsBody, 17px);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 640px) {
+    .calc-page {
+      padding: 56px 20px;
+    }
+
+    .calc-card {
+      padding: 22px;
+      margin-bottom: 40px;
+    }
+
+    .calc-result {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .calc-result-value {
+      text-align: left;
+    }
+  }
+</style>
