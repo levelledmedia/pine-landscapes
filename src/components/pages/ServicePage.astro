@@ -127,7 +127,9 @@ const workSlots = [0, 1, 2].map((i) => {
       {workSlots.map((slot, i) => (
         slot.selectedId ? (
           <div class="svc-gallery-tile" style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
-            <ImageSlot id={slot.selectedId} shape="rounded" class="svc-gallery-image" style="width:100%;" editable={false} />
+            <div class="svc-gallery-frame">
+              <ImageSlot id={slot.selectedId} shape="rounded" style="width:100%;height:100%;" editable={false} />
+            </div>
             {import.meta.env.DEV && galleryPhotos.length > 1 && (
               <div
                 class="dev-gallery-cycle"
@@ -139,7 +141,9 @@ const workSlots = [0, 1, 2].map((i) => {
             )}
           </div>
         ) : (
-          <ImageSlot id={`${id}-work-${i + 1}`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+          <div class="svc-gallery-frame">
+            <ImageSlot id={`${id}-work-${i + 1}`} shape="rounded" style="width:100%;height:100%;" />
+          </div>
         )
       ))}
     </div>
@@ -181,7 +185,7 @@ const workSlots = [0, 1, 2].map((i) => {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
-  .svc-gallery-image {
+  .svc-gallery-frame {
     height: 200px;
   }
 
@@ -226,7 +230,7 @@ const workSlots = [0, 1, 2].map((i) => {
     .svc-gallery {
       grid-template-columns: 1fr;
     }
-    .svc-gallery-image {
+    .svc-gallery-frame {
       height: 220px;
     }
   }

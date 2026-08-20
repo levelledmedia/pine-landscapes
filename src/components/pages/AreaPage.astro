@@ -37,7 +37,6 @@ const workSlots = [0, 1, 2].map((i) => {
     <div style="max-width:var(--container-width);margin:0 auto;display:flex;gap:50px;align-items:center;flex-wrap:wrap;">
       <div style="flex:1 1 400px;">
         <h2 style="font-family:var(--font-heading);font-weight:700;font-size:28px;margin:0 0 16px;color:var(--color-ink);">{areaPage.introHeading}</h2>
-        <h3 style="font-family:var(--font-heading);font-weight:600;font-size:18px;margin:0 0 12px;color:var(--color-ink);">{areaPage.introSubheading}</h3>
         {areaPage.introBody.map((paragraph) => (
           <p class="svc-p">{paragraph}</p>
         ))}
@@ -48,18 +47,9 @@ const workSlots = [0, 1, 2].map((i) => {
   </div>
 
   <div class="svc-body" style="max-width:900px;margin:0 auto;">
-    <h2 class="svc-h" style="margin-top:0;">{areaPage.offeringsHeading}</h2>
-    <p class="svc-p">{areaPage.serviceLabel} can transform how you use your outdoor space in {areaPage.area}, giving you a durable and attractive area that works for relaxing, entertaining, and everyday use.</p>
+    <h2 class="svc-h" style="margin-top:0;">{areaPage.listHeading}</h2>
     <ul class="svc-list">
-      {areaPage.offerings.map((item) => (
-        <li>{item}</li>
-      ))}
-    </ul>
-
-    <h2 class="svc-h">{areaPage.materialsHeading}</h2>
-    <p class="svc-p">We offer a wide choice of materials so the finished deck suits your garden, your budget, and how much maintenance you want going forward.</p>
-    <ul class="svc-list">
-      {areaPage.materials.map((item) => (
+      {areaPage.listItems.map((item) => (
         <li>{item}</li>
       ))}
     </ul>
@@ -68,7 +58,6 @@ const workSlots = [0, 1, 2].map((i) => {
     {areaPage.aboutBody.map((paragraph) => (
       <p class="svc-p">{paragraph}</p>
     ))}
-    <p class="svc-p"><strong>{areaPage.postcodeLabel}. Contact Pine Landscapes for a free quote.</strong></p>
   </div>
 
   <div class="svc-gallery-section" style="max-width:var(--container-width);margin:0 auto;">
@@ -80,10 +69,14 @@ const workSlots = [0, 1, 2].map((i) => {
       {workSlots.map((slot, i) => (
         slot.selectedId ? (
           <div class="svc-gallery-tile" style="position:relative;">
-            <ImageSlot id={slot.selectedId} shape="rounded" class="svc-gallery-image" style="width:100%;" editable={false} />
+            <div class="svc-gallery-frame">
+              <ImageSlot id={slot.selectedId} shape="rounded" style="width:100%;height:100%;" editable={false} />
+            </div>
           </div>
         ) : (
-          <ImageSlot id={`${areaPage.serviceId}-work-${i + 1}`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+          <div class="svc-gallery-frame">
+            <ImageSlot id={`${areaPage.serviceId}-work-${i + 1}`} shape="rounded" style="width:100%;height:100%;" />
+          </div>
         )
       ))}
     </div>
@@ -125,7 +118,7 @@ const workSlots = [0, 1, 2].map((i) => {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
   }
-  .svc-gallery-image {
+  .svc-gallery-frame {
     height: 200px;
   }
 
@@ -170,7 +163,7 @@ const workSlots = [0, 1, 2].map((i) => {
     .svc-gallery {
       grid-template-columns: 1fr;
     }
-    .svc-gallery-image {
+    .svc-gallery-frame {
       height: 220px;
     }
   }
