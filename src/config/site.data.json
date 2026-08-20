@@ -278,12 +278,6 @@
       "y": 50,
       "scale": 1
     },
-    "proj-3": {
-      "src": "/images/proj-3.jpg?v=1786632408647",
-      "x": 50,
-      "y": 50,
-      "scale": 1
-    },
     "about-hero": {
       "src": "/images/hero.jpg?v=1787220347424",
       "x": 50,
@@ -443,6 +437,12 @@
     },
     "patios-6": {
       "src": "/images/patios-6.jpg?v=1787225086220"
+    },
+    "proj-3": {
+      "src": "/images/proj-3.jpg?v=1787227468120",
+      "x": 50,
+      "y": 50,
+      "scale": 1
     }
   },
   "gallery": [
