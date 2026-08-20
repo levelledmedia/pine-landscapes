@@ -1,6 +1,6 @@
 ---
 import fs from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import BadgeIcon from '../BadgeIcon.astro';
 import EditableText from '../EditableText.astro';
 import { content, swaps } from '../../config/site';
@@ -24,7 +24,14 @@ const badges = [
 // read at build/dev time so dropping a new file in that folder makes it
 // available in the picker with no code change. Node fs is safe here: this
 // frontmatter only ever runs server-side, never ships to the browser.
-const CREDENTIALS_DIR = fileURLToPath(new URL('../../../public/images/credentials/', import.meta.url));
+// Resolved via process.cwd() rather than import.meta.url: a production
+// `astro build` bundles this frontmatter into an SSR chunk emitted at a
+// different directory depth than the source file, so a relative climb from
+// import.meta.url lands outside the project (ENOENT, silently swallowed
+// below) even though it works fine under `astro dev`. Both astro dev and
+// the GitHub Pages build (studio/lib/github/pages.ts, `cwd: buildRoot`) are
+// always invoked with the project root as cwd, so this is reliable in both.
+const CREDENTIALS_DIR = path.join(process.cwd(), 'public/images/credentials/');
 let logoFiles: string[] = [];
 try {
   logoFiles = fs
