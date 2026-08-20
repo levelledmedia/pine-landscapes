@@ -23,7 +23,7 @@ import { withBase } from '../../lib/base';
         <ul class="areas-list">
           {areas.map((area) => (
             <li>
-              <a href={withBase(`/${area.servicePath}/${area.slug}`)}>{area.serviceLabel} in {area.area}</a>
+              <a href={withBase(`/${area.servicePath}/${area.slug}`)}>{area.area}</a>
             </li>
           ))}
         </ul>

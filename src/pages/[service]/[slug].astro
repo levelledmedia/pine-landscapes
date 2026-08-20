@@ -1,0 +1,21 @@
+---
+import AreaPage from '../../components/pages/AreaPage.astro';
+import { areas, getAreaByPath } from '../../data/areas';
+
+export function getStaticPaths() {
+  return areas.map((areaPage) => ({
+    params: { service: areaPage.servicePath, slug: areaPage.slug },
+    props: { areaPage },
+  }));
+}
+
+const service = Astro.params.service ?? '';
+const slug = Astro.params.slug ?? '';
+const areaPage = Astro.props.areaPage ?? getAreaByPath(service, slug);
+
+if (!areaPage) {
+  throw new Error(`Unknown area page: ${service}/${slug}`);
+}
+---
+
+<AreaPage areaPage={areaPage} />
