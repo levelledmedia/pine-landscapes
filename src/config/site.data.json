@@ -1,11 +1,11 @@
 {
   "business": {
-    "tagline": "Family-owned landscaping company serving Hitchin and surrounding areas. Specialising in garden transformation and landscape design since 1996. Call today for a free, no-obligation quotation.",
+    "tagline": "Family-owned landscaping company in Hitchin, serving Bedfordshire and Hertfordshire. Specialising in garden transformation and landscape design since 1996. Call today for a free, no-obligation quotation.",
     "phone": "07939-591-100",
     "email": "mark@pinelandscapes.co.uk",
     "address": "123 Main Street, Suite 100<br>Your City, ST 00000",
     "addressShort": "Maquis Hill, Shillington, Hitchin, ABC 123",
-    "hours": "Mon–Fri: 8AM–5PM<br>Sat–Sun: By Appointment",
+    "hours": "8AM–7:30PM, 7 Days a Week",
     "promoBanner": "GET A QUOTE: $1,000 OFF PATIOS/DECKING | $500 OFF DRIVEWAY RESURFACING",
     "quoteCtaLabel": "Get Free Quote",
     "name": "",
@@ -621,7 +621,7 @@
     },
     "home": {
       "hero": {
-        "heading": "Landscapers in Hitchin, Bedfordshire",
+        "heading": "Landscapers in Hitchin, Serving Beds & Herts",
         "headingWidth": 810,
         "contactCta": "Request Call",
         "ctaBarText": "If it's outside, we're in",
@@ -650,7 +650,7 @@
         },
         "splitGutter": 112,
         "heroHeight": 540,
-        "splitRatio": 57
+        "splitRatio": 64
       },
       "services": {
         "badgeText": "What We Do",

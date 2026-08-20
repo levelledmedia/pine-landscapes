@@ -5,7 +5,6 @@ import Breadcrumb from '../Breadcrumb.astro';
 import EditableText from '../EditableText.astro';
 import Badge from '../Badge.astro';
 import { business, content } from '../../config/site';
-import { withBase } from '../../lib/base';
 import { withAsyncScripts } from '../../lib/embed';
 
 const { badgeText, heading, body, formHeading } = content.contact;
@@ -57,8 +56,6 @@ const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
             <EditableText editKey="business.hours" value={business.hours} as="p" global style="font-size:var(--fsBody, 18px);color:var(--color-ink);margin:0;" />
           </div>
         </div>
-
-        <a href={withBase('/schedule')} class="btn-outline">Prefer to book a call? Schedule one →</a>
 
         <div style="position:relative;margin-top:32px;min-height:260px;border-radius:var(--radius);overflow:hidden;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
           <iframe

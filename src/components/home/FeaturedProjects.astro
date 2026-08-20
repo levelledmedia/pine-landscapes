@@ -26,10 +26,10 @@ const barBg = swaps?.featuredProjectsBg === 'primary' ? 'var(--color-primary)' :
   </div>
   <div class="projects-grid" style="display:grid;gap:0;">
     {projects.map((p, i) => (
-      <a href="#" id={`proj-thumb-${i}`} class="proj-thumb" style={`height:${imageHeight}px;`} draggable="false">
+      <div id={`proj-thumb-${i}`} class="proj-thumb" style={`height:${imageHeight}px;`} draggable="false">
         <ImageSlot id={p.id} shape="rect" style="width:100%;height:100%;" />
         <div class="proj-overlay"></div>
-      </a>
+      </div>
     ))}
   </div>
   {import.meta.env.DEV && (

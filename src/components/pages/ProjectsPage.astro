@@ -30,9 +30,9 @@ const tagsWithPhotos = new Set(photos.map((p) => p.tag).filter((t): t is string 
 const visibleTags = import.meta.env.DEV ? PROJECT_TAGS : PROJECT_TAGS.filter((t) => t.id === 'all' || tagsWithPhotos.has(t.id));
 ---
 
-<Layout title="Our Work | Crestline Landscapes">
-  <PageHero imageId="photos-hero" title="Our Work" />
-  <Breadcrumb label="Our Work" />
+<Layout title="Gallery | Crestline Landscapes">
+  <PageHero imageId="photos-hero" title="Gallery" />
+  <Breadcrumb label="Gallery" />
 
   <div class="photos-page" style="max-width:var(--container-width);margin:0 auto;">
     <p style="font-size:15px;color:oklch(0.4 0.02 255);margin:0 0 28px;">Browse our latest work, or filter by project type.</p>
