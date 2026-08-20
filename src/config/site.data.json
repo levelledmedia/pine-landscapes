@@ -1,0 +1,525 @@
+{
+  "business": {
+    "tagline": "Family-owned landscaping company in Hitchin. Specialising in garden transformation and landscape design since 1996. Call today for a free, no-obligation quotation.",
+    "phone": "07891-172-482",
+    "email": "mark@pinelandscapes.co.uk",
+    "address": "123 Main Street, Suite 100<br>Your City, ST 00000",
+    "addressShort": "Maquis Hill, Shillington, Hitchin, ABC 123",
+    "hours": "Mon–Fri: 8AM–5PM<br>Sat–Sun: By Appointment",
+    "promoBanner": "GET A QUOTE: $1,000 OFF PATIOS/DECKING | $500 OFF DRIVEWAY RESURFACING",
+    "quoteCtaLabel": "Get Free Quote",
+    "name": "",
+    "nameAccent": "",
+    "legalName": "Pine Landscapes",
+    "mapQuery": "pine landscapes",
+    "socials": {
+      "facebook": "#",
+      "instagram": "#"
+    }
+  },
+  "theme": {
+    "colorPresetId": "purple-green",
+    "colors": {
+      "primary": "#57337f",
+      "accent": "#5e9f59",
+      "background": "oklch(0.98 0.008 255)"
+    },
+    "fontPresetId": "oswald-inter",
+    "fonts": {
+      "heading": "'Oswald', sans-serif",
+      "body": "'Inter', sans-serif",
+      "googleFontsHref": "https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap",
+      "headingCase": "uppercase"
+    },
+    "roundness": 8,
+    "design": {
+      "h1Size": 52,
+      "h2Size": 32,
+      "h3Size": 20,
+      "bodySize": 15,
+      "navSize": 14,
+      "buttonRadius": 2,
+      "textCase": "uppercase"
+    },
+    "roundnessPresetId": "round",
+    "iconStyle": "triangle",
+    "buttonRoundness": 10,
+    "typographyScale": "old",
+    "typographySizes": {
+      "h1": 52,
+      "h2": 36,
+      "h3": 20,
+      "body": 16,
+      "small": 14,
+      "button": 16
+    }
+  },
+  "heroVariant": "split",
+  "swaps": {
+    "headerTone": "light",
+    "subHeroStyle": "card",
+    "offerBar": "hide",
+    "heroBarStyle": "trust",
+    "headerHeight": "tall",
+    "testimonialsStyle": "embed",
+    "headerBackground": "white",
+    "faqStyle": "accordion",
+    "siteWidth": "default",
+    "testimonialsBg": "faded",
+    "iconColor": "white",
+    "topBar": "default",
+    "testimonialsWidth": "full",
+    "serviceCardsHeight": "default",
+    "eyebrowDivider": "show",
+    "whyChooseUsCardStyle": "compact",
+    "offwhiteTintStyle": "hue",
+    "contactCtaLayout": "split",
+    "featuredHeight": "tall",
+    "mainCtaStyle": "phone",
+    "topBarVisible": "show",
+    "servicesStyle": "grid",
+    "faqWidth": "narrow",
+    "heroBarVisible": "show",
+    "whyChooseUsAlign": "center",
+    "whyChooseUsCount": "3",
+    "previewLocked": "locked",
+    "testimonialsCardBg": "white",
+    "featuredProjectsBg": "primary",
+    "heroOverlayColor": "black",
+    "buttonHoverAnimation": "grow",
+    "headerWidth": "contained",
+    "buttonGradient": "off",
+    "heroBadgeTone": "white",
+    "breadcrumbTone": "white",
+    "selectedCredentialLogos": "checkatrade.png,mybuilder.png,google-maps.png,nub-news.png,yelp.logo.png,insured.png"
+  },
+  "nav": [
+    {
+      "key": "home",
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "key": "services",
+      "label": "Services",
+      "href": "/#services"
+    },
+    {
+      "key": "projects",
+      "label": "Our Work",
+      "href": "/our-work"
+    },
+    {
+      "key": "about",
+      "label": "About Us",
+      "href": "/about"
+    },
+    {
+      "key": "contact",
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "footerQuickLinks": [
+    {
+      "navKey": "home",
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "navKey": "services",
+      "label": "Services",
+      "href": "/#services"
+    },
+    {
+      "navKey": "contact",
+      "label": "Contact",
+      "href": "/contact"
+    },
+    {
+      "navKey": "projects",
+      "label": "Our Work",
+      "href": "/photos"
+    },
+    {
+      "navKey": "about",
+      "label": "About Us",
+      "href": "/about"
+    }
+  ],
+  "homeServices": [
+    [
+      {
+        "id": "svc-patios",
+        "label": "Landscape Design"
+      },
+      {
+        "id": "svc-fencing",
+        "label": "Fencing &amp; Gates"
+      },
+      {
+        "id": "svc-mslifeu6",
+        "label": "Patios &amp; Paths"
+      }
+    ],
+    [
+      {
+        "id": "svc-driveways",
+        "label": "Decking"
+      },
+      {
+        "id": "svc-turf",
+        "label": "Turf &amp; Lawns"
+      },
+      {
+        "id": "svc-msmsvk83",
+        "label": "Gazebos"
+      },
+      {
+        "id": "svc-msoqs2p8",
+        "label": "Driveways"
+      }
+    ]
+  ],
+  "images": {
+    "hero": {
+      "src": "/images/hero.jpg?v=1785413671204",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "about-house": {
+      "src": "/images/about-house.jpg?v=1785413966621",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "stats-bg": {
+      "src": "/images/stats-bg.jpg?v=1786263920168",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "mission-house": {
+      "src": "/images/mission-house.jpg?v=1786264009410",
+      "x": 50.5228,
+      "y": 11.0981,
+      "scale": 1
+    },
+    "logo": {
+      "src": "/images/logo.png?v=1786282814537",
+      "x": 50,
+      "y": 50,
+      "scale": 1.1
+    },
+    "before-after": {
+      "src": "/images/before-after.jpg?v=1786288714985",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "reasons-bg": {
+      "src": "/images/reasons-bg.jpg?v=1786288732465",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "split-house": {
+      "src": "/images/split-house.jpg?v=1786288920340",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "svc-patios": {
+      "src": "/images/svc-patios.jpg?v=1786629767658",
+      "x": 50.0013,
+      "y": 52.0173,
+      "scale": 1.2
+    },
+    "svc-msoqs2p8": {
+      "src": "/images/svc-msoqs2p8.jpg?v=1786631111328",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "svc-msmsvk83": {
+      "src": "/images/svc-msmsvk83.jpg?v=1786631116409",
+      "x": 73.3993,
+      "y": 35.7422,
+      "scale": 1.3
+    },
+    "svc-turf": {
+      "src": "/images/svc-turf.jpg?v=1786631144032",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "svc-fencing": {
+      "src": "/images/svc-fencing.jpg?v=1786631295495",
+      "x": 50,
+      "y": 50,
+      "scale": 1.3
+    },
+    "svc-driveways": {
+      "src": "/images/svc-driveways.jpg?v=1786631382293",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "svc-mslifeu6": {
+      "src": "/images/svc-mslifeu6.jpg?v=1786631558401",
+      "x": 51.3702,
+      "y": 81.2757,
+      "scale": 1.1
+    },
+    "proj-1": {
+      "src": "/images/proj-1.jpg?v=1786632228051",
+      "x": 43.9288,
+      "y": 78.3699,
+      "scale": 1.2
+    },
+    "proj-2": {
+      "src": "/images/proj-2.jpg?v=1786632397274",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    },
+    "proj-3": {
+      "src": "/images/proj-3.jpg?v=1786632408647",
+      "x": 50,
+      "y": 50,
+      "scale": 1
+    }
+  },
+  "gallery": [],
+  "content": {
+    "quoteForm": {
+      "embedCode": "<iframe\n    src=\"https://api.leadconnectorhq.com/widget/form/ASYFn1VqvAewRwLdtKoe\"\n    style=\"width:100%;height:100%;border:none;border-radius:8px\"\n    id=\"inline-ASYFn1VqvAewRwLdtKoe\" \n    data-layout=\"{'id':'INLINE'}\"\n    data-trigger-type=\"alwaysShow\"\n    data-trigger-value=\"\"\n    data-activation-type=\"alwaysActivated\"\n    data-activation-value=\"\"\n    data-deactivation-type=\"neverDeactivate\"\n    data-deactivation-value=\"\"\n    data-form-name=\"Form\"\n    data-height=\"537\"\n    data-layout-iframe-id=\"inline-ASYFn1VqvAewRwLdtKoe\"\n    data-form-id=\"ASYFn1VqvAewRwLdtKoe\"\n    title=\"Form\"\n    \n        >\n</iframe>\n<script src=\"https://link.msgsndr.com/js/form_embed.js\"></script>"
+    },
+    "home": {
+      "hero": {
+        "heading": "Landscapers in Hitchin, Bedfordshire",
+        "headingWidth": 810,
+        "contactCta": "Request Call",
+        "ctaBarText": "If it's outside, we're in",
+        "overlayOpacity": 0.7,
+        "formHeading": "Get Your Free Quote Today",
+        "badgeText": "Pine Landscapes",
+        "trustBar": {
+          "items": [
+            {
+              "text": "30+ Years Experience",
+              "caption": "Proven track record"
+            },
+            {
+              "text": "Fully Insured",
+              "caption": "Fully licensed & bonded"
+            },
+            {
+              "text": "100% Free Quote",
+              "caption": "No pressure, no surprises"
+            },
+            {
+              "text": "Family-Run Business",
+              "caption": "Local & community-focused"
+            }
+          ]
+        },
+        "splitGutter": 112,
+        "heroHeight": 540,
+        "splitRatio": 57
+      },
+      "services": {
+        "badgeText": "What We Do",
+        "heading": "Your Outdoor Space, Reimagined.",
+        "cta": "Get a Free Quote"
+      },
+      "intro": {
+        "heading": "Built for Every Yard",
+        "body": "From small courtyards to full-property renovations, our team designs and builds landscapes that fit how you actually use your outdoor space. We handle everything from initial concept to final planting.",
+        "cta": "Get Started"
+      },
+      "aboutBlurb": {
+        "heading": "REMOVE THIS SECTION",
+        "body": "We provide landscaping and garden design services across Hitchin and the surrounding Bedfordshire and Hertfordshire area. If you're nearby, there's a good chance we've already worked on a project just down the road.",
+        "areasList": "<ul><li>Hitchin</li><li>Letchworth Garden City</li><li>Baldock</li><li>Stevenage</li><li>Luton</li><li>Bedford</li></ul>",
+        "badgeText": "REMOVE THIS SECTION"
+      },
+      "whyUs": {
+        "reasons": [
+          {
+            "num": "01",
+            "title": "Minimize The Mess",
+            "body": "Landscaping can get messy so we take the proper precautions to avoid damaged turf, stray debris, and unsightly appearances."
+          },
+          {
+            "num": "02",
+            "title": "Innovative Technology",
+            "body": "We utilize the latest technology from drone site surveys to garden visualizers."
+          },
+          {
+            "num": "03",
+            "title": "Rapid Response",
+            "body": "If you have a landscaping emergency, reach out to us and we'll ensure a prompt response within 24 hours."
+          },
+          {
+            "num": "04",
+            "title": "Warrantied Work",
+            "body": "Every project includes a workmanship warranty backed by our maintenance program."
+          }
+        ]
+      },
+      "ourStory": {
+        "badgeText": "Our Story",
+        "heading": "Built By People Who Love The Work",
+        "body": "From patios to planting to driveways and beyond, our team handles all things landscaping. With over 25 years of experience and a strong work ethic, you can trust us with your project, big or small.<div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>",
+        "cta": "Learn More"
+      },
+      "stats": {
+        "heading": "Over 30 Years",
+        "subheading": "OF LANDSCAPING EXCELLENCE",
+        "items": [
+          {
+            "value": "30+",
+            "label": "Years Experience"
+          },
+          {
+            "value": "1000+",
+            "label": "Projects Completed"
+          },
+          {
+            "value": "250+",
+            "label": "Glowing Reviews"
+          }
+        ],
+        "missionHeading": "Pine Landscapes",
+        "missionBody": "We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results — and expert virtual renderings to help you love the look of yours.<br><br>We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results — and expert virtual renderings to help you love the look of yours.<br><br>We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results and such.",
+        "missionCta": "Learn More",
+        "overlayOpacity": 0.7
+      },
+      "whyChooseUs": {
+        "badgeText": "Why Choose Us",
+        "heading": "Landscaping Done Right, Always.",
+        "body": "We're not just another crew with shovels. Every project gets a dedicated designer, a clear timeline, and a team that treats your garden like their own.",
+        "ctaLabel": "Get a Free Quote",
+        "items": [
+          {
+            "title": "25+ Years Of Experience",
+            "body": "Nearly three decades of hands-on landscaping across every kind of property, from small courtyards to full estate grounds. Nearly three decades of hands-on landscaping across."
+          },
+          {
+            "title": "Fully Insured & Guaranteed",
+            "body": "Every project is backed by comprehensive insurance and a workmanship warranty, so you're covered long after we've packed up. Every project is backed."
+          },
+          {
+            "title": "Transparent, Upfront Pricing",
+            "body": "A clear, itemised quote before any work begins — no hidden fees or surprise costs once the job is under way. A clear, itemised quote before any work begins."
+          },
+          {
+            "title": "Licensed Local Team",
+            "body": "No subcontractors passed between jobs — the same licensed, background-checked crew shows up from quote to completion. No subcontractors passed between jobs."
+          },
+          {
+            "title": "A Team That Listens",
+            "body": "Real conversations about your space and your budget, not a sales script — we design around what actually works for you. Real conversations about your space and your budget."
+          },
+          {
+            "title": "Built Around Your Property",
+            "body": "We design for how you actually use your outdoor space, not a one-size-fits-all template pulled off the shelf. We design for how you actually use your outdoor space."
+          }
+        ]
+      },
+      "testimonials": {
+        "badgeText": "Testimonials",
+        "heading": "Recent Customer Reviews",
+        "embedCode": "<script type='text/javascript' src='https://reputationhub.site/reputation/assets/review-widget.js'></script><iframe class='lc_reviews_widget' src='https://reputationhub.site/reputation/widgets/review_widget/y5wNfgcesjGbFN8bACsl?widgetId=6a782104927684028952a41f' frameborder='0' scrolling='no' style='min-width: 100%; width: 100%;'></iframe>"
+      },
+      "featuredProjectsCta": "View More",
+      "featuredProjectsLabel": "Featured Projects",
+      "callToday": {
+        "label": "Call Today"
+      },
+      "credentialsTitle": "Credentials & Brands",
+      "badgesCta": "View More",
+      "faq": {
+        "heading": "Your Questions, Answered.",
+        "subheading": "Got a question about working with us? Here are the ones we hear most.",
+        "items": [
+          {
+            "q": "How much will my project cost?",
+            "a": "Every garden is different, so we price after a free on-site consultation rather than guessing over the phone. Request a quote and we'll get back to you with a clear, no-obligation estimate."
+          },
+          {
+            "q": "Are you insured and guaranteed?",
+            "a": "Yes — we're fully insured, and every project is backed by a workmanship warranty so you're covered long after we've finished."
+          },
+          {
+            "q": "How long does a typical project take?",
+            "a": "Smaller jobs like fencing or turf can wrap up in a few days, while larger patio or full-garden transformations usually run one to three weeks. We'll give you a firm timeline before work starts."
+          },
+          {
+            "q": "Do I need to be home during the work?",
+            "a": "No, as long as we have access to the outdoor space. Many of our clients are at work during the day — we'll keep you updated with photos as the project progresses."
+          },
+          {
+            "q": "Do you offer any warranty on your work?",
+            "a": "Yes — every project is backed by a workmanship warranty, and we'll always come back to put things right if something isn't up to standard."
+          },
+          {
+            "q": "Can you help with garden design as well as the build?",
+            "a": "Absolutely. Many clients come to us with just an idea of what they want — we'll help design the space, then carry out the full build ourselves."
+          },
+          {
+            "q": "What forms of payment do you accept?",
+            "a": "We accept bank transfer and all major debit and credit cards. For larger projects, we can also agree a staged payment schedule tied to project milestones."
+          }
+        ],
+        "badgeText": "Common Questions"
+      },
+      "areasWeCover": {
+        "badgeText": "<span style=\"letter-spacing: 1.68px;\">Areas Covered</span>",
+        "heading": "Proudly Serving Hitchin &amp; Surrounding Areas",
+        "body": "Based in Hitchin, we take on projects across North Hertfordshire, Bedfordshire and the surrounding towns within about a 20-mile radius. Not sure if you're in range? Get in touch with your postcode and we'll confirm we can help before you book anything in.<div><br></div><div>Based in Hitchin, we take on projects across North Hertfordshire, Bedfordshire and the surrounding towns within about a 20-mile radius. Not sure if you're in range? Get in touch with your postcode and we'll confirm we can help before you book anything in.</div>",
+        "towns": [
+          "Hitchin",
+          "Letchworth Garden City",
+          "Baldock",
+          "Stevenage",
+          "Luton",
+          "Welwyn Garden City",
+          "Knebworth",
+          "Royston"
+        ]
+      },
+      "contactCta": {
+        "badgeText": "FOOTER CTA",
+        "heading": "Ready to Transform Your Outdoor Space?",
+        "body": "Request a free, no-obligation quote and we'll get back to you with a clear estimate — no pressure, no guesswork."
+      },
+      "credentialLogoSize": 132
+    },
+    "about": {
+      "mission": {
+        "heading": "Our Mission",
+        "body": "<p>As a design-oriented business, we're passionate about making your outdoor space reach its full potential. With a strong work ethic and attention to detail, we deliver the highest quality results.</p><p>We proudly offer services in all things landscaping, from patios and paving to full garden design and more. Our expert team is committed to using the best materials and designs to deliver the best results possible. We're also capable of creating virtual renderings.</p><p>We're here to deliver the outdoor space of your dreams!</p>"
+      },
+      "reasons": {
+        "heading": "Reasons to Choose Us",
+        "body": "There's lots to love when it comes to working with us, even beyond our beautiful work. Find out what makes us stand out from the crowd!",
+        "cta": "Get a Quote"
+      },
+      "badgesCta": "View More"
+    },
+    "contact": {
+      "badgeText": "Get In Touch",
+      "heading": "Let's Talk About Your Project",
+      "body": "Have a question or ready to get started? Reach out and we'll get back to you within one business day — or use the form below to send us the details.",
+      "formHeading": "Send Us a Message"
+    },
+    "schedule": {
+      "badgeText": "Book a Call",
+      "heading": "Schedule a Free Consultation",
+      "body": "Pick a time that works for you and we'll call to talk through your project — no obligation, no pressure."
+    }
+  }
+}

@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../PageHero.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import Badges from '../home/Badges.astro';
+import SplitFeature from '../home/SplitFeature.astro';
+import ContactSection from '../home/ContactSection.astro';
+import { content } from '../../config/site';
+import { withBase } from '../../lib/base';
+
+const { reasons: reasonsIntro } = content.about;
+
+const reasons = [
+  { title: 'Over 25 Years of Experience', body: 'From small projects to large, new patios to full-property transformations, we have the experience to make every project a success. You can feel confident working with our team, who have experience with a wide variety of different materials, manufacturers, concepts, and more.' },
+  { title: 'Family-Owned', body: "We're a family-owned business that treats every client like a neighbor, not a number." },
+  { title: 'Award-Winning', body: 'Recognized for craftsmanship and customer service across the region.' },
+  { title: 'Design-Oriented', body: 'Every project starts with thoughtful design, not just installation.' },
+  { title: 'Women-Owned', body: 'Proudly certified as a women-owned business.' },
+];
+---
+
+<Layout title="About Us | Crestline Landscapes">
+  <PageHero imageId="about-hero" title="About Us" />
+  <Breadcrumb label="About Us" />
+
+  <SplitFeature
+    editKey="home.ourStory"
+    imageId="before-after"
+    imagePlaceholder="Drop team or project photo"
+    heading={content.home.ourStory.heading}
+    body={content.home.ourStory.body}
+    ctaLabel={content.home.ourStory.cta}
+    ctaHref={withBase('/#contact')}
+    badgeText={content.home.ourStory.badgeText}
+  />
+
+  <div class="about-reasons" style="position:relative;">
+    <ImageSlot id="reasons-bg" shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    <div style="position:absolute;inset:0;background:rgba(15,20,35,.75);pointer-events:none;"></div>
+    <div style="position:relative;max-width:var(--container-width);margin:0 auto;display:flex;gap:56px;flex-wrap:wrap;">
+      <div style="flex:1 1 380px;">
+        <Badge editKey="about.reasons.badgeText" value={reasonsIntro.badgeText ?? 'Why Choose Us'} tone="light" />
+        <EditableText editKey="about.reasons.heading" value={reasonsIntro.heading} as="h2" style="font-family:var(--font-heading);font-weight:700;font-size:32px;text-transform:var(--heading-case);color:#fff;margin:0 0 16px;" />
+        <EditableText
+          editKey="about.reasons.body"
+          value={reasonsIntro.body}
+          as="div"
+          multiline
+          style="font-size:15px;line-height:1.8;color:rgba(255,255,255,.85);margin:0 0 24px;"
+        />
+        <EditableText editKey="about.reasons.cta" value={reasonsIntro.cta} class="btn-accent" href={withBase('/#contact')} style="--btn-bg:var(--color-primary);" />
+      </div>
+      <div style="flex:1 1 480px;">
+        {reasons.map((r, i) => (
+          <details class="reason" open={i === 0}>
+            <summary class="reason-bar">{r.title}</summary>
+            <div class="reason-body">{r.body}</div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <Badges />
+
+  <ContactSection />
+</Layout>
+
+<style>
+  .about-reasons {
+    padding: 90px 40px;
+  }
+  .reason { margin-bottom: 10px; }
+  .reason-bar {
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 17px;
+    padding: 18px 24px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 16px;
+    cursor: pointer;
+    list-style: none;
+    border-radius: var(--radius);
+  }
+  .reason[open] .reason-bar {
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .reason-bar::-webkit-details-marker { display: none; }
+  .reason-bar::after { content: '▼'; font-size: 11px; flex-shrink: 0; }
+  .reason[open] .reason-bar { background: var(--color-accent); }
+  .reason[open] .reason-bar::after { content: '▲'; }
+  .reason-body {
+    background: #fff;
+    padding: 22px 24px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: oklch(0.4 0.02 255);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: 0 1px 0 oklch(0.9 0.006 255) inset;
+  }
+
+  @media (max-width: 640px) {
+    .about-reasons {
+      padding: 56px 20px;
+    }
+
+    .reason-bar {
+      padding: 16px 18px;
+    }
+  }
+</style>

@@ -1,0 +1,119 @@
+---
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import { content } from '../../config/site';
+
+const { heading, subheading, missionHeading, missionBody, missionCta, overlayOpacity = 0.6 } = content.home.stats;
+
+const stats = content.home.stats.items ?? [
+  { value: '5500+', label: 'Projects' },
+  { value: '5000+', label: 'Happy Clients' },
+  { value: '30', label: 'Employees' },
+];
+---
+
+<div>
+  <div class="stats-hero" style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    <ImageSlot id="stats-bg" shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    <div
+      id="stats-overlay"
+      data-opacity-rgb="12,18,32"
+      style={`position:absolute;inset:0;background:rgba(12,18,32,${overlayOpacity});pointer-events:none;`}
+    ></div>
+    {import.meta.env.DEV && (
+      <div
+        class="dev-opacity-control"
+        data-opacity-key="home.stats.overlayOpacity"
+        data-opacity-target="stats-overlay"
+        data-opacity-value={overlayOpacity}
+        style="position:absolute;top:12px;right:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    <div style="position:relative;text-align:center;color:#fff;pointer-events:none;">
+      <EditableText editKey="home.stats.heading" value={heading} as="h2" style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 44px);text-transform:var(--heading-case);margin:0;" />
+      <EditableText editKey="home.stats.subheading" value={subheading} as="p" style="font-family:var(--font-heading);letter-spacing:.05em;font-size:14px;margin:8px 0 24px;" />
+      <div class="stats-row">
+        {stats.map((s, i) => (
+          <div>
+            <EditableText editKey={`home.stats.items.${i}.value`} value={s.value} as="div" style="color:var(--color-accent);font-family:var(--font-heading);font-weight:700;font-size:38px;" />
+            <EditableText editKey={`home.stats.items.${i}.label`} value={s.label} as="div" style="font-size:var(--fsBody, 16px);" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+  {/* The card's negative top margin must stay smaller than the bg
+      wrapper's bottom padding above, or it starts overlapping the
+      heading/stats text instead of just the image below them. The bottom
+      margin needs to clear the box-shadow's own vertical reach (offset +
+      blur) — anything tighter and the next section's solid background cuts
+      the shadow off mid-fade instead of letting it taper out, which reads
+      as a hard edge rather than a soft drop shadow. A smaller shadow (was
+      20px/40px) needs proportionally less clearance, so this stays closer
+      to WhyChooseUs than the original fix did while still not clipping.
+      Below the mobile breakpoint the overlap is dropped entirely (see
+      .mission-card below) so the card's position no longer depends on
+      staying in sync with the hero's padding once things reflow. */}
+  <div class="mission-card" style="position:relative;max-width:var(--container-width);margin:-300px auto 56px;box-shadow:0 12px 26px rgba(0,0,0,.2);">
+    <div class="mission-image" style="position:relative;min-height:280px;">
+      <ImageSlot id="mission-house" shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    </div>
+    <div class="mission-text" style="background:var(--color-primary);color:#fff;">
+      <EditableText editKey="home.stats.missionHeading" value={missionHeading} as="h3" style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 30px);margin:0 0 20px;" />
+      <EditableText
+        editKey="home.stats.missionBody"
+        value={missionBody}
+        as="div"
+        multiline
+        style="font-size:var(--fsBody, 16px);line-height:1.7;margin:0 0 24px;color:oklch(0.89 0.015 255);"
+      />
+      <EditableText editKey="home.stats.missionCta" value={missionCta} class="btn-accent" href="#" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .stats-hero {
+    padding: 88px 40px 360px;
+  }
+
+  .stats-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px 80px;
+    margin-bottom: 20px;
+  }
+
+  .mission-card {
+    display: grid;
+    grid-template-columns: 45% 55%;
+  }
+
+  .mission-text {
+    padding: 36px 55px 36px 36px;
+  }
+
+  @media (max-width: 780px) {
+    .stats-hero {
+      padding: 72px 24px 88px;
+    }
+
+    .stats-row {
+      gap: 20px 40px;
+    }
+
+    .mission-card {
+      grid-template-columns: 1fr;
+      margin: 0 auto 56px !important;
+    }
+
+    .mission-image {
+      min-height: 220px;
+    }
+
+    .mission-text {
+      padding: 32px 24px;
+    }
+  }
+</style>

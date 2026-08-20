@@ -1,0 +1,49 @@
+---
+import { withBase } from '../lib/base';
+import { swaps } from '../config/site';
+
+interface Props {
+  label: string;
+  // Optional middle crumb (e.g. Home > Services > Patios & Paving) — omit
+  // for a plain Home > label trail.
+  parentLabel?: string;
+  parentHref?: string;
+}
+
+const { label, parentLabel, parentHref } = Astro.props;
+const linkTone = swaps?.breadcrumbTone ?? 'accent';
+const linkColor = linkTone === 'white' ? '#fff' : 'var(--color-accent)';
+---
+
+<div style="background:var(--color-primary);padding:20px 40px;font-size:13px;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+  <div style="position:relative;max-width:var(--container-width);margin:0 auto;display:flex;align-items:center;gap:8px;">
+    {/* Absolutely positioned in the padding gutter to the left of the trail
+        so it never pushes "Home" over — it's an editing control, not part
+        of the breadcrumb's own content/width. */}
+    {import.meta.env.DEV && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.breadcrumbTone"
+        data-cycle-options="accent,white"
+        data-cycle-icon="droplet"
+        data-cycle-current={linkTone}
+        data-cycle-title="Toggle breadcrumb link color"
+        style="position:absolute;top:50%;right:100%;transform:translateY(-50%);margin-right:8px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    <span>
+      <a href={withBase('/')} style={`color:${linkColor};`}>Home</a>
+      {parentLabel && (
+        <>
+          <span style="color:#fff;"> &raquo; </span>
+          {parentHref ? (
+            <a href={withBase(parentHref)} style={`color:${linkColor};`}>{parentLabel}</a>
+          ) : (
+            <span style="color:#fff;">{parentLabel}</span>
+          )}
+        </>
+      )}
+      <span style="color:#fff;"> &raquo; {label}</span>
+    </span>
+  </div>
+</div>

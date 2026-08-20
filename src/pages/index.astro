@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { business, content } from '../config/site';
+import Hero from '../components/home/Hero.astro';
+import Services from '../components/home/Services.astro';
+import CallToday from '../components/home/CallToday.astro';
+import StatsBand from '../components/home/StatsBand.astro';
+import WhyChooseUs from '../components/home/WhyChooseUs.astro';
+import FeaturedProjects from '../components/home/FeaturedProjects.astro';
+import Badges from '../components/home/Badges.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import FAQ from '../components/home/FAQ.astro';
+import AreasWeCover from '../components/home/AreasWeCover.astro';
+import ContactSection from '../components/home/ContactSection.astro';
+
+const brandName = business.name || business.legalName;
+const pageTitle = `${content.home.hero.heading} | ${brandName}`;
+---
+
+<Layout title={pageTitle}>
+  <Hero />
+  <Services />
+  <CallToday />
+  <Testimonials />
+  <StatsBand />
+  <WhyChooseUs />
+  <CallToday />
+  <Badges />
+  <FeaturedProjects />
+  <AreasWeCover />
+  <div class="section-divider"></div>
+  <FAQ />
+  <ContactSection />
+</Layout>
+
+<style>
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: oklch(0.9 0.006 255);
+  }
+</style>

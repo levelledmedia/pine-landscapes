@@ -1,0 +1,69 @@
+---
+// Marks a piece of copy as inline-editable. In dev, src/scripts/dev-edit.js
+// makes any [data-edit-key] element contenteditable and saves changes back
+// to <editKey> (a dot path from the config root) in site.data.json on blur.
+// In production this is just a plain tag — no editing behavior ships.
+interface Props {
+  editKey: string;
+  value: string;
+  as?: string;
+  multiline?: boolean;
+  // Global fields (business info) show a gold outline instead of blue, and
+  // editing one instance updates every place it's rendered — it's the same
+  // underlying field, not a per-page copy of it.
+  global?: boolean;
+  // For CTA buttons: renders as a real, clickable <a> (dev-edit.js lets a
+  // plain click place the text cursor, and a Cmd/Ctrl-click follow the link).
+  href?: string;
+  // Opts into the hero-style contained-width slider. widthKey is the dot
+  // path its value is saved to.
+  widthKey?: string;
+  widthValue?: number;
+  // Nav labels double as their page's URL slug — passing slugKey (the dot
+  // path to that nav entry's href) makes dev-edit.js also re-slugify and
+  // save a new href whenever this field's text changes. Requires href to be
+  // set too (the entry's *current* href, mirrored into a data attribute so
+  // dev-edit.js knows what it's renaming from).
+  slugKey?: string;
+  style?: string;
+  class?: string;
+}
+
+const {
+  editKey,
+  value,
+  as = 'div',
+  multiline = false,
+  global: isGlobal = false,
+  href,
+  widthKey,
+  widthValue,
+  slugKey,
+  style = '',
+  class: className,
+} = Astro.props;
+
+const Tag = href ? 'a' : as;
+const widthStyle = widthValue ? `max-width:${widthValue}px;margin-left:auto;margin-right:auto;` : '';
+
+const tagProps = {
+  'data-edit-key': import.meta.env.DEV ? editKey : undefined,
+  'data-edit-multiline': import.meta.env.DEV && multiline ? true : undefined,
+  'data-edit-scope': import.meta.env.DEV && isGlobal ? 'global' : undefined,
+  'data-width-key': import.meta.env.DEV ? widthKey : undefined,
+  'data-nav-slug-key': import.meta.env.DEV ? slugKey : undefined,
+  'data-nav-href-current': import.meta.env.DEV && slugKey ? href : undefined,
+  href,
+  style: `${widthStyle}${style}`,
+  class: className,
+};
+---
+
+{import.meta.env.DEV && href ? (
+  <span class="dev-link-wrap">
+    <Tag {...tagProps} set:html={value} />
+    <button type="button" class="dev-link-open" data-link-href={href} title="Open link" aria-label="Open link" tabindex="-1">↗</button>
+  </span>
+) : (
+  <Tag {...tagProps} set:html={value} />
+)}

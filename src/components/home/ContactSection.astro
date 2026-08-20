@@ -1,0 +1,270 @@
+---
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { content, swaps } from '../../config/site';
+import { withAsyncScripts } from '../../lib/embed';
+
+const { badgeText, heading, body } = content.home.contactCta;
+const layout = swaps?.contactCtaLayout ?? 'split';
+const CYCLE_OPTIONS = 'split,full,centered';
+const CYCLE_LABEL = 'Split,Full width,Centered';
+
+// Shared quote-form field styling/options — kept in sync with the hero's
+// quote form (Hero.astro's QUOTE_FIELD_STYLE/QUOTE_SERVICE_OPTIONS).
+const QUOTE_SERVICE_OPTIONS = ['Fencing', 'Paving', 'Decking', 'Turfing', 'Other'];
+
+// Same sitewide embed value as Hero.astro's quote form — see that file's
+// comment and CLAUDE.md for why this is one shared value, not a per-layout
+// toggle.
+const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
+---
+
+{layout === 'centered' ? (
+  <div id="contact" class="contact-section" style="position:relative;background:var(--color-primary);padding:100px 40px;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    {import.meta.env.DEV && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.contactCtaLayout"
+        data-cycle-options={CYCLE_OPTIONS}
+        data-cycle-label={CYCLE_LABEL}
+        data-cycle-current={layout}
+        style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    <div style="max-width:600px;margin:0 auto;text-align:center;color:#fff;">
+      <Badge editKey="home.contactCta.badgeText" value={badgeText} tone="light" style="align-items:center;" />
+      <EditableText
+        editKey="home.contactCta.heading"
+        value={heading}
+        as="h2"
+        style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 12px;"
+      />
+      <EditableText
+        editKey="home.contactCta.body"
+        value={body}
+        as="p"
+        multiline
+        style="font-size:var(--fsBody, 17px);line-height:1.7;margin:0;color:rgba(255,255,255,.85);"
+      />
+    </div>
+    <div class="contact-form-card" style="position:relative;max-width:480px;margin:36px auto 0;background:#fff;border-radius:var(--radius);padding:40px;box-shadow:0 24px 60px rgba(0,0,0,.2);box-sizing:border-box;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+      {quoteEmbedCode ? (
+        <div class="quote-embed-wrap" data-quote-key="footer-centered">
+          <div class="quote-embed-skeleton"><div class="quote-embed-spinner"></div></div>
+          <div set:html={quoteEmbedCode} />
+        </div>
+      ) : (
+        <form style="display:grid;grid-template-columns:1fr;gap:16px;">
+          <select class="quote-field quote-select" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;">
+            <option value="" selected>Choose Service *</option>
+            {QUOTE_SERVICE_OPTIONS.map((option) => <option value={option}>{option}</option>)}
+          </select>
+          <input class="quote-field" placeholder="Full Name *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+          <input class="quote-field" placeholder="Phone Number *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+          <input class="quote-field" placeholder="Email *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+          <input class="quote-field" placeholder="Post Code *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+          <button type="submit" class="btn-accent" style="border:none;cursor:pointer;">Get A Free Quote</button>
+        </form>
+      )}
+      {import.meta.env.DEV && (
+        <div
+          class="dev-embed-control"
+          data-embed-key="quoteForm.embedCode"
+          data-embed-value={quoteEmbedCode}
+          style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+      )}
+    </div>
+  </div>
+) : layout === 'full' ? (
+  <div id="contact" class="contact-section" style="position:relative;background:var(--color-primary);padding:80px 40px;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    {import.meta.env.DEV && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.contactCtaLayout"
+        data-cycle-options={CYCLE_OPTIONS}
+        data-cycle-label={CYCLE_LABEL}
+        data-cycle-current={layout}
+        style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    <div style="max-width:var(--container-width);margin:0 auto;text-align:center;color:#fff;">
+      <Badge editKey="home.contactCta.badgeText" value={badgeText} tone="light" style="align-items:center;" />
+      <EditableText
+        editKey="home.contactCta.heading"
+        value={heading}
+        as="h2"
+        style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 12px;"
+      />
+      <EditableText
+        editKey="home.contactCta.body"
+        value={body}
+        as="p"
+        multiline
+        style="font-size:var(--fsBody, 17px);line-height:1.7;margin:0 auto 36px;max-width:640px;color:rgba(255,255,255,.85);"
+      />
+      <div style="position:relative;width:100%;box-sizing:border-box;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+        {/* overflow deliberately left visible on quote-embed-wrap below — an
+            embed that settles taller than our starting min-height must be
+            free to grow the box, not get clipped by rounded-corner
+            overflow:hidden. */}
+        {quoteEmbedCode ? (
+          <div class="quote-embed-wrap" data-quote-key="footer-full" style="background:#fff;border-radius:var(--radius);box-shadow:0 24px 60px rgba(0,0,0,.2);">
+            <div class="quote-embed-skeleton"><div class="quote-embed-spinner"></div></div>
+            <div set:html={quoteEmbedCode} />
+          </div>
+        ) : (
+          <form style="display:flex;gap:12px;flex-wrap:wrap;background:#fff;border-radius:var(--radius);padding:12px;box-shadow:0 24px 60px rgba(0,0,0,.2);width:100%;box-sizing:border-box;">
+            <select class="quote-field quote-select" style="flex:1 1 160px;padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;box-sizing:border-box;">
+              <option value="" selected>Choose Service</option>
+              {QUOTE_SERVICE_OPTIONS.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <input class="quote-field" placeholder="Full Name" style="flex:1 1 160px;padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Phone Number" style="flex:1 1 160px;padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Email" style="flex:1 1 160px;padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Post Code" style="flex:1 1 160px;padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;box-sizing:border-box;" />
+            <button type="submit" class="btn-accent" style="border:none;cursor:pointer;flex:0 0 auto;">Get A Free Quote</button>
+          </form>
+        )}
+        {import.meta.env.DEV && (
+          <div
+            class="dev-embed-control"
+            data-embed-key="quoteForm.embedCode"
+            data-embed-value={quoteEmbedCode}
+            style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+          ></div>
+        )}
+      </div>
+    </div>
+  </div>
+) : (
+  <div id="contact" class="contact-section" style="position:relative;background:var(--color-primary);padding:100px 40px;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    {import.meta.env.DEV && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.contactCtaLayout"
+        data-cycle-options={CYCLE_OPTIONS}
+        data-cycle-label={CYCLE_LABEL}
+        data-cycle-current={layout}
+        style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    <div style="max-width:var(--container-width);margin:0 auto;display:flex;gap:64px;flex-wrap:wrap;align-items:center;">
+      <div style="flex:1 1 380px;color:#fff;">
+        <Badge editKey="home.contactCta.badgeText" value={badgeText} tone="light" style="align-items:center;" />
+        <EditableText
+          editKey="home.contactCta.heading"
+          value={heading}
+          as="h2"
+          style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 12px;"
+        />
+        <EditableText
+          editKey="home.contactCta.body"
+          value={body}
+          as="p"
+          multiline
+          style="font-size:var(--fsBody, 17px);line-height:1.7;margin:0;color:rgba(255,255,255,.85);"
+        />
+      </div>
+      <div class="contact-form-card" style="position:relative;flex:1 1 380px;background:#fff;border-radius:var(--radius);padding:48px;box-shadow:0 24px 60px rgba(0,0,0,.1);box-sizing:border-box;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+        {quoteEmbedCode ? (
+          <div class="quote-embed-wrap" data-quote-key="footer-split">
+            <div class="quote-embed-skeleton"><div class="quote-embed-spinner"></div></div>
+            <div set:html={quoteEmbedCode} />
+          </div>
+        ) : (
+          <form style="display:grid;grid-template-columns:1fr;gap:16px;">
+            <select class="quote-field quote-select" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;">
+              <option value="" selected>Choose Service *</option>
+              {QUOTE_SERVICE_OPTIONS.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <input class="quote-field" placeholder="Full Name *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Phone Number *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Email *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Post Code *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <button type="submit" class="btn-accent" style="border:none;cursor:pointer;">Get A Free Quote</button>
+          </form>
+        )}
+        {import.meta.env.DEV && (
+          <div
+            class="dev-embed-control"
+            data-embed-key="quoteForm.embedCode"
+            data-embed-value={quoteEmbedCode}
+            style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+          ></div>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
+<style>
+  /* The placeholder option is a real, selectable value (not disabled — see
+     the quote-form-placeholder task notes) so it can be reselected, but
+     that means it needs its own visual cue that it isn't a real choice yet;
+     otherwise it just looks like "Fencing" would: plain, full-opacity text
+     sitting in a valid-looking select. */
+  /* Browsers don't reliably apply the page's own font to <select> (it often
+     falls back to the OS UI font unless told otherwise), which is what made
+     "Choose Service" read as a different typeface than the plain-text
+     inputs beside it — one rule for both element types guarantees they
+     match. Explicit dark ink, not color:inherit — this select's background
+     is always white regardless of what section/text-color context it sits
+     in (e.g. the full-width footer CTA form sits inside a white-text block
+     on a primary-color background, which made inherited color:inherit
+     render invisible white-on-white). An inline color:inherit would also
+     always beat the :has() rule below on specificity, which is why the
+     "grey placeholder" state below never actually showed up before. */
+  .quote-field {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+  }
+  /* Matches the exact grey used below for the select's own placeholder
+     state — a browser's default ::placeholder grey doesn't necessarily
+     equal that, which is what made the two look like different colors. */
+  .quote-field::placeholder {
+    color: #8a8f98;
+    opacity: 1;
+  }
+  .quote-select:has(option[value=""]:checked) {
+    color: #8a8f98;
+  }
+  .quote-select option[value=""] {
+    color: #8a8f98;
+  }
+  .quote-select option:not([value=""]) {
+    color: var(--color-ink);
+  }
+  /* Native <select> chrome (the platform's own arrow + text rendering) is
+     what made "Choose Service" read as a different weight/font than the
+     plain-text placeholders beside it even with color/font-family matched
+     above — removing it and drawing our own arrow guarantees the select's
+     text is rendered exactly like any other box, not an OS widget.
+     background-color/-image are separate longhands (not the `background`
+     shorthand) so a variant like .cta-minimal-field can override just the
+     color without losing this arrow. */
+  .quote-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8f98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .contact-section {
+      padding-top: 56px !important;
+      padding-bottom: 56px !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    .contact-form-card {
+      padding: 24px !important;
+    }
+  }
+</style>

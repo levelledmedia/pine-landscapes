@@ -1,0 +1,166 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../PageHero.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import ImageSlot from '../ImageSlot.astro';
+import ContactSection from '../home/ContactSection.astro';
+import { homeServices, gallery, images } from '../../config/site';
+
+// Filter chips mirror the home page's Services cards exactly — same ids and
+// labels, so adding/removing a service card updates this list on the next
+// build with no separate data to keep in sync (same pattern Header.astro's
+// nav dropdown uses for homeServices.flat()).
+const serviceTags = homeServices.flat().map((s) => ({ id: s.id, label: s.label }));
+const PROJECT_TAGS = [{ id: 'all', label: 'All Photos' }, ...serviceTags];
+
+// Newest upload first — reversed since new photos are appended to the end
+// of config.gallery. A photo whose file failed to land (or was since
+// removed by hand) is skipped rather than rendering an empty tile.
+const photos = [...gallery].reverse().filter((p) => images[p.id]?.src);
+---
+
+<Layout title="Our Work | Crestline Landscapes">
+  <PageHero imageId="photos-hero" title="Our Work" />
+  <Breadcrumb label="Our Work" />
+
+  <div class="photos-page" style="max-width:var(--container-width);margin:0 auto;">
+    <p style="font-size:15px;color:oklch(0.4 0.02 255);margin:0 0 28px;">Browse our latest work, or filter by project type.</p>
+
+    <div id="filter-pills" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;">
+      {PROJECT_TAGS.map((t) => (
+        <button class={`filter-pill ${t.id === 'all' ? 'active' : ''}`} data-id={t.id}>{t.label}</button>
+      ))}
+    </div>
+
+    <div id="photo-grid" class="photo-grid" style="padding-bottom:60px;">
+      {photos.map((p, i) => (
+        <div class="photo-item" data-project={p.tag ?? ''} data-gallery-id={p.id} data-index={i} style={i >= 12 ? 'display:none;' : ''}>
+          <ImageSlot id={p.id} shape="rounded" natural />
+        </div>
+      ))}
+    </div>
+
+    <div style="text-align:center;padding-bottom:60px;">
+      <button type="button" id="load-more-btn" class="btn-accent" style="border:none;cursor:pointer;">Load More</button>
+    </div>
+  </div>
+
+  <ContactSection />
+</Layout>
+
+<style>
+  .photos-page {
+    padding: 48px 40px 0;
+  }
+
+  /* Masonry wall: a CSS multi-column layout instead of a grid, so each
+     photo keeps its own natural aspect ratio and simply flows into
+     whichever column has room next, rather than every tile being forced
+     to the same cropped height. Two columns at a size larger than a
+     thumbnail was the brief — not the usual 3/4-column thumbnail grid. */
+  .photo-grid {
+    column-count: 2;
+    column-gap: 20px;
+  }
+
+  .photo-item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 560px) {
+    .photos-page {
+      padding: 36px 20px 0;
+    }
+
+    .photo-grid {
+      column-count: 1;
+    }
+
+    .photo-item {
+      margin-bottom: 16px;
+    }
+  }
+
+  .filter-pill {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-primary);
+    background: transparent;
+    color: var(--color-ink);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .filter-pill.active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+</style>
+
+<script>
+  const PAGE_SIZE = 12;
+  const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+  const items = Array.from(document.querySelectorAll<HTMLElement>('.photo-item'));
+  const loadMoreBtn = document.getElementById('load-more-btn')!;
+
+  // Filter ids are internally "svc-decking" etc., which reads as clutter in a
+  // shareable URL — the "svc-" prefix is stripped when writing to the URL and
+  // re-added here when reading it back. The param key itself is generic
+  // ("filter", not "project") since this page/section can be relabeled to
+  // anything (Our Work, Gallery, Portfolio...) — the URL shouldn't assume
+  // "project" is the right word for what's being filtered.
+  const FILTER_PARAM = 'filter';
+  const toUrlValue = (id: string) => id.replace(/^svc-/, '');
+  const fromUrlValue = (value: string) => (Array.from(pills).some((p) => p.dataset.id === value) ? value : `svc-${value}`);
+
+  const params = new URLSearchParams(window.location.search);
+  const initialProjectParam = params.get(FILTER_PARAM);
+  const initialProject = initialProjectParam ? fromUrlValue(initialProjectParam) : null;
+  let activeProject = initialProject && Array.from(pills).some((p) => p.dataset.id === initialProject) ? initialProject : 'all';
+  let visibleCount = PAGE_SIZE;
+
+  // A link to this page can point straight at a filter (e.g. "?filter=decking"
+  // from a service page) — the pill row needs to reflect that on first paint,
+  // not just filter the grid underneath it, or it reads as "All Photos" is
+  // selected while a different set of photos is actually showing.
+  pills.forEach((p) => p.classList.toggle('active', p.dataset.id === activeProject));
+
+  function matches(item: HTMLElement) {
+    return activeProject === 'all' || item.dataset.project === activeProject;
+  }
+
+  function render() {
+    const filtered = items.filter(matches);
+    filtered.forEach((item, i) => {
+      item.style.display = i < visibleCount ? '' : 'none';
+    });
+    items.filter((item) => !matches(item)).forEach((item) => { item.style.display = 'none'; });
+    loadMoreBtn.style.display = visibleCount < filtered.length ? '' : 'none';
+  }
+
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      activeProject = pill.dataset.id ?? 'all';
+      visibleCount = PAGE_SIZE;
+      pills.forEach((p) => p.classList.toggle('active', p === pill));
+      render();
+      // Keeps the URL a shareable, clean link to whatever's currently
+      // filtered — "all" (the default) drops the param entirely rather than
+      // leaving "?filter=all" in the address bar.
+      const url = new URL(window.location.href);
+      if (activeProject === 'all') url.searchParams.delete(FILTER_PARAM);
+      else url.searchParams.set(FILTER_PARAM, toUrlValue(activeProject));
+      window.history.replaceState({}, '', url);
+    });
+  });
+
+  loadMoreBtn.addEventListener('click', () => {
+    visibleCount += PAGE_SIZE;
+    render();
+  });
+
+  render();
+</script>

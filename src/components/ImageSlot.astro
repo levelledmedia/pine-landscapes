@@ -1,0 +1,84 @@
+---
+// Stand-in for the Claude Design <image-slot> custom element. Renders a real
+// <img> when a src is supplied (explicitly, or via config.images[id] — the
+// studio app's image uploads write into that map), otherwise a labeled
+// placeholder box so it's obvious what photo belongs where.
+import { images } from '../config/site';
+import { withBase } from '../lib/base';
+
+interface Props {
+  id: string;
+  src?: string;
+  alt?: string;
+  shape?: 'rect' | 'rounded' | 'circle';
+  fit?: 'cover' | 'contain';
+  style?: string;
+  class?: string;
+  // Renders the image at its own natural aspect ratio (no forced cover-crop
+  // to a fixed box) instead of the usual absolutely-positioned fill — for
+  // masonry-style layouts (see the Our Work gallery) where each photo's own
+  // proportions are what make the wall look right. Reposition/zoom controls
+  // don't apply to a slot in this mode (there's no crop to adjust), so
+  // dev-edit.js skips them for it — see the `data-image-natural` attribute.
+  natural?: boolean;
+}
+
+const {
+  id,
+  src,
+  alt = '',
+  shape = 'rounded',
+  fit = 'cover',
+  style = '',
+  class: className,
+  natural = false,
+} = Astro.props;
+
+const image = images[id];
+const resolvedSrc = src ?? image?.src;
+const x = image?.x ?? 50;
+const y = image?.y ?? 50;
+const scale = image?.scale ?? 1;
+
+// 'circle' stays a true circle regardless of the roundness setting — a
+// roundness amount applied to it would just make it a rounded square.
+const borderRadius = shape === 'circle' ? '50%' : shape === 'rounded' ? 'var(--radius)' : '0';
+---
+
+<div
+  data-image-slot={import.meta.env.DEV ? id : undefined}
+  data-image-natural={import.meta.env.DEV && natural ? '1' : undefined}
+  class={className}
+  style={`position:relative;overflow:hidden;border-radius:${borderRadius};${style}`}
+>
+  {
+    resolvedSrc ? natural ? (
+      <img
+        src={withBase(resolvedSrc)}
+        alt={alt}
+        loading="lazy"
+        style="width:100%;height:auto;display:block;"
+      />
+    ) : (
+      // Separate wrapper for any hover-zoom effect a parent component wants
+      // to apply (e.g. FeaturedProjects) — keeps that transform off this
+      // div itself, since the dev-mode photo controls (adjust/delete) are
+      // appended here as siblings of the image and would otherwise scale
+      // and drift out of position along with the zoom.
+      <div class="image-slot-zoom" style="width:100%;height:100%;">
+        <img
+          src={withBase(resolvedSrc)}
+          alt={alt}
+          loading="lazy"
+          style={`width:100%;height:100%;object-fit:${fit};object-position:${x}% ${y}%;transform:scale(${scale});transition:opacity .5s ease;display:block;`}
+        />
+      </div>
+    ) : (
+      <div
+        style="width:100%;height:100%;min-height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;background:oklch(0.9 0.01 255);border:1px dashed oklch(0.7 0.01 255);color:oklch(0.5 0.01 255);font-family:'Inter',sans-serif;font-size:12px;box-sizing:border-box;"
+      >
+        Add photo
+      </div>
+    )
+  }
+</div>

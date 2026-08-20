@@ -1,0 +1,91 @@
+---
+import fs from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import BadgeIcon from '../BadgeIcon.astro';
+import EditableText from '../EditableText.astro';
+import { content, swaps } from '../../config/site';
+import { withBase } from '../../lib/base';
+
+// Generic stylized credential badges — no real trademarked logos. Neutral
+// gray placeholders shown until the client's real logos are picked via the
+// dev-logo-picker below. Shared section, rendered identically on the home
+// page and About page.
+const badges = [
+  { label: 'Checkatrade', initials: 'CT' },
+  { label: 'TrustATrader', initials: 'TT' },
+  { label: 'Which? Trusted Trader', initials: 'W?' },
+  { label: 'Rated People', initials: 'RP' },
+  { label: 'Trustpilot', initials: 'TP' },
+  { label: 'FMB', initials: 'FMB' },
+  { label: 'Gas Safe Registered', initials: 'GS' },
+];
+
+// Real credential logos live in public/images/credentials/ (see CLAUDE.md) —
+// read at build/dev time so dropping a new file in that folder makes it
+// available in the picker with no code change. Node fs is safe here: this
+// frontmatter only ever runs server-side, never ships to the browser.
+const CREDENTIALS_DIR = fileURLToPath(new URL('../../../public/images/credentials/', import.meta.url));
+let logoFiles: string[] = [];
+try {
+  logoFiles = fs
+    .readdirSync(CREDENTIALS_DIR)
+    .filter((f) => /\.(png|jpe?g|webp|svg)$/i.test(f))
+    .sort();
+} catch {
+  logoFiles = [];
+}
+
+const selectedLogos = (swaps?.selectedCredentialLogos ?? '')
+  .split(',')
+  .map((f) => f.trim())
+  .filter((f) => f && logoFiles.includes(f));
+const showRealLogos = selectedLogos.length > 0;
+
+// One size governs every circle (placeholder or real) via a CSS custom
+// property — see the dev-logo-size-control below and BadgeIcon.astro.
+const logoSize = Number(content.home.credentialLogoSize) || 104;
+---
+
+<div class="badges-section" style="position:relative;text-align:center;padding:70px 40px;background:var(--color-offwhite-deep);" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+  <EditableText
+    editKey="home.credentialsTitle"
+    value={content.home.credentialsTitle ?? 'Credentials & Brands'}
+    as="h3"
+    style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 22px);text-transform:var(--heading-case);letter-spacing:.05em;margin:0 0 40px;color:var(--color-ink);"
+  />
+  <div id="badges-row" style={`display:flex;justify-content:center;align-items:flex-start;gap:40px;flex-wrap:wrap;--logo-size:${logoSize}px;`}>
+    {showRealLogos
+      ? selectedLogos.map((file) => (
+          <div style="width:var(--logo-size);height:var(--logo-size);border-radius:50%;background:#fff;border:2px solid var(--color-offwhite-deep);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:calc(var(--logo-size) * 0.15);box-sizing:border-box;">
+            <img src={withBase(`/images/credentials/${encodeURIComponent(file)}`)} alt="" style="max-width:100%;max-height:100%;object-fit:contain;" />
+          </div>
+        ))
+      : badges.map((b) => <BadgeIcon label={b.label} initials={b.initials} />)}
+  </div>
+  {import.meta.env.DEV && (
+    <div
+      class="dev-logo-picker"
+      data-logo-key="swaps.selectedCredentialLogos"
+      data-logo-options={logoFiles.join(',')}
+      data-logo-current={selectedLogos.join(',')}
+      style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+    ></div>
+  )}
+  {import.meta.env.DEV && (
+    <div
+      class="dev-logo-size-control"
+      data-size-key="home.credentialLogoSize"
+      data-size-target="badges-row"
+      data-size-value={logoSize}
+      style="position:absolute;top:12px;right:12px;z-index:9999;pointer-events:auto;"
+    ></div>
+  )}
+</div>
+
+<style>
+  @media (max-width: 640px) {
+    .badges-section {
+      padding: 44px 20px !important;
+    }
+  }
+</style>

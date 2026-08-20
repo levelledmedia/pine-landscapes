@@ -1,0 +1,133 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../PageHero.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { business, content } from '../../config/site';
+import { withBase } from '../../lib/base';
+import { withAsyncScripts } from '../../lib/embed';
+
+const { badgeText, heading, body, formHeading } = content.contact;
+const mapQuery = business.mapQuery || 'London';
+const phoneHref = `tel:${business.phone.replace(/\D/g, '')}`;
+
+// Same sitewide embed value as the hero and footer CTA quote forms — see
+// Hero.astro's comment and CLAUDE.md for why this is one shared value.
+const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
+---
+
+<Layout title="Contact Us | Crestline Landscapes">
+  <PageHero imageId="contact-hero" title="Contact Us" />
+  <Breadcrumb label="Contact" />
+
+  <div class="contact-page" style="position:relative;">
+    <div style="max-width:var(--container-width);margin:0 auto;display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div style="flex:1 1 380px;">
+        <Badge editKey="contact.badgeText" value={badgeText} tone="dark" />
+        <EditableText
+          editKey="contact.heading"
+          value={heading}
+          as="h1"
+          style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 16px;color:var(--color-ink);"
+        />
+        <EditableText
+          editKey="contact.body"
+          value={body}
+          as="p"
+          multiline
+          style="font-size:var(--fsBody, 17px);line-height:1.7;color:oklch(0.4 0.02 255);margin:0 0 32px;"
+        />
+
+        <div style="display:flex;flex-direction:column;gap:20px;margin-bottom:32px;">
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Phone</div>
+            <EditableText editKey="business.phone" value={business.phone} as="a" href={phoneHref} global style="font-size:var(--fsBody, 18px);color:var(--color-ink);text-decoration:none;font-weight:600;" />
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Email</div>
+            <EditableText editKey="business.email" value={business.email} as="a" href={`mailto:${business.email}`} global style="font-size:var(--fsBody, 18px);color:var(--color-ink);text-decoration:none;font-weight:600;" />
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Address</div>
+            <EditableText editKey="business.address" value={business.address} as="p" global style="font-size:var(--fsBody, 18px);color:var(--color-ink);margin:0;" />
+          </div>
+          <div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Hours</div>
+            <EditableText editKey="business.hours" value={business.hours} as="p" global style="font-size:var(--fsBody, 18px);color:var(--color-ink);margin:0;" />
+          </div>
+        </div>
+
+        <a href={withBase('/schedule')} class="btn-outline">Prefer to book a call? Schedule one →</a>
+
+        <div style="position:relative;margin-top:32px;min-height:260px;border-radius:var(--radius);overflow:hidden;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+          <iframe
+            src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+            style="width:100%;height:100%;min-height:260px;border:0;display:block;"
+            loading="lazy"
+            title="Map"
+          ></iframe>
+          {import.meta.env.DEV && (
+            <div class="dev-map-control" data-map-key="business.mapQuery" data-map-value={mapQuery} style="position:absolute;bottom:12px;right:12px;z-index:9999;"></div>
+          )}
+        </div>
+      </div>
+
+      <div class="contact-form-card" style="position:relative;flex:1 1 420px;background:var(--color-offwhite);border-radius:var(--radius);padding:44px;box-sizing:border-box;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+        <EditableText
+          editKey="contact.formHeading"
+          value={formHeading}
+          as="h3"
+          style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 24px);margin:0 0 20px;color:var(--color-ink);"
+        />
+        {quoteEmbedCode ? (
+          <div class="quote-embed-wrap" data-quote-key="contact">
+            <div class="quote-embed-skeleton"><div class="quote-embed-spinner"></div></div>
+            <div set:html={quoteEmbedCode} />
+          </div>
+        ) : (
+          <form style="display:grid;grid-template-columns:1fr;gap:14px;">
+            <input class="quote-field" placeholder="Full Name *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Phone Number *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <input class="quote-field" placeholder="Email *" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;" />
+            <textarea class="quote-field" placeholder="How can we help? *" rows="5" style="padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;resize:vertical;font-family:inherit;"></textarea>
+            <button type="submit" class="btn-accent" style="width:100%;border:none;cursor:pointer;">Send Message</button>
+          </form>
+        )}
+        {import.meta.env.DEV && (
+          <div
+            class="dev-embed-control"
+            data-embed-key="quoteForm.embedCode"
+            data-embed-value={quoteEmbedCode}
+            style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+          ></div>
+        )}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .quote-field {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+  }
+  .quote-field::placeholder {
+    color: #8a8f98;
+    opacity: 1;
+  }
+
+  .contact-page {
+    padding: 100px 40px;
+  }
+
+  @media (max-width: 640px) {
+    .contact-page {
+      padding: 56px 20px;
+    }
+
+    .contact-form-card {
+      padding: 24px !important;
+    }
+  }
+</style>

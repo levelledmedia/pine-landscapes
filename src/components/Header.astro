@@ -1,0 +1,809 @@
+---
+import EditableText from './EditableText.astro';
+import SocialIcons from './SocialIcons.astro';
+import { business, homeServices, images, nav, swaps } from '../config/site';
+import { withBase } from '../lib/base';
+import { serviceHref } from '../lib/pages';
+
+// nav/service hrefs are all base-relative ("/", "/fencing") — stripping
+// the configured base back off the actual pathname here (rather than
+// base-prefixing every href for comparison) keeps isActive's own logic
+// untouched, since under a GitHub Pages preview build Astro.url.pathname
+// includes the /<repo>/<slug>/ prefix but nothing in `nav`/`services` does.
+const basePrefix = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const path = basePrefix && Astro.url.pathname.startsWith(basePrefix) ? Astro.url.pathname.slice(basePrefix.length) || '/' : Astro.url.pathname;
+const brandName = business.name || business.legalName;
+// Header background: 'white' is the neutral default, 'primary' and 'accent'
+// let the header pick up either of the site's two brand colors (e.g. a
+// vivid accent-colored bar). Text goes white on either colored background;
+// the nav-hover/CTA highlight always uses whichever of primary/accent the
+// background *isn't*, so it never blends into its own bar.
+const headerBackground = swaps?.headerBackground ?? 'white';
+const headerWidth = swaps?.headerWidth ?? 'contained';
+const isFullWidthHeader = headerWidth === 'full';
+const isLightHeader = headerBackground === 'white';
+const headerBg = headerBackground === 'white' ? '#fff' : `var(--color-${headerBackground})`;
+const highlightVar = headerBackground === 'accent' ? '--color-primary' : '--color-accent';
+// Free Quote button color when the header background is white — the
+// secondary/accent color, settled on after comparing it against the
+// primary-color version.
+const quoteCtaBg = isLightHeader ? 'var(--color-accent)' : 'var(--header-highlight)';
+// Header/hero primary CTA layout — see mainCtaStyle in studio/lib/types.ts
+// for what each option does.
+const mainCtaStyle = swaps?.mainCtaStyle ?? 'default';
+const phoneTelHref = `tel:${business.phone.replace(/[^0-9+]/g, '')}`;
+const logo = images?.logo;
+// Header height presets bound how tall the header (and its logo) can get —
+// the logo scale slider is clamped to this via CSS max-height so dragging it
+// can no longer grow the header past what the selected preset allows. Vertical
+// padding for each preset lives in the .height-tall / .height-taller rules below.
+const LOGO_MAX_HEIGHT = { default: 44, tall: 60, taller: 76 } as const;
+const logoMaxHeight = LOGO_MAX_HEIGHT[swaps?.headerHeight ?? 'default'];
+const HEADER_PADDING = { default: 14, tall: 22, taller: 30 } as const;
+const headerHeightKey = swaps?.headerHeight ?? 'default';
+const topBar = swaps?.topBar ?? 'default';
+const topBarVisible = swaps?.topBarVisible ?? 'show';
+const TOP_BAR_PADDING = { default: 8, tall: 14 } as const;
+// Nav dropdown mirrors whatever service cards exist on the home page —
+// there's no separate list to keep in sync, and no card means no page.
+// Service pages are flat, clean URLs derived from the card's own label
+// (not nested under /services/), so "is this a service route" has to check
+// against the actual list rather than a shared path prefix.
+const services = homeServices.flat().map((s) => ({ label: s.label, href: serviceHref(s.label) }));
+const isServiceRoute = services.some((s) => s.href === path);
+const isActive = (href: string) => {
+  if (href === '/') return path === '/';
+  if (href.startsWith('/#') || href === '#') return false;
+  return path.startsWith(href);
+};
+---
+
+{topBarVisible !== 'hide' && (
+  <div id="top-bar" class="top-bar" style={`position:relative;background:var(--color-accent);color:#fff;display:flex;justify-content:space-between;align-items:center;padding-top:${TOP_BAR_PADDING[topBar]}px;padding-bottom:${TOP_BAR_PADDING[topBar]}px;font-size:var(--fsSmall, 13px);`} data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    <span style="display:flex;align-items:center;gap:6px;min-width:0;">
+      <svg aria-hidden="true" viewBox="0 0 512 512" width="13" height="13" fill="currentColor" style="flex:none;">
+        <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+      </svg>
+      <EditableText editKey="business.phone" value={business.phone} as="span" global style="white-space:nowrap;" />
+      <span class="top-bar-address">
+        &nbsp; | &nbsp;
+        <EditableText editKey="business.addressShort" value={business.addressShort} as="span" global style="white-space:nowrap;" />
+      </span>
+    </span>
+    <span style="display:flex;align-items:center;gap:12px;color:#fff;">
+      <SocialIcons socials={business.socials} email={business.email} />
+    </span>
+    {import.meta.env.DEV && (
+      <div
+        class="dev-height-handle"
+        data-handle-key="swaps.topBar"
+        data-handle-current={topBar}
+        data-handle-stops={JSON.stringify([
+          { name: 'default', save: 'default', effects: [{ target: 'top-bar', prop: 'paddingTop', value: `${TOP_BAR_PADDING.default}px` }, { target: 'top-bar', prop: 'paddingBottom', value: `${TOP_BAR_PADDING.default}px` }] },
+          { name: 'tall', save: 'tall', effects: [{ target: 'top-bar', prop: 'paddingTop', value: `${TOP_BAR_PADDING.tall}px` }, { target: 'top-bar', prop: 'paddingBottom', value: `${TOP_BAR_PADDING.tall}px` }] },
+        ])}
+        style="position:absolute;bottom:0;left:50%;transform:translate(-50%,50%);z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+  </div>
+)}
+
+<header
+  class={`main-header ${isLightHeader ? 'light' : 'tinted'}`}
+  data-header-background={headerBackground}
+  style={`--header-bg:${headerBg};--header-highlight:var(${highlightVar});position:relative;`}
+  data-dev-hover-zone={import.meta.env.DEV ? true : undefined}
+>
+  <div id="main-header-inner" class={`main-header-inner height-${headerHeightKey} ${isFullWidthHeader ? 'width-full' : ''}`}>
+    <a href={withBase('/')} class="brand-lockup-slot" data-image-slot={import.meta.env.DEV ? 'logo' : undefined}>
+      {logo?.src ? (
+        <img
+          id="brand-logo-img"
+          src={withBase(logo.src)}
+          alt={brandName}
+          class="brand-logo-img"
+          data-scale={logo.scale ?? 1}
+          data-max-scale={logoMaxHeight / 44}
+          style={`height:${Math.round(44 * (logo.scale ?? 1))}px;max-height:${logoMaxHeight}px;`}
+        />
+      ) : (
+        <span class="brand-lockup">
+          <EditableText editKey="business.name" value={brandName} as="span" global class="brand-name" />
+          {' '}
+          <EditableText editKey="business.nameAccent" value={business.nameAccent} as="span" global class="brand-accent" />
+        </span>
+      )}
+    </a>
+    <nav class="main-nav">
+      {nav.map((item, i) =>
+        item.key === 'services' ? (
+          <div class={`nav-dropdown ${isServiceRoute ? 'active' : ''}`}>
+            <EditableText
+              editKey={`nav.${i}.label`}
+              value={item.label}
+              as="span"
+              class={`navlink navlink-summary ${isServiceRoute ? 'active' : ''}`}
+            />
+            <div class="nav-dropdown-menu">
+              <div class="nav-dropdown-menu-inner">
+                {services.map((service) => (
+                  <a class={`nav-dropdown-link ${isActive(service.href) ? 'active' : ''}`} href={withBase(service.href)}>
+                    {service.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <EditableText
+            editKey={`nav.${i}.label`}
+            value={item.label}
+            as="span"
+            class={`navlink ${isActive(item.href) ? 'active' : ''}`}
+            href={withBase(item.href)}
+            slugKey={item.key !== 'home' ? `nav.${i}.href` : undefined}
+          />
+        )
+      )}
+    </nav>
+    <div class="header-actions">
+      <div class="header-actions-inline">
+      {mainCtaStyle === 'phone' ? (
+        <>
+          <EditableText
+            editKey="business.quoteCtaLabel"
+            value={business.quoteCtaLabel}
+            as="span"
+            href={withBase("/#contact")}
+            global
+            class="header-outline-btn"
+          />
+          <span class="btn-accent header-phone-btn" style="display:inline-flex;align-items:center;gap:10px;padding:12px 22px;font-size:var(--fsButton, 15px);--btn-bg:var(--color-accent);">
+            <svg aria-hidden="true" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
+              <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+            </svg>
+            <EditableText
+              editKey="business.phone"
+              value={business.phone}
+              as="span"
+              href={phoneTelHref}
+              global
+              style="color:inherit;text-decoration:none;"
+            />
+          </span>
+        </>
+      ) : (
+        <>
+          <span class="header-phone">
+            <svg aria-hidden="true" viewBox="0 0 512 512" width="16" height="16" class="phone-icon" fill="currentColor">
+              <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+            </svg>
+            <EditableText
+              editKey="business.phone"
+              value={business.phone}
+              as="span"
+              href={phoneTelHref}
+              global
+              class="header-phone-text"
+            />
+          </span>
+          <EditableText
+            editKey="business.quoteCtaLabel"
+            value={business.quoteCtaLabel}
+            class="btn-accent"
+            href={withBase("/#contact")}
+            global
+            style={`padding:12px 22px;font-size:var(--fsButton, 15px);--btn-bg:${quoteCtaBg};`}
+          />
+        </>
+      )}
+      </div>
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-nav-panel"
+        aria-label="Toggle navigation menu"
+      >
+        <svg aria-hidden="true" class="icon-menu" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+        <svg aria-hidden="true" class="icon-close" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav-panel" class="mobile-nav-panel">
+    <nav class="mobile-nav">
+      {nav.map((item, i) =>
+        item.key === 'services' ? (
+          <div class="mobile-nav-group">
+            <button type="button" class={`mobile-nav-summary ${isServiceRoute ? 'active' : ''}`} aria-expanded="false">
+              <EditableText editKey={`nav.${i}.label`} value={item.label} as="span" />
+              <svg aria-hidden="true" class="mobile-nav-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="mobile-nav-submenu">
+              {services.map((service) => (
+                <a class={`mobile-nav-sublink ${isActive(service.href) ? 'active' : ''}`} href={withBase(service.href)}>
+                  {service.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <EditableText
+            editKey={`nav.${i}.label`}
+            value={item.label}
+            as="span"
+            class={`mobile-navlink ${isActive(item.href) ? 'active' : ''}`}
+            href={withBase(item.href)}
+            slugKey={item.key !== 'home' ? `nav.${i}.href` : undefined}
+          />
+        )
+      )}
+    </nav>
+    <div class="mobile-nav-actions">
+      <a class="mobile-nav-phone" href={phoneTelHref}>
+        <svg aria-hidden="true" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
+          <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+        </svg>
+        <EditableText editKey="business.phone" value={business.phone} as="span" global style="color:inherit;text-decoration:none;" />
+      </a>
+      <EditableText
+        editKey="business.quoteCtaLabel"
+        value={business.quoteCtaLabel}
+        class="btn-accent mobile-nav-cta"
+        href={withBase('/#contact')}
+        global
+        style="--btn-bg:var(--color-accent);"
+      />
+    </div>
+  </div>
+  {import.meta.env.DEV && (
+    <div
+      class="dev-height-handle"
+      data-handle-key="swaps.headerHeight"
+      data-handle-current={headerHeightKey}
+      data-handle-stops={JSON.stringify([
+        { name: 'default', save: 'default', effects: [
+          { target: 'main-header-inner', prop: 'paddingTop', value: `${HEADER_PADDING.default}px` },
+          { target: 'main-header-inner', prop: 'paddingBottom', value: `${HEADER_PADDING.default}px` },
+          { target: 'brand-logo-img', prop: 'maxHeight', value: `${LOGO_MAX_HEIGHT.default}px` },
+        ] },
+        { name: 'tall', save: 'tall', effects: [
+          { target: 'main-header-inner', prop: 'paddingTop', value: `${HEADER_PADDING.tall}px` },
+          { target: 'main-header-inner', prop: 'paddingBottom', value: `${HEADER_PADDING.tall}px` },
+          { target: 'brand-logo-img', prop: 'maxHeight', value: `${LOGO_MAX_HEIGHT.tall}px` },
+        ] },
+        { name: 'taller', save: 'taller', effects: [
+          { target: 'main-header-inner', prop: 'paddingTop', value: `${HEADER_PADDING.taller}px` },
+          { target: 'main-header-inner', prop: 'paddingBottom', value: `${HEADER_PADDING.taller}px` },
+          { target: 'brand-logo-img', prop: 'maxHeight', value: `${LOGO_MAX_HEIGHT.taller}px` },
+        ] },
+      ])}
+      style="position:absolute;bottom:0;left:50%;transform:translate(-50%,50%);z-index:9999;pointer-events:auto;"
+    ></div>
+  )}
+  {import.meta.env.DEV && (
+    <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.headerBackground"
+        data-cycle-options="white,primary,accent"
+        data-cycle-icon="droplet"
+        data-cycle-current={headerBackground}
+        data-cycle-title="Toggle header background"
+        style="pointer-events:auto;"
+      ></div>
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.headerWidth"
+        data-cycle-options="contained,full"
+        data-cycle-icon="widthToggle"
+        data-cycle-current={headerWidth}
+        data-cycle-title="Toggle header width"
+        style="pointer-events:auto;"
+      ></div>
+    </div>
+  )}
+</header>
+
+{swaps?.offerBar !== 'hide' && (
+  <div style="background:var(--color-primary);color:#fff;text-align:center;padding:16px;font-family:var(--font-heading);font-weight:600;font-size:14px;letter-spacing:.03em;">
+    <EditableText editKey="business.promoBanner" value={business.promoBanner} as="span" global />
+  </div>
+)}
+
+<style>
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--header-bg);
+  }
+
+  .top-bar {
+    padding-left: 40px;
+    padding-right: 40px;
+    gap: 12px;
+  }
+
+  .main-header-inner {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+    gap: 28px;
+    padding: 14px 40px;
+  }
+
+  .brand-lockup-slot,
+  .header-actions {
+    align-self: center;
+  }
+
+  .main-header-inner.height-tall {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .main-header-inner.height-taller {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  .main-header-inner.width-full {
+    max-width: none;
+  }
+
+  .brand-lockup-slot {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .brand-lockup {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: .02em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .brand-logo-img {
+    display: block;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .main-header.light .brand-lockup {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted .brand-lockup {
+    color: #fff;
+  }
+
+  .brand-accent {
+    color: var(--header-highlight);
+  }
+
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    min-width: 0;
+    align-items: center;
+  }
+
+  .nav-dropdown {
+    position: relative;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+
+  /* :global() because this class is passed as a prop into EditableText,
+     which renders the actual element from its own component — Astro's
+     scoped-style hash never reaches an element rendered by a different
+     component, so a plain (non-:global) selector here would silently never
+     match it. Same reason .navlink below is wrapped the same way. */
+  .main-header :global(.navlink-summary) {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* .nav-dropdown now stretches to the header's full row height (see above),
+     so top:100% already sits flush with the header's bottom edge — matching
+     standard dropdown-nav behavior instead of hanging mid-header off the
+     link's own text line. Zero gap to that edge also means no dead zone for
+     the pointer to cross between the link and the menu opening below it. */
+  .nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 30;
+  }
+
+  .nav-dropdown-menu-inner {
+    margin-top: 12px;
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    display: block;
+  }
+
+  .nav-dropdown-link {
+    display: block;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .nav-dropdown-link:hover,
+  .nav-dropdown-link.active {
+    background: oklch(0.96 0.01 255);
+    color: var(--header-highlight);
+  }
+
+  .main-header :global(.navlink) {
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .main-header.light :global(.navlink) {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted :global(.navlink) {
+    color: #fff;
+  }
+
+  .main-header :global(.navlink:hover) {
+    color: var(--header-highlight);
+  }
+
+  .main-header.tinted .nav-dropdown-menu-inner {
+    background: var(--header-bg);
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  .main-header.tinted .nav-dropdown-link {
+    color: #fff;
+  }
+
+  .main-header.tinted .nav-dropdown-link:hover,
+  .main-header.tinted .nav-dropdown-link.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--header-highlight);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 18px;
+  }
+
+  .header-actions-inline {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .header-phone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 1;
+  }
+
+  .header-phone :global(.header-phone-text) {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .main-header.light .header-phone {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted .header-phone {
+    color: #fff;
+  }
+
+  .phone-icon {
+    flex: none;
+    color: var(--color-primary);
+  }
+
+  .main-header :global(.header-outline-btn) {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: 1.5px solid var(--color-primary);
+    color: var(--color-primary);
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: .05em;
+    padding: 11px 22px;
+    border-radius: var(--radius-btn);
+    text-transform: var(--heading-case);
+  }
+
+  .main-header :global(.header-outline-btn:hover) {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  /* Below 900px there isn't room for the full nav + phone + CTA inline, so
+     the whole row collapses to logo + hamburger and the nav/phone/CTA move
+     into .mobile-nav-panel instead of wrapping onto extra rows. */
+  .mobile-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    flex: none;
+  }
+
+  .main-header.light .mobile-menu-toggle {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted .mobile-menu-toggle {
+    color: #fff;
+  }
+
+  .mobile-menu-toggle .icon-close {
+    display: none;
+  }
+
+  .mobile-menu-toggle[aria-expanded="true"] .icon-menu {
+    display: none;
+  }
+
+  .mobile-menu-toggle[aria-expanded="true"] .icon-close {
+    display: block;
+  }
+
+  .mobile-nav-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 100%);
+    overflow-y: auto;
+    background: var(--header-bg);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    z-index: 40;
+  }
+
+  .main-header.tinted .mobile-nav-panel {
+    border-top-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .mobile-nav-panel.open {
+    display: block;
+  }
+
+  .mobile-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 20px;
+  }
+
+  .mobile-navlink,
+  .mobile-nav-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 14px 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    text-align: left;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .main-header.light .mobile-navlink,
+  .main-header.light .mobile-nav-summary {
+    color: var(--color-ink);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .main-header.tinted .mobile-navlink,
+  .main-header.tinted .mobile-nav-summary {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .mobile-navlink.active,
+  .mobile-nav-summary.active {
+    color: var(--header-highlight);
+  }
+
+  .mobile-nav-chevron {
+    flex: none;
+    transition: transform 0.15s ease;
+  }
+
+  .mobile-nav-summary[aria-expanded="true"] .mobile-nav-chevron {
+    transform: rotate(180deg);
+  }
+
+  .mobile-nav-submenu {
+    display: none;
+    flex-direction: column;
+    padding: 4px 0 8px 14px;
+  }
+
+  .mobile-nav-submenu.open {
+    display: flex;
+  }
+
+  .mobile-nav-sublink {
+    padding: 11px 4px;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  .main-header.light .mobile-nav-sublink {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted .mobile-nav-sublink {
+    color: #fff;
+  }
+
+  .mobile-nav-sublink.active {
+    opacity: 1;
+    color: var(--header-highlight);
+  }
+
+  .mobile-nav-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px 20px 24px;
+  }
+
+  .mobile-nav-phone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 17px;
+  }
+
+  .main-header.light .mobile-nav-phone {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted .mobile-nav-phone {
+    color: #fff;
+  }
+
+  .main-header :global(.mobile-nav-cta) {
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 900px) {
+    .main-header-inner {
+      grid-template-columns: auto auto;
+      padding: 14px 20px;
+      gap: 16px;
+    }
+
+    .main-nav,
+    .header-actions-inline {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: inline-flex;
+    }
+
+    .brand-lockup {
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .top-bar {
+      padding-left: 16px !important;
+      padding-right: 16px !important;
+    }
+
+    .top-bar-address {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function initMobileNav(header: HTMLElement) {
+    const toggle = header.querySelector<HTMLButtonElement>('.mobile-menu-toggle');
+    const panel = header.querySelector<HTMLElement>('#mobile-nav-panel');
+    if (!toggle || !panel) return;
+
+    const setOpen = (open: boolean) => {
+      panel.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('mobile-nav-open', open);
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(!panel.classList.contains('open'));
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>('.mobile-nav-summary').forEach((summary) => {
+      summary.addEventListener('click', () => {
+        const submenu = summary.nextElementSibling as HTMLElement | null;
+        const isOpen = submenu?.classList.toggle('open') ?? false;
+        summary.setAttribute('aria-expanded', String(isOpen));
+      });
+    });
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setOpen(false);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('.main-header').forEach(initMobileNav);
+</script>
+
+<style is:global>
+  body.mobile-nav-open {
+    overflow: hidden;
+  }
+</style>

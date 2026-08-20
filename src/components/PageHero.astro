@@ -1,0 +1,74 @@
+---
+import ImageSlot from './ImageSlot.astro';
+import { content, swaps } from '../config/site';
+
+interface Props {
+  imageId: string;
+  title: string;
+}
+
+const { imageId, title } = Astro.props;
+
+// Shares content.home.hero.overlayOpacity with the home hero on purpose —
+// one opacity value for every hero on the site, editable from either place.
+const { overlayOpacity = 0.4 } = content.home.hero;
+const pageHeroTall = swaps?.pageHeroTall ?? 'default';
+---
+
+<div class={`page-hero ${pageHeroTall === 'tall' ? 'tall' : ''}`} style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+  <ImageSlot id={imageId} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+  <div
+    id="page-hero-overlay"
+    data-opacity-rgb="15,20,35"
+    style={`position:absolute;inset:0;background:rgba(15,20,35,${overlayOpacity});pointer-events:none;`}
+  ></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+    <h1 class="page-hero-title" style="font-family:var(--font-heading);font-weight:700;text-transform:var(--heading-case);color:#fff;margin:0;letter-spacing:.03em;text-align:center;">{title}</h1>
+  </div>
+  {import.meta.env.DEV && (
+    <>
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.pageHeroTall"
+        data-cycle-options="default,tall"
+        data-cycle-label="Default,Tall"
+        data-cycle-current={pageHeroTall}
+        data-cycle-title="Toggle hero height"
+        style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+      <div
+        class="dev-opacity-control"
+        data-opacity-key="home.hero.overlayOpacity"
+        data-opacity-target="page-hero-overlay"
+        data-opacity-value={overlayOpacity}
+        style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    </>
+  )}
+</div>
+
+<style>
+  .page-hero {
+    height: 200px;
+  }
+  .page-hero.tall {
+    height: 300px;
+  }
+  .page-hero-title {
+    font-size: 40px;
+  }
+
+  @media (max-width: 640px) {
+    .page-hero {
+      height: auto;
+      min-height: 220px;
+    }
+    .page-hero.tall {
+      min-height: 320px;
+    }
+    .page-hero-title {
+      font-size: 28px;
+      padding: 0 20px;
+    }
+  }
+</style>

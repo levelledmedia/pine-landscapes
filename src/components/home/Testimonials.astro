@@ -1,0 +1,382 @@
+---
+import { content, swaps } from '../../config/site';
+import StarRating from '../StarRating.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+
+const testimonials = [
+  { quote: "“Excellent experience with this company. Very responsive throughout the entire process — the crew came in, did an excellent job, and left everything neat and clean. We'd recommend them to anyone.”", name: 'Laura K.' },
+  { quote: '“From the design consultation to the final walkthrough, the team was professional and precise. Our new patio and plantings completely transformed the backyard.”', name: 'Marcus T.' },
+  { quote: '“They showed up on time, stayed on budget, and the garden looks better than we imagined. Communication was great the whole way through.”', name: 'Priya S.' },
+];
+
+const style = swaps?.testimonialsStyle ?? 'single';
+const embedCode = content.home.testimonials?.embedCode ?? '';
+const heading = content.home.testimonials?.heading ?? 'Testimonials';
+const badgeText = content.home.testimonials?.badgeText ?? 'Testimonials';
+
+// 'faded' keeps the subtle brand tint (--color-offwhite-deep); 'full'
+// switches the section to the solid primary color, which also means the
+// heading/quote/name text needs to flip to white to stay readable.
+const isFullBg = (swaps?.testimonialsBg ?? 'faded') === 'full';
+const isCardPrimary = swaps?.testimonialsCardBg === 'primary';
+const isFullWidth = (swaps?.testimonialsWidth ?? 'contained') === 'full';
+const isEmbed = style === 'embed';
+const sectionBg = isFullBg ? 'var(--color-primary)' : 'var(--color-offwhite-deep)';
+const textColor = isFullBg ? '#fff' : 'var(--color-ink)';
+const dotInactive = isFullBg ? 'rgba(255,255,255,.3)' : 'rgba(0,0,0,.15)';
+---
+
+<div class="testimonials-section" style={`position:relative;padding:${isEmbed ? '80px' : '100px'} 40px;text-align:center;background:${sectionBg};--testimonial-dot-inactive:${dotInactive};`} data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+  <Badge editKey="home.testimonials.badgeText" value={badgeText} tone={isFullBg ? 'light' : 'dark'} style="align-items:center;" />
+  <EditableText
+    editKey="home.testimonials.heading"
+    value={heading}
+    as="h3"
+    style={`font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 32px);text-transform:var(--heading-case);letter-spacing:.05em;margin:0 0 48px;color:${textColor};`}
+  />
+
+  {style === 'single' && (
+    <div style={`position:relative;max-width:640px;margin:0 auto;color:${textColor};`}>
+      <p id="testimonial-quote" style="font-size:var(--fsBody, 17px);line-height:1.7;font-style:italic;margin:0 0 20px;min-height:95px;">{testimonials[0].quote}</p>
+      <StarRating style="margin-bottom:6px;" />
+      <div id="testimonial-name" style="font-family:var(--font-heading);font-weight:600;font-size:14px;margin-bottom:24px;">{testimonials[0].name}</div>
+      <div style="display:flex;justify-content:center;gap:10px;">
+        {testimonials.map((_, i) => (
+          <button class={`testimonial-dot ${i === 0 ? 'active' : ''}`} data-i={i} aria-label={`Show testimonial ${i + 1}`}></button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {style === 'cards' && (
+    <div class={`testimonial-carousel ${isFullWidth ? 'full-width' : ''}`}>
+      {/* Repeated 4x (not 2x) so a full extra set of cards is always still
+          on-screen when the loop wraps, even on very wide/full-bleed
+          viewports — with only 2x, the track ran out of cards before the
+          seamless reset point and a gap flashed in. */}
+      <div class="testimonial-track">
+        {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+          <div class={`testimonial-card ${isCardPrimary ? 'card-primary' : ''}`} role="button" tabindex="0" aria-label="Toggle full testimonial">
+            <StarRating style="justify-content:flex-start;" size={22} />
+            <div class="testimonial-quote-wrap">
+              <p class="testimonial-quote">{t.quote}</p>
+            </div>
+            <div style="font-family:var(--font-heading);font-weight:600;font-size:var(--fsBody, 16px);margin-top:10px;">{t.name}</div>
+            {/* Only on the first (non-repeated) card — the track loops 4
+                copies of the same testimonials for the seamless scroll (see
+                comment above), and one control per repeat would scatter
+                duplicate buttons across the carousel for what's a single
+                shared setting. */}
+            {i === 0 && import.meta.env.DEV && (
+              <div
+                class="dev-variant-cycle"
+                data-cycle-key="swaps.testimonialsCardBg"
+                data-cycle-options="white,primary"
+                data-cycle-icon="droplet"
+                data-cycle-current={isCardPrimary ? 'primary' : 'white'}
+                data-cycle-title="Toggle card color"
+                style="position:absolute;top:8px;right:8px;z-index:20;pointer-events:auto;"
+              ></div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {style === 'embed' && (
+    <div class={`testimonial-embed ${isFullWidth ? 'full-width' : ''}`} style={`position:relative;color:${textColor};margin-top:-16px;`}>
+      {embedCode ? (
+        <div set:html={embedCode} />
+      ) : (
+        <p style="font-size:14px;opacity:.7;">Paste a reviews-widget embed code using the control below (visible on hover in edit mode).</p>
+      )}
+    </div>
+  )}
+
+  {import.meta.env.DEV && style === 'embed' && (
+    <div
+      class="dev-embed-control"
+      data-embed-key="home.testimonials.embedCode"
+      data-embed-value={embedCode}
+      style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+    ></div>
+  )}
+  {import.meta.env.DEV && (
+    <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.testimonialsStyle"
+        data-cycle-options="single,cards,embed"
+        data-cycle-label="Single,Cards,Embed"
+        data-cycle-current={style}
+        style="pointer-events:auto;"
+      ></div>
+      {(style === 'cards' || style === 'embed') && (
+        <div
+          class="dev-variant-cycle"
+          data-cycle-key="swaps.testimonialsWidth"
+          data-cycle-options="contained,full"
+          data-cycle-icon="widthToggle"
+          data-cycle-current={isFullWidth ? 'full' : 'contained'}
+          data-cycle-title={style === 'cards' ? 'Toggle carousel width' : 'Toggle embed width'}
+          style="pointer-events:auto;"
+        ></div>
+      )}
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.testimonialsBg"
+        data-cycle-options="faded,full"
+        data-cycle-icon="droplet"
+        data-cycle-current={isFullBg ? 'full' : 'faded'}
+        data-cycle-title="Toggle background"
+        style="pointer-events:auto;"
+      ></div>
+    </div>
+  )}
+</div>
+
+<style>
+  .testimonial-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: rgba(0, 0, 0, .15);
+  }
+  .testimonial-dot.active {
+    background: var(--color-accent);
+  }
+
+  .testimonial-carousel {
+    position: relative;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 1.5%, black 98.5%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 1.5%, black 98.5%, transparent);
+  }
+  .testimonial-carousel::-webkit-scrollbar {
+    display: none;
+  }
+  .testimonial-track {
+    display: flex;
+    align-items: flex-start;
+    width: max-content;
+    gap: 28px;
+  }
+  /* Standard full-bleed trick: break out of the section's own padding and
+     the page's centered container regardless of ancestor width. */
+  .testimonial-carousel.full-width {
+    max-width: none;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+  .testimonial-embed {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .testimonial-embed.full-width {
+    max-width: none;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
+  .testimonial-embed :global(iframe.lc_reviews_widget) {
+    display: block;
+    margin-top: -20px;
+    margin-bottom: -20px;
+  }
+  .testimonial-card {
+    position: relative;
+    flex: 0 0 340px;
+    height: auto;
+    background: #fff;
+    border: 1px solid oklch(0.9 0.006 255);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: left;
+    color: var(--color-ink);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .testimonial-card:hover,
+  .testimonial-card:focus-visible {
+    border-color: var(--color-accent);
+  }
+  /* Mixed toward black rather than the raw primary color, so the card
+     reads as a distinct shade even when the section itself is already
+     solid primary (testimonialsBg: full) instead of blending flat. */
+  .testimonial-card.card-primary {
+    background: color-mix(in oklch, var(--color-primary) 85%, black);
+    border-color: transparent;
+    color: #fff;
+  }
+  .testimonial-quote-wrap {
+    overflow: hidden;
+    margin: 12px 0 4px;
+  }
+  .testimonial-quote {
+    font-size: 16px;
+    line-height: 1.7;
+    font-style: italic;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .testimonial-card.expanded {
+    height: auto;
+  }
+  .testimonial-card.expanded .testimonial-quote-wrap {
+    overflow: visible;
+  }
+  .testimonial-card.expanded .testimonial-quote {
+    display: block;
+    -webkit-line-clamp: unset;
+    overflow: visible;
+  }
+  @media (max-width: 640px) {
+    .testimonials-section {
+      padding: 56px 20px !important;
+    }
+  }
+</style>
+
+{style === 'single' && (
+  <script define:vars={{ testimonials }}>
+    const dots = document.querySelectorAll('.testimonial-dot');
+    const quoteEl = document.getElementById('testimonial-quote');
+    const nameEl = document.getElementById('testimonial-name');
+    let index = 0;
+    let timer;
+
+    function show(i) {
+      index = i;
+      quoteEl.textContent = testimonials[i].quote;
+      nameEl.textContent = testimonials[i].name;
+      dots.forEach((d, di) => d.classList.toggle('active', di === i));
+    }
+
+    function startAutoplay() {
+      clearInterval(timer);
+      timer = setInterval(() => show((index + 1) % testimonials.length), 6000);
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        show(Number(dot.dataset.i));
+        startAutoplay();
+      });
+    });
+
+    startAutoplay();
+  </script>
+)}
+
+{style === 'cards' && (
+  <script>
+    document.querySelectorAll('.testimonial-card').forEach((card) => {
+      const toggle = () => {
+        const expanded = card.classList.toggle('expanded');
+        card.setAttribute('aria-label', expanded ? 'Show less' : 'Toggle full testimonial');
+      };
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+
+    // Native overflow-x:auto scroll driven by rAF rather than a CSS
+    // transform animation — this is what lets a touch drag interrupt and
+    // scrub the carousel directly (a transform-based animation can't be
+    // grabbed on touch devices, only paused via :hover, which doesn't
+    // exist on touch at all). Mobile runs much slower per user feedback
+    // (fast auto-scroll made it impossible to read a card before it slid
+    // off screen and there was no way to stop or drag it).
+    document.querySelectorAll('.testimonial-carousel').forEach((carousel) => {
+      const track = carousel.querySelector('.testimonial-track');
+      if (!track) return;
+      const isMobile = () => window.matchMedia('(max-width: 640px)').matches;
+      const pxPerSecond = () => (isMobile() ? 16 : 45);
+      let paused = false;
+      let resumeTimer;
+      let lastTime = null;
+      // Some browsers (notably iOS Safari) round scrollLeft to a whole
+      // pixel on both read and write — at ~16px/s that's a ~0.27px delta
+      // per frame, which got silently rounded away every time and the
+      // carousel never visibly moved. Tracking our own float position and
+      // only ever writing from it (never reading it back from scrollLeft)
+      // keeps the fractional progress instead of losing it each frame.
+      let pos = carousel.scrollLeft;
+
+      function frame(time) {
+        if (lastTime === null) lastTime = time;
+        const dt = (time - lastTime) / 1000;
+        lastTime = time;
+        if (!paused) {
+          const loopWidth = track.scrollWidth / 4;
+          pos += pxPerSecond() * dt;
+          if (pos >= loopWidth) pos -= loopWidth;
+          carousel.scrollLeft = pos;
+        }
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      const pause = () => {
+        paused = true;
+        clearTimeout(resumeTimer);
+      };
+      const scheduleResume = () => {
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+          // Resync from wherever the user's own drag/scroll left it before
+          // handing control back to the auto-scroll loop.
+          pos = carousel.scrollLeft;
+          paused = false;
+          lastTime = null;
+        }, 2500);
+      };
+
+      carousel.addEventListener('pointerdown', pause);
+      carousel.addEventListener('pointerup', scheduleResume);
+      carousel.addEventListener('pointercancel', scheduleResume);
+      // Deliberately not mouseenter/mouseleave: those fire from the
+      // *cursor* entering/leaving the element, but several browsers also
+      // synthesize them when the page scrolls content under an otherwise
+      // stationary cursor — inconsistently across browsers/input devices,
+      // which is exactly what made this carousel randomly stop mid-
+      // animation while someone was just scrolling past it on the page,
+      // not interacting with the carousel at all. A wheel gesture that's
+      // mostly horizontal (deltaX) is the actual signal that someone's
+      // trying to scrub the carousel itself; a normal vertical page-scroll
+      // wheel event (deltaY-dominant) is left alone entirely so the
+      // animation keeps running smoothly underneath it.
+      carousel.addEventListener(
+        'wheel',
+        (e) => {
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            pause();
+            scheduleResume();
+          }
+        },
+        { passive: true },
+      );
+    });
+  </script>
+)}

@@ -1,0 +1,331 @@
+---
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { homeServices, content, swaps } from '../../config/site';
+import { withBase } from '../../lib/base';
+import { serviceHref } from '../../lib/pages';
+
+const { badgeText, heading } = content.home.services ?? { badgeText: 'What We Do', heading: 'Our Services' };
+
+// 'default' is the original 259px card height; 'medium'/'tall'/'large'/'taller'
+// scale it up in steps. Only applies to the 'grid' servicesStyle — 'text'
+// cards size to content.
+const SERVICE_CARD_HEIGHT = { default: 259, medium: 300, tall: 340, large: 380, taller: 420 } as const;
+const cardHeight = SERVICE_CARD_HEIGHT[swaps?.serviceCardsHeight ?? 'default'];
+// Image height for the 'text'/'text2' variants — those cards size to
+// content, so only the image portion (not the whole card) is adjustable.
+const TEXT_IMAGE_HEIGHT = { default: 180, medium: 205, tall: 230, large: 255, taller: 280 } as const;
+const textImageHeight = TEXT_IMAGE_HEIGHT[swaps?.servicesTextImageHeight ?? 'default'];
+const servicesStyle = swaps?.servicesStyle ?? 'grid';
+const isTextStyle = servicesStyle === 'text' || servicesStyle === 'text2';
+const showLearnMore = servicesStyle === 'text';
+const DEFAULT_TEXT_DESCRIPTION =
+  "Professional, reliable service from start to finish — our crew shows up on time, takes care of the details, and leaves the site clean. Get in touch for a free, no-obligation quote.";
+---
+
+<div
+  id="services"
+  style={`position:relative;--services-card-height:${cardHeight}px;--services-text-image-height:${textImageHeight}px;`}
+  data-dev-hover-zone={import.meta.env.DEV ? true : undefined}
+>
+  <div class="services-section" style="max-width:var(--container-width);margin:0 auto;padding:100px 40px;">
+  {(swaps?.servicesTitleVisible ?? 'show') !== 'hide' && (
+    <div style="text-align:center;margin-bottom:48px;">
+      <Badge editKey="home.services.badgeText" value={badgeText} tone="dark" style="align-items:center;" />
+      <EditableText
+        editKey="home.services.heading"
+        value={heading}
+        as="h2"
+        style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0;color:var(--color-ink);"
+      />
+    </div>
+  )}
+  <div class={`services-grid ${isTextStyle ? 'text-style' : ''}`} data-services-grid={import.meta.env.DEV ? true : undefined}>
+    {homeServices.map((row, rowIndex) => (
+      <div class="services-row" style={`--per-row:${row.length};`} data-row-index={rowIndex}>
+        {row.map((s, colIndex) => (
+          isTextStyle ? (
+            <div class="services-card services-card-text" data-service-id={s.id}>
+              <div class="services-card-media">
+                <ImageSlot id={s.id} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+                <div class="services-card-media-overlay"></div>
+              </div>
+              <div class="services-card-text-body">
+                {/* The title is the one real <a> — kept for crawlable, SEO-
+                    meaningful link text — but ::after stretches its hit area
+                    to the whole card (see .services-card-text-title::after)
+                    so the card reads and behaves as fully clickable. */}
+                <h4 class="services-card-text-title-wrap">
+                  <EditableText
+                    editKey={`homeServices.${rowIndex}.${colIndex}.label`}
+                    value={s.label}
+                    href={withBase(serviceHref(s.label))}
+                    class="services-card-text-title"
+                  />
+                </h4>
+                <EditableText
+                  editKey={`homeServices.${rowIndex}.${colIndex}.description`}
+                  value={s.description ?? DEFAULT_TEXT_DESCRIPTION}
+                  as="p"
+                  multiline
+                  class="services-card-text-desc"
+                />
+                {showLearnMore && <span class="services-card-text-link">Learn more →</span>}
+              </div>
+            </div>
+          ) : (
+            <div class="services-card" data-service-id={s.id}>
+              <a class="services-card-link" href={withBase(serviceHref(s.label))} aria-label={s.label} draggable="false">
+                <ImageSlot id={s.id} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+                <div class="services-card-overlay"></div>
+              </a>
+              <EditableText
+                editKey={`homeServices.${rowIndex}.${colIndex}.label`}
+                value={s.label}
+                as="div"
+                class="services-card-label"
+              />
+            </div>
+          )
+        ))}
+      </div>
+    ))}
+    {import.meta.env.DEV && !isTextStyle && (
+      <div
+        class="dev-height-handle"
+        data-handle-key="swaps.serviceCardsHeight"
+        data-handle-current={swaps?.serviceCardsHeight ?? 'default'}
+        data-handle-stops={JSON.stringify([
+          { name: 'default', save: 'default', effects: [{ target: 'services', prop: '--services-card-height', value: `${SERVICE_CARD_HEIGHT.default}px` }] },
+          { name: 'medium', save: 'medium', effects: [{ target: 'services', prop: '--services-card-height', value: `${SERVICE_CARD_HEIGHT.medium}px` }] },
+          { name: 'tall', save: 'tall', effects: [{ target: 'services', prop: '--services-card-height', value: `${SERVICE_CARD_HEIGHT.tall}px` }] },
+          { name: 'large', save: 'large', effects: [{ target: 'services', prop: '--services-card-height', value: `${SERVICE_CARD_HEIGHT.large}px` }] },
+          { name: 'taller', save: 'taller', effects: [{ target: 'services', prop: '--services-card-height', value: `${SERVICE_CARD_HEIGHT.taller}px` }] },
+        ])}
+        style="position:absolute;bottom:-14px;left:calc(50% + 22px);transform:translateX(-50%);z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+    {import.meta.env.DEV && isTextStyle && (
+      <div
+        class="dev-height-handle"
+        data-handle-key="swaps.servicesTextImageHeight"
+        data-handle-current={swaps?.servicesTextImageHeight ?? 'default'}
+        data-handle-stops={JSON.stringify([
+          { name: 'default', save: 'default', effects: [{ target: 'services', prop: '--services-text-image-height', value: `${TEXT_IMAGE_HEIGHT.default}px` }] },
+          { name: 'medium', save: 'medium', effects: [{ target: 'services', prop: '--services-text-image-height', value: `${TEXT_IMAGE_HEIGHT.medium}px` }] },
+          { name: 'tall', save: 'tall', effects: [{ target: 'services', prop: '--services-text-image-height', value: `${TEXT_IMAGE_HEIGHT.tall}px` }] },
+          { name: 'large', save: 'large', effects: [{ target: 'services', prop: '--services-text-image-height', value: `${TEXT_IMAGE_HEIGHT.large}px` }] },
+          { name: 'taller', save: 'taller', effects: [{ target: 'services', prop: '--services-text-image-height', value: `${TEXT_IMAGE_HEIGHT.taller}px` }] },
+        ])}
+        style="position:absolute;bottom:-14px;left:calc(50% + 22px);transform:translateX(-50%);z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+  </div>
+  </div>
+  {import.meta.env.DEV && (
+    <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.servicesStyle"
+        data-cycle-options="grid,text,text2"
+        data-cycle-label="Grid,Text,Text2"
+        data-cycle-current={servicesStyle}
+        style="pointer-events:auto;"
+      ></div>
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.servicesTitleVisible"
+        data-cycle-options="show,hide"
+        data-cycle-icon="heading"
+        data-cycle-current={swaps?.servicesTitleVisible ?? 'show'}
+        data-cycle-title="Toggle section title"
+        style="pointer-events:auto;"
+      ></div>
+    </div>
+  )}
+</div>
+
+<style>
+  .services-grid {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .services-row {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+
+  .services-card {
+    position: relative;
+    height: var(--services-card-height, 259px);
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-grow: 1;
+    flex-basis: calc((100% - (var(--per-row) - 1) * 18px) / var(--per-row));
+  }
+
+  .services-card-link {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .services-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 20, 35, 0.35);
+    pointer-events: none;
+    transition: background-color 0.2s ease;
+  }
+
+  /* Hover softens the overlay itself (letting more of the photo show
+     through) rather than fading the image toward the page background —
+     the latter is the Featured Projects treatment, kept distinct here. */
+  .services-card-link:hover .services-card-overlay {
+    background: rgba(15, 20, 35, 0.15);
+  }
+
+  /* Text variant: content-sized card (image on top, label + description
+     below) instead of the full-bleed image-with-overlay tile above. */
+  .services-grid.text-style .services-row {
+    align-items: stretch;
+  }
+
+  .services-card-text {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+  }
+
+  .services-card-media {
+    position: relative;
+    display: block;
+    height: var(--services-text-image-height, 180px);
+    flex: none;
+    overflow: hidden;
+  }
+
+  /* Same treatment as the Featured Projects thumbnails (see .proj-overlay
+     there), minus their hover-zoom — that effect reads as "this image is
+     the interactive element", which would compete with the whole card
+     itself now being the click target. */
+  .services-card-media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0) 55%);
+    pointer-events: none;
+  }
+
+  .services-card-text-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 24px 26px;
+  }
+
+  .services-card-text-title-wrap {
+    margin: 0;
+  }
+
+  :global(.services-card-text-title) {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--fsH3, 22px);
+    text-transform: var(--heading-case);
+    color: var(--color-ink);
+    text-decoration: none;
+    margin: 0;
+  }
+
+  /* Stretches the title link's hit area to cover the whole card (Bootstrap's
+     "stretched link" pattern) — the title stays the one real, crawlable <a>
+     in the markup, but the entire card becomes clickable. Requires
+     .services-card-text above to be the nearest positioned ancestor. */
+  :global(.services-card-text-title)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  :global(.services-card-text-title):hover {
+    color: var(--color-accent);
+  }
+
+  :global(.services-card-text-desc) {
+    font-size: 16px;
+    line-height: 1.6;
+    color: oklch(0.45 0.02 255);
+    margin: 0;
+  }
+
+  .services-card-text-link {
+    margin-top: 4px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-accent);
+  }
+
+  /* EditableText renders this element from a different component, so it
+     never receives this file's Astro scope attribute — :global() is what
+     makes the rule match anyway. */
+  :global(.services-card-label) {
+    /* Sized to its own text rather than stretched inset:0 — in dev mode,
+       dev-edit.js's [data-edit-key] rule re-enables pointer-events on
+       whatever it makes editable (same specificity as this rule, injected
+       later, so it wins the cascade), which would otherwise make a
+       full-card label swallow every hover/click before it reaches the
+       image slot's Add-photo/Reposition/Remove overlay underneath. Keeping
+       the hit area tight to the text itself leaves the rest of the card
+       free for that overlay while the label stays independently clickable
+       to edit. */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 32px);
+    text-align: center;
+    color: #fff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: var(--fsH3, 22px);
+    text-transform: var(--heading-case);
+    line-height: 1.25;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .services-card {
+      flex-basis: calc(50% - 9px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .services-section {
+      padding: 56px 20px !important;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .services-card {
+      flex-basis: 100%;
+      height: min(var(--services-card-height, 259px), 240px);
+    }
+
+    .services-card-media {
+      height: min(var(--services-text-image-height, 180px), 220px);
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+// Small editable eyebrow label shown above a heading — plain colored text
+// with a short separator rule underneath, not a pill/button. `tone` picks
+// the text color: 'light' (white) for dark/image backgrounds, 'dark'
+// (accent) for light ones.
+import EditableText from './EditableText.astro';
+import { swaps } from '../config/site';
+
+interface Props {
+  editKey: string;
+  value: string;
+  tone?: 'light' | 'dark';
+  style?: string;
+  // Dev-only accent/white color toggle rendered next to the label — pass a
+  // swaps key (e.g. 'heroBadgeTone') to opt a given Badge instance in. Only
+  // the Hero currently uses this; every other Badge keeps its tone fixed to
+  // whatever the caller decided fits its background.
+  toneSwapKey?: string;
+}
+
+const { editKey, value, tone = 'light', style = '', toneSwapKey } = Astro.props;
+const toneOverride = toneSwapKey ? (swaps as Record<string, string> | undefined)?.[toneSwapKey] : undefined;
+const resolvedTone = toneOverride === 'white' ? 'light' : toneOverride === 'accent' ? 'dark' : tone;
+const color = resolvedTone === 'dark' ? 'var(--color-accent)' : '#fff';
+const showDivider = (swaps?.eyebrowDivider ?? 'show') !== 'hide';
+---
+
+<div style={`position:relative;display:inline-flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:16px;${style}`}>
+  <div style="display:inline-flex;align-items:center;gap:8px;">
+    <EditableText
+      editKey={editKey}
+      value={value}
+      as="span"
+      style={`font-family:var(--font-heading);font-weight:700;font-size:calc(var(--fsSmall, 15px) + 1px);text-transform:uppercase;letter-spacing:.12em;color:${color};`}
+    />
+    {import.meta.env.DEV && toneSwapKey && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key={`swaps.${toneSwapKey}`}
+        data-cycle-options="accent,white"
+        data-cycle-icon="droplet"
+        data-cycle-current={toneOverride ?? 'accent'}
+        data-cycle-title="Toggle eyebrow color"
+        style="pointer-events:auto;"
+      ></div>
+    )}
+  </div>
+  {showDivider && <span style={`display:inline-block;width:32px;height:2px;background:${color};`}></span>}
+</div>

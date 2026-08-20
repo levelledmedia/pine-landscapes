@@ -1,0 +1,347 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { theme, swaps, content } from '../config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '' } = Astro.props;
+
+// The quote-form embed (see CLAUDE.md) pulls its widget script and iframe
+// content from whatever third-party host the pasted code points at — a
+// preconnect for those specific hosts, started as early as possible in
+// <head>, overlaps the DNS/TLS handshake with the rest of the page loading
+// instead of only starting once the browser reaches the embed's own tags
+// deep in the body. Doesn't touch how long the widget's own server takes to
+// respond, just removes connection-setup time from in front of it.
+const embedCode = content.quoteForm?.embedCode ?? '';
+const embedHosts = Array.from(new Set(Array.from(embedCode.matchAll(/https:\/\/([a-z0-9.-]+)/gi), (m) => m[1])));
+const { colors, fonts, roundness, buttonRoundness } = theme;
+const CONTAINER_WIDTH = { default: '1200px', wide: '1280px', wider: '1360px' } as const;
+const containerWidth = CONTAINER_WIDTH[swaps?.siteWidth ?? 'default'];
+// Some heading fonts (e.g. Merriweather) read poorly in all-caps — each font
+// pairing says whether its headings should go uppercase (see FONT_PRESETS in
+// studio/lib/presets.ts). Title-sized text reads --heading-case; buttons and
+// small eyebrow labels stay uppercase unconditionally, which is a UI
+// convention independent of the heading font's own readability.
+const headingCase = fonts.headingCase ?? 'uppercase';
+const iconColor = swaps?.iconColor === 'white' ? '#fff' : colors.accent;
+
+// Off-white section backgrounds are meant to be a faint tint of the brand
+// color rather than flat gray, but color-mix()'s tint amount is a
+// percentage OF THE PRIMARY COLOR'S OWN CHROMA — so a vibrant color still
+// reads as tinted at 8%, while a dark, low-chroma color (navy, near-black)
+// has so little chroma to begin with that 8% of it is imperceptible and
+// the result just looks grey. The 'hue' style fixes this by borrowing only
+// the primary's hue angle and applying our own fixed lightness/chroma via
+// CSS relative color syntax, so the tint stays visible regardless of how
+// saturated the source color is. 'mix' keeps the original color-mix()
+// behavior for comparison (see swaps.offwhiteTintStyle in Customize).
+const useHueTint = swaps?.offwhiteTintStyle === 'hue';
+// Rendered server-side so a direct visit to this dev server (outside the
+// studio iframe, which otherwise only learns the lock state via postMessage
+// after the page has already loaded) still comes up locked. See
+// dev-edit.js's initLockMode.
+const previewLocked = swaps?.previewLocked === 'locked';
+const offwhiteValue = useHueTint
+  ? 'oklch(from var(--color-primary) 0.99 0.006 h)'
+  : 'color-mix(in oklch, var(--color-primary) 1.5%, white)';
+const offwhiteDeepValue = useHueTint
+  ? 'oklch(from var(--color-primary) 0.965 0.012 h)'
+  : 'color-mix(in oklch, var(--color-primary) 8%, white)';
+
+// 'old' (default) leaves these six custom properties undefined entirely —
+// every component's own font-size falls back to whatever value it always
+// had (see e.g. Services.astro's `font-size: var(--fs-h2, 36px)`), so
+// nothing changes for a site that's never touched this. 'new' defines them
+// from theme.typographySizes (edited in the sidebar's Typography section,
+// see studio/lib/presets.ts's TYPOGRAPHY_SIZE_DEFAULTS for the starting
+// numbers), which overrides every one of those fallbacks at once — lets the
+// whole site be compared/toggled and dialed in without hand-editing every
+// component, and without losing the old per-component values if it's
+// switched back.
+const TYPOGRAPHY_SIZE_DEFAULTS = { h1: 58, h2: 36, h3: 20, body: 16, small: 14, button: 16 };
+const typographyVars =
+  theme.typographyScale === 'new'
+    ? (() => {
+        const sizes = { ...TYPOGRAPHY_SIZE_DEFAULTS, ...theme.typographySizes };
+        return {
+          fsH1: `${sizes.h1}px`,
+          fsH2: `${sizes.h2}px`,
+          fsH3: `${sizes.h3}px`,
+          fsBody: `${sizes.body}px`,
+          fsSmall: `${sizes.small}px`,
+          fsButton: `${sizes.button}px`,
+        };
+      })()
+    : {};
+
+const buttonHoverAnimation = swaps?.buttonHoverAnimation ?? 'none';
+const buttonGradient = swaps?.buttonGradient ?? 'off';
+const htmlClasses = [
+  previewLocked ? 'webgen-locked' : '',
+  buttonHoverAnimation !== 'none' ? `btn-hover-${buttonHoverAnimation}` : '',
+  buttonGradient === 'on' ? 'btn-gradient' : '',
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<!DOCTYPE html>
+<html lang="en" class={htmlClasses || undefined}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {/* iOS auto-detects phone-number-looking text and turns it into a blue,
+      underlined tel: link regardless of surrounding CSS — this is what
+      made the top bar's phone number look different only on iPhone. */}
+  <meta name="format-detection" content="telephone=no" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href={fonts.googleFontsHref} rel="stylesheet" />
+  {embedHosts.map((host) => <link rel="preconnect" href={`https://${host}`} crossorigin />)}
+  <style is:global define:vars={{
+    colorPrimary: colors.primary,
+    colorAccent: colors.accent,
+    colorIcon: iconColor,
+    fontHeading: fonts.heading,
+    fontBody: fonts.body,
+    headingCase,
+    roundnessPx: `${roundness}px`,
+    buttonRoundnessPx: `${buttonRoundness ?? roundness}px`,
+    containerWidth,
+    offwhiteValue,
+    offwhiteDeepValue,
+    ...typographyVars,
+  }}>
+    :root {
+      --color-primary: var(--colorPrimary);
+      --color-accent: var(--colorAccent);
+      /* Icon glyph color — defaults to the accent color, but some color
+         schemes make accent-colored icons hard to read against their
+         background, so this can be forced to white independently (see
+         swaps.iconColor in the Customize panel). */
+      --color-icon: var(--colorIcon);
+      /* Fixed near-black, independent of the color preset — used for nav
+         links, headings, body copy, and text on light button backgrounds,
+         none of which should shift with the brand color scheme. */
+      --color-ink: oklch(0.16 0.01 260);
+      --font-heading: var(--fontHeading);
+      --font-body: var(--fontBody);
+      /* Whether title-sized text goes uppercase — set per font pairing
+         since not every heading font reads well in all-caps. */
+      --heading-case: var(--headingCase);
+      /* Corner radius for boxes and image corners. Purely round shapes
+         (circular badges) are deliberately not wired to this — a
+         "roundness" amount would just make a circle look like a
+         slightly-rounded square instead of a circle. */
+      --radius: var(--roundnessPx);
+      /* Buttons use their own radius (see theme.buttonRoundness) so
+         "roundest" can mean a true, fully-rounded pill without also
+         turning large images into stadium shapes. */
+      --radius-btn: var(--buttonRoundnessPx);
+      /* Max-width used by every section's inner container — see
+         swaps.siteWidth in the Customize panel. */
+      --container-width: var(--containerWidth);
+      /* Off-white section backgrounds derived from the primary color rather
+         than stored separately — a faint tint of the brand color instead of
+         a flat gray. --color-offwhite is the barely-there default used for
+         the page background; --color-offwhite-deep lets a section (e.g.
+         testimonials) allow noticeably more of that tint through while
+         staying off-white. */
+      --color-offwhite: var(--offwhiteValue);
+      --color-offwhite-deep: var(--offwhiteDeepValue);
+      /* Slightly darker than --color-primary, used for the footer so it
+         reads as a deeper shade rather than flat-matching the header/CTAs. */
+      --color-primary-dark: color-mix(in oklch, var(--color-primary) 82%, black);
+    }
+    /* Every heading/body font-size in the template reads from one of these
+       six custom properties with its own per-component pixel fallback (e.g.
+       `font-size: var(--fsH2, 36px)`) — see typographyVars above. Above this
+       breakpoint none of these six are otherwise set unless typographyScale
+       is 'new', so each component keeps rendering its own fallback exactly
+       as before; this block only ever takes effect on small screens, and
+       !important guarantees it wins even when 'new' mode has already set a
+       custom desktop size. One shared rule here means every font preset and
+       every component gets proportional mobile scaling automatically —
+       nothing to hand-tune per preset or per component.
+       Sizes: h1 40px, h2 28px, h3 18px, body 15px, small 13px, button 15px. */
+    @media (max-width: 640px) {
+      :root {
+        --fsH1: 40px !important;
+        --fsH2: 28px !important;
+        --fsH3: 18px !important;
+        --fsBody: 15px !important;
+        --fsSmall: 13px !important;
+        --fsButton: 15px !important;
+      }
+    }
+    body {
+      margin: 0;
+      background: var(--color-offwhite);
+      font-family: var(--font-body);
+      color: var(--color-ink);
+      overflow-x: hidden;
+    }
+    /* Multi-paragraph rich text (About page mission copy, etc.) renders
+       literal <p> tags — the UA default 1em top+bottom margin (collapsing
+       to 1em between paragraphs) reads a bit loose next to this site's
+       body-copy line-heights, so trim it slightly. */
+    p { margin: 0 0 0.85em; }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--color-ink); }
+    a:hover { color: var(--color-accent); }
+    /* Safety net so a new clickable element (button, toggle, summary, etc.)
+       never silently ships without a pointer cursor — individual classes can
+       still be more specific than this if they need a different cursor. */
+    button, [role="button"], summary, label[for] { cursor: pointer; }
+    .navlink {
+      color: var(--color-ink);
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+    .navlink:hover, .navlink.active { color: var(--color-accent); }
+    .btn-accent {
+      display: inline-block;
+      /* Per-instance overrides (header quote button, hero submit, footer
+         CTA, etc.) set --btn-bg inline instead of `background` directly, so
+         the gradient toggle below can derive light/dark stops from
+         whatever color a given button actually uses. */
+      background: var(--btn-bg, var(--color-accent));
+      color: #fff;
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: var(--fsButton, 17px);
+      letter-spacing: .05em;
+      padding: 14px 28px;
+      border-radius: var(--radius-btn);
+      text-transform: var(--heading-case);
+      border: none;
+      cursor: pointer;
+    }
+    /* Buttons need their own hover color: the generic a:hover rule above
+       switches text to var(--color-accent), which is invisible on a button
+       whose background is already that color. */
+    .btn-accent:hover {
+      color: #fff;
+      filter: brightness(1.08);
+    }
+    .btn-outline {
+      display: inline-block;
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid #fff;
+      text-decoration: none;
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: var(--fsButton, 17px);
+      letter-spacing: .05em;
+      padding: 13px 28px;
+      border-radius: var(--radius-btn);
+      text-transform: var(--heading-case);
+    }
+    .btn-outline:hover {
+      background: #fff;
+      color: var(--color-ink);
+    }
+    /* Hover feedback for every button sitewide — see swaps.buttonHoverAnimation
+       in the Customize panel. 'none' (no class on <html>) keeps the plain
+       brightness/color-swap hover above with no added transform. */
+    html.btn-hover-grow .btn-accent,
+    html.btn-hover-grow .btn-outline,
+    html.btn-hover-grow .header-outline-btn,
+    html.btn-hover-shrink .btn-accent,
+    html.btn-hover-shrink .btn-outline,
+    html.btn-hover-shrink .header-outline-btn,
+    html.btn-hover-pop .btn-accent,
+    html.btn-hover-pop .btn-outline,
+    html.btn-hover-pop .header-outline-btn {
+      transition: transform .15s ease;
+    }
+    html.btn-hover-grow .btn-accent:hover,
+    html.btn-hover-grow .btn-outline:hover,
+    html.btn-hover-grow .header-outline-btn:hover {
+      transform: scale(1.06);
+    }
+    html.btn-hover-shrink .btn-accent:hover,
+    html.btn-hover-shrink .btn-outline:hover,
+    html.btn-hover-shrink .header-outline-btn:hover {
+      transform: scale(0.94);
+    }
+    /* A bouncier, overshooting scale (vs. grow's plain ease) is what reads
+       as a "pop" rather than a simple size change. */
+    html.btn-hover-pop .btn-accent:hover,
+    html.btn-hover-pop .btn-outline:hover,
+    html.btn-hover-pop .header-outline-btn:hover {
+      transform: scale(1.12);
+      transition-timing-function: cubic-bezier(.34, 1.7, .64, 1);
+    }
+    /* Subtle gradient on solid buttons — see swaps.buttonGradient in the
+       Customize panel. Lightened/darkened stops are derived from whichever
+       color the button already uses (--btn-bg, or --color-accent by
+       default) via color-mix, rather than a separately stored gradient
+       color, so it always tracks the button's actual color and stays
+       centered on it (the two stops average back to the original). */
+    html.btn-gradient .btn-accent {
+      background: linear-gradient(
+        135deg,
+        color-mix(in oklch, var(--btn-bg, var(--color-accent)) 100%, white 16%),
+        color-mix(in oklch, var(--btn-bg, var(--color-accent)) 100%, black 16%)
+      );
+    }
+    /* Reserves the embedded quote form's typical loaded height (431px, the
+       split hero form's measured height) up front so the page doesn't jump
+       once a third-party iframe embed finishes loading in — see
+       src/scripts/quote-embed.js. Only a minimum: the iframe is free to
+       render taller (e.g. a stacked mobile layout of the same form), this
+       just stops the box collapsing to near-zero while empty. */
+    .quote-embed-wrap {
+      position: relative;
+      min-height: 431px;
+    }
+    .quote-embed-skeleton {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-offwhite-deep);
+      border-radius: var(--radius);
+      transition: opacity .2s ease;
+    }
+    .quote-embed-wrap.quote-embed-loaded .quote-embed-skeleton {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .quote-embed-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid oklch(0.85 0.01 255);
+      border-top-color: var(--color-accent);
+      border-radius: 50%;
+      animation: quote-embed-spin .8s linear infinite;
+    }
+    @keyframes quote-embed-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div style="font-family:var(--font-body);color:var(--color-ink);overflow-x:hidden;">
+    <Header />
+    <slot />
+    <Footer />
+  </div>
+  <script>
+    import '../scripts/quote-embed.js';
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+---
+// Every page that isn't Home or Schedule lives at whatever URL its label
+// currently slugifies to (see Header.astro's editable nav labels and
+// dev-edit.js's initNavSlugSync for the nav pages; home services' cards for
+// the service pages) rather than a fixed filename — one dynamic route
+// serves all of them, picking what to render off the matched slug's kind.
+//
+// Note: getStaticPaths() runs in its own isolated scope and can only see its
+// own imports/locals, not other top-level consts in this file — so the
+// page-component imports are referenced directly inside it below, and the
+// PAGE_COMPONENTS lookup used for rendering is built separately, after it.
+import AboutPage from '../components/pages/AboutPage.astro';
+import ContactPage from '../components/pages/ContactPage.astro';
+import ProjectsPage from '../components/pages/ProjectsPage.astro';
+import ServicePage from '../components/pages/ServicePage.astro';
+import { homeServices, nav } from '../config/site';
+import { slugifyLabel } from '../lib/pages';
+
+export function getStaticPaths() {
+  const pageKeys = ['about', 'contact', 'projects'] as const;
+  const pagePaths = pageKeys
+    .map((key) => {
+      const item = nav.find((n) => n.key === key);
+      if (!item || !item.href || item.href === '/' || item.href.startsWith('/#')) return null;
+      return { params: { slug: item.href.replace(/^\//, '') }, props: { kind: 'page' as const, pageKey: key } };
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null);
+
+  const servicePaths = homeServices.flat().map((s) => ({
+    params: { slug: slugifyLabel(s.label) },
+    props: { kind: 'service' as const, id: s.id, label: s.label },
+  }));
+
+  return [...pagePaths, ...servicePaths];
+}
+
+type Props =
+  | { kind: 'page'; pageKey: 'about' | 'contact' | 'projects' }
+  | { kind: 'service'; id: string; label: string };
+
+const props = Astro.props as Props;
+const PAGE_COMPONENTS = { about: AboutPage, contact: ContactPage, projects: ProjectsPage } as const;
+const PageComponent = props.kind === 'page' ? PAGE_COMPONENTS[props.pageKey] : null;
+---
+
+{props.kind === 'service' ? (
+  <ServicePage id={props.id} label={props.label} />
+) : PageComponent ? (
+  <PageComponent />
+) : null}

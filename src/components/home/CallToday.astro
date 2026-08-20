@@ -1,0 +1,25 @@
+---
+import EditableText from '../EditableText.astro';
+import { business, content } from '../../config/site';
+
+const phoneHref = `tel:${business.phone.replace(/\D/g, '')}`;
+const callTodayLabel = content.home.callToday?.label ?? 'Call Today';
+
+// Icon sourced from https://icon-sets.iconify.design/ (Lucide phone icon),
+// inlined as static SVG per project convention — see /CLAUDE.md. Matches
+// the phone icon used in Header.astro.
+const PHONE_ICON = '<svg aria-hidden="true" viewBox="0 0 512 512" width="20" height="20" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>';
+---
+
+<div style="text-align:center;padding:0 0 60px;">
+  <EditableText
+    editKey="home.callToday.label"
+    value={callTodayLabel}
+    as="div"
+    style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 22px);margin-bottom:18px;"
+  />
+  <span class="btn-accent" style="display:inline-flex;align-items:center;gap:12px;font-size:22px;padding:20px 48px;">
+    <span style="display:flex;flex:none;" set:html={PHONE_ICON} />
+    <EditableText editKey="business.phone" value={business.phone} as="span" href={phoneHref} global style="color:inherit;text-decoration:none;" />
+  </span>
+</div>

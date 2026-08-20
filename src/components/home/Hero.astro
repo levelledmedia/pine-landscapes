@@ -1,0 +1,480 @@
+---
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { business, content, swaps, heroVariant, theme } from '../../config/site';
+import { withBase } from '../../lib/base';
+import { withAsyncScripts } from '../../lib/embed';
+
+const { heading, headingWidth, contactCta, ctaBarText, overlayOpacity = 0.4, splitGutter = 56, splitRatio = 59, heroHeight = 640, formHeading, trustBar, badgeText } = content.home.hero;
+
+// Quote-form embed code is one value shared by every quote-form box sitewide
+// (this hero form, ContactSection's footer CTA form, and the contact page
+// form) — see the dev-embed-control below and CLAUDE.md's note on why this
+// stays a single source of truth instead of a per-instance toggle. A
+// non-empty value replaces the built-in <form> with the embed everywhere;
+// there's no separate on/off switch to keep in sync with it.
+const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
+
+// The opacity slider (initOpacityControls in dev-edit.js) builds
+// rgba(<rgb>, <alpha>) from a plain "r,g,b" triplet read off the overlay
+// element — brand colors are stored as hex, so they need converting once
+// here rather than being usable as a CSS var straight in that rgba() call.
+function hexToRgbTriplet(hex: string): string {
+  const clean = hex.replace('#', '');
+  const full = clean.length === 3 ? clean.split('').map((c) => c + c).join('') : clean;
+  const value = parseInt(full, 16);
+  return `${(value >> 16) & 255},${(value >> 8) & 255},${value & 255}`;
+}
+const OVERLAY_RGB = {
+  black: '15,20,35',
+  primary: hexToRgbTriplet(theme.colors.primary),
+  accent: hexToRgbTriplet(theme.colors.accent),
+} as const;
+const overlayColor = swaps?.heroOverlayColor ?? 'black';
+const overlayRgb = OVERLAY_RGB[overlayColor];
+const isSplit = heroVariant === 'split';
+const trustItems = trustBar?.items ?? [];
+// Split hero's Contact Us + phone actions — see mainCtaStyle in
+// studio/lib/types.ts. 'quote' drops the Contact Us button and turns the
+// phone button into a single "Call Us"-prefixed outline CTA.
+const mainCtaStyle = swaps?.mainCtaStyle ?? 'default';
+const isQuoteMerged = mainCtaStyle === 'quote';
+
+// Default and split heroes share the same height baseline (640px, matching
+// the split layout's original hardcoded min-height) and both read from the
+// same field (home.hero.heroHeight, see the dev-height-handle below) so
+// switching heroVariant doesn't silently change the hero's height.
+const HERO_HEIGHT_STOPS = { short: 540, default: 640, tall: 740 } as const;
+
+// Shared quote-form field styling/options — kept in sync with the other two
+// quote forms on the page (ContactSection.astro's split/full layouts).
+const QUOTE_FIELD_STYLE = 'padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;background:#fff;';
+// Same as above minus `background` — the select's background (color + custom
+// arrow) is owned by the .quote-select CSS rule below instead, since an
+// inline `background` shorthand would reset/override the arrow's
+// background-image regardless of the stylesheet rule's specificity.
+const QUOTE_SELECT_STYLE = 'padding:12px;border:1px solid oklch(0.88 0.008 255);border-radius:var(--radius);font-size:14px;width:100%;box-sizing:border-box;';
+const QUOTE_SERVICE_OPTIONS = ['Fencing', 'Paving', 'Decking', 'Turfing', 'Other'];
+
+// Icons sourced from https://icon-sets.iconify.design/ (Lucide set), inlined
+// as static SVG per project convention — see /CLAUDE.md.
+const PHONE_ICON = '<svg aria-hidden="true" viewBox="0 0 512 512" width="17" height="17" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>';
+const phoneHref = `tel:${business.phone.replace(/\D/g, '')}`;
+
+const TRUST_ICONS = [
+  // lucide:star
+  '<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>',
+  // lucide:shield-check
+  '<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.79 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>',
+  // lucide:banknote
+  '<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>',
+  // lucide:house
+  '<svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+];
+---
+
+{isSplit ? (
+  <div style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    <ImageSlot id="hero" shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    <div
+      id="hero-overlay"
+      data-opacity-rgb={overlayRgb}
+      style={`position:absolute;inset:0;background:rgba(${overlayRgb},${overlayOpacity});pointer-events:none;`}
+    ></div>
+    <div
+      id="hero-split-columns"
+      class="hero-split-grid"
+      style={`position:relative;max-width:calc(var(--container-width) + 80px);margin:0 auto;padding:100px 40px;min-height:${heroHeight}px;box-sizing:border-box;display:grid;align-items:center;gap:${splitGutter}px;grid-template-columns:minmax(320px,${splitRatio}fr) minmax(300px,${100 - splitRatio}fr);`}
+    >
+      <div style="color:#fff;">
+        <Badge editKey="home.hero.badgeText" value={badgeText ?? 'Landscape Design'} tone="dark" toneSwapKey="heroBadgeTone" />
+        <EditableText
+          editKey="home.hero.heading"
+          value={heading}
+          as="h1"
+          style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH1, 58px);text-transform:var(--heading-case);margin:0;letter-spacing:.02em;line-height:1.15;"
+        />
+        <EditableText
+          editKey="business.tagline"
+          value={business.tagline}
+          as="p"
+          global
+          style="font-family:var(--font-body);font-size:var(--fsBody, 18px);line-height:1.6;margin-top:14px;"
+        />
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:28px;">
+          {isQuoteMerged ? (
+            <span class="btn-outline" style="display:inline-flex;align-items:center;gap:10px;">
+              <span style="display:flex;flex:none;" set:html={PHONE_ICON} />
+              <span style="display:inline-flex;align-items:baseline;gap:5px;">
+                <span>Call</span>
+                <EditableText editKey="business.phone" value={business.phone} as="span" href={phoneHref} global style="color:inherit;text-decoration:none;" />
+              </span>
+            </span>
+          ) : (
+            <>
+              <EditableText editKey="home.hero.contactCta" value={contactCta} class="btn-outline" href={withBase('/schedule')} />
+              <span class="btn-accent" style="display:inline-flex;align-items:center;gap:10px;">
+                <span style="display:flex;flex:none;" set:html={PHONE_ICON} />
+                <EditableText editKey="business.phone" value={business.phone} as="span" href={phoneHref} global style="color:inherit;text-decoration:none;" />
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+      <div style="position:relative;background:#fff;border-radius:var(--radius);box-shadow:0 24px 60px rgba(0,0,0,.3);padding:36px;box-sizing:border-box;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+        <EditableText
+          editKey="home.hero.formHeading"
+          value={formHeading ?? 'Get A Free Quote'}
+          as="h3"
+          style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 26px);margin:0 0 20px;color:var(--color-ink);text-align:center;"
+        />
+        {quoteEmbedCode ? (
+          <div class="quote-embed-wrap" data-quote-key="hero">
+            <div class="quote-embed-skeleton"><div class="quote-embed-spinner"></div></div>
+            <div set:html={quoteEmbedCode} />
+          </div>
+        ) : (
+          <form style="display:grid;grid-template-columns:1fr;gap:12px;">
+            <select class="quote-field quote-select" style={QUOTE_SELECT_STYLE}>
+              <option value="" selected>Choose Service</option>
+              {QUOTE_SERVICE_OPTIONS.map((option) => <option value={option}>{option}</option>)}
+            </select>
+            <input class="quote-field" placeholder="Full Name *" style={QUOTE_FIELD_STYLE} />
+            <input class="quote-field" placeholder="Phone Number *" style={QUOTE_FIELD_STYLE} />
+            <input class="quote-field" placeholder="Email *" style={QUOTE_FIELD_STYLE} />
+            <input class="quote-field" placeholder="Post Code *" style={QUOTE_FIELD_STYLE} />
+            <button type="submit" class="btn-accent" style={`width:100%;border:none;cursor:pointer;${mainCtaStyle === 'phone' ? '--btn-bg:var(--color-primary);' : ''}`}>Get A Free Quote</button>
+          </form>
+        )}
+        {import.meta.env.DEV && (
+          <div
+            class="dev-embed-control"
+            data-embed-key="quoteForm.embedCode"
+            data-embed-value={quoteEmbedCode}
+            style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+          ></div>
+        )}
+      </div>
+    </div>
+    {import.meta.env.DEV && (
+      <>
+        <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+          <div
+            class="dev-variant-cycle"
+            data-cycle-key="heroVariant"
+            data-cycle-options="default,split"
+            data-cycle-label="Default,Split"
+            data-cycle-current={heroVariant}
+            style="pointer-events:auto;"
+          ></div>
+          <div
+            class="dev-variant-cycle"
+            data-cycle-key="swaps.heroOverlayColor"
+            data-cycle-options="black,primary,accent"
+            data-cycle-icon="droplet"
+            data-cycle-current={overlayColor}
+            data-cycle-title="Toggle overlay color"
+            style="pointer-events:auto;"
+          ></div>
+        </div>
+        <div
+          class="dev-height-handle"
+          data-handle-key="home.hero.heroHeight"
+          data-handle-numeric=""
+          data-handle-current={heroHeight}
+          data-handle-stops={JSON.stringify([
+            { name: 'Short', save: HERO_HEIGHT_STOPS.short, effects: [{ target: 'hero-split-columns', prop: 'minHeight', value: `${HERO_HEIGHT_STOPS.short}px` }] },
+            { name: 'Default', save: HERO_HEIGHT_STOPS.default, effects: [{ target: 'hero-split-columns', prop: 'minHeight', value: `${HERO_HEIGHT_STOPS.default}px` }] },
+            { name: 'Tall', save: HERO_HEIGHT_STOPS.tall, effects: [{ target: 'hero-split-columns', prop: 'minHeight', value: `${HERO_HEIGHT_STOPS.tall}px` }] },
+          ])}
+          style="position:absolute;bottom:0;left:50%;transform:translate(-50%,50%);z-index:9999;pointer-events:auto;"
+        ></div>
+        <div
+          class="dev-gap-control"
+          data-gap-key="home.hero.splitGutter"
+          data-gap-target="hero-split-columns"
+          data-gap-value={splitGutter}
+          style="position:absolute;bottom:52px;right:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+        <div
+          class="dev-column-ratio-handle"
+          data-ratio-key="home.hero.splitRatio"
+          data-ratio-target="hero-split-columns"
+          data-ratio-current={splitRatio}
+          style="position:absolute;inset:0;z-index:9998;pointer-events:none;"
+        ></div>
+        <div
+          class="dev-opacity-control"
+          data-opacity-key="home.hero.overlayOpacity"
+          data-opacity-target="hero-overlay"
+          data-opacity-value={overlayOpacity}
+          style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+      </>
+    )}
+  </div>
+) : (
+  <div id="hero-default-container" style={`position:relative;height:${heroHeight}px;`} data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    <ImageSlot id="hero" shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    <div
+      id="hero-overlay"
+      data-opacity-rgb={overlayRgb}
+      style={`position:absolute;inset:0;background:rgba(${overlayRgb},${overlayOpacity});pointer-events:none;`}
+    ></div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;pointer-events:none;">
+      <Badge editKey="home.hero.badgeText" value={badgeText ?? 'Landscape Design'} tone="dark" toneSwapKey="heroBadgeTone" style="align-items:center;" />
+      <EditableText
+        editKey="home.hero.heading"
+        value={heading}
+        as="h1"
+        widthKey="home.hero.headingWidth"
+        widthValue={headingWidth}
+        style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH1, 58px);text-transform:var(--heading-case);margin:0;letter-spacing:.02em;line-height:1.15;"
+      />
+      <EditableText
+        editKey="business.tagline"
+        value={business.tagline}
+        as="p"
+        global
+        widthValue={headingWidth}
+        style="font-family:var(--font-body);font-size:var(--fsBody, 17px);line-height:1.6;margin-top:14px;"
+      />
+    </div>
+    {import.meta.env.DEV && (
+      <>
+        <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+          <div
+            class="dev-variant-cycle"
+            data-cycle-key="heroVariant"
+            data-cycle-options="default,split"
+            data-cycle-label="Default,Split"
+            data-cycle-current={heroVariant}
+            style="pointer-events:auto;"
+          ></div>
+          <div
+            class="dev-variant-cycle"
+            data-cycle-key="swaps.heroOverlayColor"
+            data-cycle-options="black,primary,accent"
+            data-cycle-icon="droplet"
+            data-cycle-current={overlayColor}
+            data-cycle-title="Toggle overlay color"
+            style="pointer-events:auto;"
+          ></div>
+        </div>
+        <div
+          class="dev-height-handle"
+          data-handle-key="home.hero.heroHeight"
+          data-handle-numeric=""
+          data-handle-current={heroHeight}
+          data-handle-stops={JSON.stringify([
+            { name: 'Short', save: HERO_HEIGHT_STOPS.short, effects: [{ target: 'hero-default-container', prop: 'height', value: `${HERO_HEIGHT_STOPS.short}px` }] },
+            { name: 'Default', save: HERO_HEIGHT_STOPS.default, effects: [{ target: 'hero-default-container', prop: 'height', value: `${HERO_HEIGHT_STOPS.default}px` }] },
+            { name: 'Tall', save: HERO_HEIGHT_STOPS.tall, effects: [{ target: 'hero-default-container', prop: 'height', value: `${HERO_HEIGHT_STOPS.tall}px` }] },
+          ])}
+          style="position:absolute;bottom:0;left:50%;transform:translate(-50%,50%);z-index:9999;pointer-events:auto;"
+        ></div>
+        <div class="dev-width-control" data-width-key="home.hero.headingWidth" data-width-target="home.hero.heading business.tagline" style="position:absolute;bottom:44px;right:12px;z-index:9999;pointer-events:auto;"></div>
+        <div
+          class="dev-opacity-control"
+          data-opacity-key="home.hero.overlayOpacity"
+          data-opacity-target="hero-overlay"
+          data-opacity-value={overlayOpacity}
+          style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+      </>
+    )}
+  </div>
+)}
+
+{swaps?.heroBarVisible !== 'hide' && (
+  <div style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    {(swaps?.heroBarStyle === 'trustPlus' || swaps?.heroBarStyle === 'trustPlusPlus') ? (
+      <div style={`background:var(--color-primary);${swaps?.heroBarStyle === 'trustPlusPlus' ? 'border-top:4px solid var(--color-accent);' : ''}`}>
+        <div class="hero-trust-plus" style="max-width:var(--container-width);margin:0 auto;padding:32px 40px;">
+          {trustItems.map((item: { text: string; caption?: string }, i: number) => (
+            <div class="hero-trust-plus-item">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span
+                  style="flex:none;width:25px;height:25px;color:var(--color-icon);display:flex;align-items:center;justify-content:center;"
+                  set:html={TRUST_ICONS[i % TRUST_ICONS.length]}
+                />
+                <EditableText
+                  editKey={`home.hero.trustBar.items.${i}.text`}
+                  value={item.text}
+                  as="span"
+                  class="hero-trust-text"
+                  style="font-family:var(--font-heading);font-weight:600;font-size:18px;color:#fff;white-space:nowrap;"
+                />
+              </div>
+              <EditableText
+                editKey={`home.hero.trustBar.items.${i}.caption`}
+                value={item.caption ?? ''}
+                as="div"
+                style="font-family:var(--font-body);font-size:13px;color:rgba(255,255,255,.7);margin-top:6px;"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : swaps?.heroBarStyle === 'trust' ? (
+      <div style="background:var(--color-primary);">
+        <div class="hero-trust-plus" style="max-width:var(--container-width);margin:0 auto;padding:24px 40px;">
+          {trustItems.map((item: { text: string }, i: number) => (
+            <div class="hero-trust-plus-item plain">
+              <span
+                style="flex:none;width:25px;height:25px;color:var(--color-icon);display:flex;align-items:center;justify-content:center;"
+                set:html={TRUST_ICONS[i % TRUST_ICONS.length]}
+              />
+              <EditableText
+                editKey={`home.hero.trustBar.items.${i}.text`}
+                value={item.text}
+                as="span"
+                class="hero-trust-text"
+                style="font-family:var(--font-heading);font-weight:600;font-size:18px;color:#fff;white-space:nowrap;"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div style="background:var(--color-primary);">
+        <div style="max-width:var(--container-width);margin:0 auto;padding:18px 40px;display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;">
+          <EditableText
+            editKey="home.hero.ctaBarText"
+            value={ctaBarText}
+            as="p"
+            style="color:#fff;font-family:var(--font-heading);font-weight:600;font-size:16px;text-transform:var(--heading-case);letter-spacing:.02em;margin:0;"
+          />
+          <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+            <EditableText editKey="home.hero.contactCta" value={contactCta} class="btn-outline" href="#contact" />
+            <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="btn-accent" href="#contact" global />
+          </div>
+        </div>
+      </div>
+    )}
+    {import.meta.env.DEV && (
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.heroBarStyle"
+        data-cycle-options="cta,trust,trustPlus,trustPlusPlus"
+        data-cycle-label="CTA,Trust,Trust+,Trust++"
+        data-cycle-current={swaps?.heroBarStyle ?? 'cta'}
+        style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+      ></div>
+    )}
+  </div>
+)}
+
+<style>
+  /* Text column gets a larger share than the quote form by default (see
+     splitRatio, set inline above) — a straight 50/50 split left the form
+     wider than it needs to be for four fields. */
+  @media (max-width: 860px) {
+    .hero-split-grid {
+      grid-template-columns: 1fr !important;
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+      gap: 40px !important;
+    }
+  }
+
+  .hero-trust-plus {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hero-trust-plus-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  .hero-trust-plus-item:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* Plain 'trust' bar reuses trust+'s equal-column grid for identical
+     spacing, but keeps its own icon-beside-text row (no caption/divider). */
+  .hero-trust-plus-item.plain {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    border-right: none;
+  }
+
+  @media (max-width: 720px) {
+    .hero-trust-plus {
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 32px;
+      column-gap: 12px;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+
+    .hero-trust-plus-item:nth-child(2n) {
+      border-right: none;
+    }
+
+    .hero-trust-plus-item {
+      padding: 0 8px;
+    }
+
+    :global(.hero-trust-text) {
+      white-space: normal !important;
+      text-align: left;
+    }
+  }
+
+  /* Browsers don't reliably apply the page's own font to <select> (it often
+     falls back to the OS UI font unless told otherwise), which is what made
+     the "Choose Service" field read as a different typeface than the
+     plain-text inputs beside it — this rule covers both element types so
+     they're guaranteed to match. Explicit dark ink rather than color:inherit
+     — see ContactSection.astro's identical rule for why (white-on-white in
+     some contexts, and inline color:inherit always beating the :has() rule
+     below on specificity). */
+  .quote-field {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+  }
+  /* Matches the exact grey used below for the select's own placeholder
+     state — a browser's default ::placeholder grey doesn't necessarily
+     equal that, which is what made the two look like different colors. */
+  .quote-field::placeholder {
+    color: #8a8f98;
+    opacity: 1;
+  }
+  /* The placeholder option is a real, selectable value (not disabled, so it
+     can be reselected) — it needs its own visual cue that it isn't a real
+     choice yet, or it just reads as plain, full-opacity text like any other
+     option. */
+  .quote-select:has(option[value=""]:checked) {
+    color: #8a8f98;
+  }
+  .quote-select option[value=""] {
+    color: #8a8f98;
+  }
+  .quote-select option:not([value=""]) {
+    color: var(--color-ink);
+  }
+  /* Native <select> chrome renders its own text/arrow outside our CSS's
+     control, which is what made "Choose Service" read as a different
+     weight/font than the plain-text placeholders beside it even with
+     color/font-family matched above — removing it and drawing our own arrow
+     guarantees the select is rendered like any other styled box, not an OS
+     widget. See ContactSection.astro's identical rule. */
+  .quote-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8f98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    cursor: pointer;
+  }
+</style>

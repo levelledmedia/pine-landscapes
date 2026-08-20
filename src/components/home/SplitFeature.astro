@@ -1,0 +1,147 @@
+---
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { business } from '../../config/site';
+
+interface Props {
+  editKey: string;
+  imageId: string;
+  imagePlaceholder: string;
+  heading: string;
+  body: string;
+  ctaLabel: string;
+  ctaHref: string;
+  ctaGlobal?: boolean;
+  reverse?: boolean;
+  badgeText?: string;
+  dark?: boolean;
+  // When set, renders a Google Maps embed (styled/sized the same as the
+  // image it replaces) instead of an ImageSlot — see AreasWeCover for the
+  // same pattern.
+  mapEmbed?: boolean;
+  // Optional HTML list rendered under the body copy (e.g. areas served).
+  areasList?: string;
+}
+
+const { editKey, imageId, imagePlaceholder, heading, body, ctaLabel, ctaHref, ctaGlobal = false, reverse = false, badgeText, dark = false, mapEmbed = false, areasList } = Astro.props;
+const headingColor = dark ? '#fff' : 'var(--color-ink)';
+const bodyColor = dark ? 'rgba(255,255,255,.85)' : 'oklch(0.4 0.02 255)';
+const mapQuery = business.mapQuery || 'London';
+---
+
+<div style={`background:${dark ? 'var(--color-primary)' : 'transparent'};`}>
+  <div class="split-feature-row" style={`max-width:var(--container-width);margin:0 auto;padding:100px 40px;display:flex;gap:60px;align-items:stretch;flex-wrap:${reverse ? 'wrap-reverse' : 'wrap'};`}>
+    {!reverse && (
+      mapEmbed ? (
+        <div class="split-feature-media" style="position:relative;flex:1 1 420px;min-height:340px;border-radius:var(--radius);overflow:hidden;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+          <iframe
+            src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+            style="width:100%;height:100%;min-height:340px;border:0;display:block;"
+            loading="lazy"
+            title="Map"
+          ></iframe>
+          {import.meta.env.DEV && (
+            <div class="dev-map-control" data-map-key="business.mapQuery" data-map-value={mapQuery} style="position:absolute;bottom:12px;right:12px;z-index:9999;"></div>
+          )}
+        </div>
+      ) : (
+        <ImageSlot id={imageId} shape="rounded" class="split-feature-media" style="flex:1 1 420px;min-height:340px;" />
+      )
+    )}
+    <div style="flex:1 1 420px;">
+      <Badge editKey={`${editKey}.badgeText`} value={badgeText ?? 'Learn More'} tone={dark ? 'light' : 'dark'} />
+      <EditableText
+        editKey={`${editKey}.heading`}
+        value={heading}
+        as="h2"
+        style={`font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 16px;color:${headingColor};`}
+      />
+      <EditableText
+        editKey={`${editKey}.body`}
+        value={body}
+        as="div"
+        multiline
+        style={`font-size:var(--fsBody, 17px);line-height:1.7;color:${bodyColor};margin:0 0 24px;`}
+      />
+      {areasList !== undefined && (
+        <EditableText
+          editKey={`${editKey}.areasList`}
+          value={areasList}
+          as="div"
+          multiline
+          class="split-feature-areas"
+          style={`font-size:var(--fsBody, 17px);line-height:1.9;color:${bodyColor};margin:0 0 24px;`}
+        />
+      )}
+      <EditableText
+        editKey={ctaGlobal ? 'business.quoteCtaLabel' : `${editKey}.cta`}
+        value={ctaLabel}
+        class="btn-accent"
+        href={ctaHref}
+        global={ctaGlobal}
+      />
+    </div>
+    {reverse && (
+      mapEmbed ? (
+        <div class="split-feature-media" style="position:relative;flex:1 1 420px;min-height:340px;border-radius:var(--radius);overflow:hidden;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+          <iframe
+            src={`https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`}
+            style="width:100%;height:100%;min-height:340px;border:0;display:block;"
+            loading="lazy"
+            title="Map"
+          ></iframe>
+          {import.meta.env.DEV && (
+            <div class="dev-map-control" data-map-key="business.mapQuery" data-map-value={mapQuery} style="position:absolute;bottom:12px;right:12px;z-index:9999;"></div>
+          )}
+        </div>
+      ) : (
+        <ImageSlot id={imageId} shape="rounded" class="split-feature-media" style="flex:1 1 420px;min-height:340px;" />
+      )
+    )}
+  </div>
+</div>
+
+<style>
+  .split-feature-areas :global(ul) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 20px;
+  }
+  .split-feature-areas :global(li) {
+    position: relative;
+    padding-left: 18px;
+  }
+  .split-feature-areas :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .split-feature-row {
+      padding-top: 56px !important;
+      padding-bottom: 56px !important;
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+      gap: 32px !important;
+    }
+
+    .split-feature-media,
+    .split-feature-media :global(iframe) {
+      min-height: 220px !important;
+    }
+
+    .split-feature-areas :global(ul) {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

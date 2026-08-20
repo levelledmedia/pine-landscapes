@@ -1,0 +1,173 @@
+---
+import EditableText from '../EditableText.astro';
+import Badge from '../Badge.astro';
+import { content, swaps } from '../../config/site';
+
+const { badgeText, heading, body, items } = content.home.whyChooseUs;
+const isCompact = swaps?.whyChooseUsCardStyle === 'compact';
+// Alignment used to ride along with the style variant (compact forced
+// center) — it's now its own control, defaulting to whatever the variant
+// used to imply so existing sites don't visually change until toggled.
+const align = swaps?.whyChooseUsAlign ?? (isCompact ? 'center' : 'left');
+const isCenterAligned = align === 'center';
+const count = Number(swaps?.whyChooseUsCount ?? '6');
+const visibleItems = items.slice(0, count);
+const gridColumns = count === 4 ? 2 : 3;
+
+// Icons sourced from https://icon-sets.iconify.design/ (Lucide set), inlined
+// as static SVG per project convention — see /CLAUDE.md.
+const ICONS = [
+  // lucide:award
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>',
+  // lucide:shield-check
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.79 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>',
+  // lucide:banknote
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>',
+  // lucide:badge-check
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>',
+  // lucide:users
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3.128a4 4 0 0 1 0 7.744M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>',
+  // lucide:map-pin
+  '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>',
+];
+---
+
+<div style="position:relative;background:var(--color-offwhite);" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+  {import.meta.env.DEV && (
+    <div style="position:absolute;top:12px;left:12px;z-index:9999;display:flex;gap:8px;">
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.whyChooseUsCardStyle"
+        data-cycle-options="default,compact"
+        data-cycle-label="Default,Compact"
+        data-cycle-current={isCompact ? 'compact' : 'default'}
+        style="pointer-events:auto;"
+      ></div>
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.whyChooseUsAlign"
+        data-cycle-options="left,center"
+        data-cycle-icon="align"
+        data-cycle-current={align}
+        style="pointer-events:auto;"
+      ></div>
+      <div
+        class="dev-variant-cycle"
+        data-cycle-key="swaps.whyChooseUsCount"
+        data-cycle-options="6,3,4"
+        data-cycle-icon="grid"
+        data-cycle-current={String(count)}
+        style="pointer-events:auto;"
+      ></div>
+    </div>
+  )}
+  <div class="why-choose-section" style={`max-width:var(--container-width);margin:0 auto;padding:100px 40px ${isCompact ? '80px' : '100px'};`}>
+    <div class="why-choose-intro" style={`max-width:640px;margin:0 auto ${isCompact ? '92px' : '64px'};text-align:center;`}>
+      <Badge editKey="home.whyChooseUs.badgeText" value={badgeText} tone="dark" style="align-items:center;" />
+      <EditableText
+        editKey="home.whyChooseUs.heading"
+        value={heading}
+        as="h2"
+        style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH2, 36px);text-transform:var(--heading-case);margin:0 0 16px;color:var(--color-ink);line-height:1.2;"
+      />
+      <EditableText
+        editKey="home.whyChooseUs.body"
+        value={body}
+        as="div"
+        multiline
+        style="font-size:var(--fsBody, 17px);line-height:1.7;color:oklch(0.4 0.02 255);margin:0;"
+      />
+    </div>
+    <div class={`why-choose-grid ${isCompact ? 'compact' : ''}`} style={`display:grid;grid-template-columns:repeat(${gridColumns}, 1fr);column-gap:32px;row-gap:${isCompact ? '64' : '32'}px;`}>
+      {visibleItems.map((item: { title: string; body: string }, i: number) => (
+        <div class={`why-choose-item ${isCompact ? 'compact' : ''} ${isCenterAligned ? 'align-center' : 'align-left'}`}>
+          <span
+            class="why-choose-icon"
+            style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:var(--color-primary);color:var(--color-icon);flex:none;"
+            set:html={ICONS[i % ICONS.length]}
+          />
+          <EditableText
+            editKey={`home.whyChooseUs.items.${i}.title`}
+            value={item.title}
+            as="h4"
+            style="font-family:var(--font-heading);font-weight:700;font-size:var(--fsH3, 20px);text-transform:var(--heading-case);margin:0 0 8px;color:var(--color-ink);"
+          />
+          <EditableText
+            editKey={`home.whyChooseUs.items.${i}.body`}
+            value={item.body}
+            as="div"
+            multiline
+            style="font-size:var(--fsBody, 16px);line-height:1.65;color:oklch(0.4 0.02 255);"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .why-choose-item {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .why-choose-item .why-choose-icon {
+    margin-bottom: 18px;
+  }
+
+  .why-choose-item.align-center {
+    text-align: center;
+  }
+
+  .why-choose-item.align-center .why-choose-icon {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Compact: let the icon float half-overlapping the card's top edge, so
+     the card needs less of its own vertical padding to make room for it.
+     Alignment (left/center) is a separate control — see .align-left/
+     .align-center above/below for where the icon and text sit. */
+  .why-choose-item.compact {
+    padding: 44px 28px 30px;
+    position: relative;
+  }
+
+  .why-choose-item.compact .why-choose-icon {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+
+  .why-choose-item.compact.align-left .why-choose-icon {
+    left: 28px;
+    transform: translate(0, -50%);
+  }
+
+  @media (max-width: 860px) {
+    .why-choose-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .why-choose-section {
+      padding: 56px 20px !important;
+    }
+
+    .why-choose-intro {
+      margin-bottom: 48px !important;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .why-choose-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

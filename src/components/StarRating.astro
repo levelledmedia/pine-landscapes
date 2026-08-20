@@ -1,0 +1,15 @@
+---
+interface Props {
+  style?: string;
+  size?: number;
+}
+const { style = '', size = 20 } = Astro.props;
+---
+
+<div style={`color:var(--color-accent);display:flex;justify-content:center;gap:3px;${style}`} aria-label="5 out of 5 stars">
+  {Array.from({ length: 5 }).map(() => (
+    <svg viewBox="0 0 20 20" width={size} height={size} fill="currentColor" aria-hidden="true">
+      <path d="M10 1.5l2.59 5.25 5.79.84-4.19 4.08.99 5.77L10 14.77l-5.18 2.67.99-5.77L1.62 7.59l5.79-.84L10 1.5Z" />
+    </svg>
+  ))}
+</div>

@@ -1,0 +1,199 @@
+---
+// One page per home-services card — the card is what makes the page exist
+// at all (see [slug].astro's getStaticPaths). Content is generic/dummy copy
+// parameterized only by the card's label, not bespoke per service.
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../Breadcrumb.astro';
+import ImageSlot from '../ImageSlot.astro';
+import EditableText from '../EditableText.astro';
+import ContactSection from '../home/ContactSection.astro';
+import { business, content, swaps } from '../../config/site';
+import { withBase } from '../../lib/base';
+import { pageHref } from '../../lib/pages';
+
+interface Props {
+  id: string;
+  label: string;
+}
+
+const { id, label } = Astro.props;
+
+// Shares content.home.hero.overlayOpacity and swaps.pageHeroTall with
+// PageHero.astro's non-home heroes — one value each, editable from any page.
+const { overlayOpacity = 0.4 } = content.home.hero;
+const pageHeroTall = swaps?.pageHeroTall ?? 'default';
+---
+
+<Layout title={`${label} | ${business.legalName}`}>
+  <div class={`svc-hero ${pageHeroTall === 'tall' ? 'tall' : ''}`} style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
+    <ImageSlot id={id} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
+    <div
+      id="svc-hero-overlay"
+      data-opacity-rgb="15,20,35"
+      style={`position:absolute;inset:0;background:rgba(15,20,35,${overlayOpacity});pointer-events:none;`}
+    ></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+      <h1 class="svc-hero-title" style="font-family:var(--font-heading);font-weight:700;text-transform:var(--heading-case);color:#fff;margin:0;letter-spacing:.03em;text-align:center;">{label}</h1>
+    </div>
+    {import.meta.env.DEV && (
+      <>
+        <div
+          class="dev-variant-cycle"
+          data-cycle-key="swaps.pageHeroTall"
+          data-cycle-options="default,tall"
+          data-cycle-label="Default,Tall"
+          data-cycle-current={pageHeroTall}
+          data-cycle-title="Toggle hero height"
+          style="position:absolute;top:12px;left:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+        <div
+          class="dev-opacity-control"
+          data-opacity-key="home.hero.overlayOpacity"
+          data-opacity-target="svc-hero-overlay"
+          data-opacity-value={overlayOpacity}
+          style="position:absolute;bottom:12px;right:12px;z-index:9999;pointer-events:auto;"
+        ></div>
+      </>
+    )}
+  </div>
+
+  <Breadcrumb label={label} parentLabel="Services" />
+
+  <div class="svc-intro" style="background:oklch(0.95 0.006 255);">
+    <div style="max-width:var(--container-width);margin:0 auto;display:flex;gap:50px;align-items:center;flex-wrap:wrap;">
+      <div style="flex:1 1 400px;">
+        <h2 style="font-family:var(--font-heading);font-weight:700;font-size:28px;margin:0 0 16px;color:var(--color-ink);">{label} Done Right</h2>
+        <h3 style="font-family:var(--font-heading);font-weight:600;font-size:18px;margin:0 0 12px;color:var(--color-ink);">Looking for {label.toLowerCase()}?</h3>
+        <p class="svc-p">Our experienced team delivers {label.toLowerCase()} built around how you actually use your outdoor space — quality materials, careful planning, and craftsmanship that holds up for years to come.</p>
+        <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="btn-accent" href={withBase("/#contact")} global />
+      </div>
+      <ImageSlot id={id} shape="rect" class="svc-intro-image" style="flex:1 1 400px;" />
+    </div>
+  </div>
+
+  <div class="svc-body" style="max-width:900px;margin:0 auto;">
+    <h2 class="svc-h" style="margin-top:0;">Why Choose Us for {label}</h2>
+    <p class="svc-p">Every project starts with a conversation about what you actually want from your outdoor space. From there, we plan, design, and build with an eye for detail and a commitment to doing it right the first time.</p>
+
+    <h3 class="svc-h3">What's included:</h3>
+    <ul class="svc-list">
+      <li>Initial consultation and design</li>
+      <li>Premium materials and equipment</li>
+      <li>Experienced, professional crews</li>
+      <li>Clear timelines and communication</li>
+      <li>Workmanship warranty on every project</li>
+    </ul>
+    <p class="svc-p"><strong>Ready to get started? Schedule your free quote today.</strong></p>
+
+    <h2 class="svc-h">Built to Last</h2>
+    <p class="svc-p">We don't cut corners. Every project is built on solid fundamentals — proper preparation, quality materials, and attention to detail — so it looks great and holds up for years.</p>
+
+    <h2 class="svc-h">What Sets Us Apart</h2>
+    <ul class="svc-list">
+      <li><strong>Expert Team</strong> — no rushed work or shortcuts</li>
+      <li><strong>Quality Materials</strong> — we only use products we trust</li>
+      <li><strong>Local Knowledge</strong> — we know what your yard needs to thrive</li>
+      <li><strong>5-Star Reputation</strong> — backed by reviews and referrals</li>
+    </ul>
+    <p class="svc-p">We treat your yard like it's our own. <strong>Get your free quote now.</strong></p>
+  </div>
+
+  <div class="svc-gallery-section" style="max-width:var(--container-width);margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+      <h2 style="font-family:var(--font-heading);font-weight:700;font-size:22px;margin:0;color:var(--color-ink);">Examples of Our Work</h2>
+      <a class="btn-accent" href={withBase(pageHref('projects'))}>View Projects</a>
+    </div>
+    <div class="svc-gallery">
+      <ImageSlot id={`${id}-work-1`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+      <ImageSlot id={`${id}-work-2`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+      <ImageSlot id={`${id}-work-3`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+      <ImageSlot id={`${id}-work-4`} shape="rounded" class="svc-gallery-image" style="width:100%;" />
+    </div>
+  </div>
+
+  <ContactSection />
+</Layout>
+
+<style>
+  .svc-list { margin: 0 0 20px; padding-left: 20px; }
+  .svc-list li { font-size: 15px; line-height: 1.8; color: oklch(0.4 0.02 255); }
+  .svc-h { font-family: var(--font-heading); font-weight: 700; font-size: 24px; color: var(--color-ink); margin: 36px 0 12px; }
+  .svc-h3 { font-family: var(--font-heading); font-weight: 600; font-size: 18px; color: var(--color-ink); margin: 24px 0 10px; }
+  .svc-p { font-size: 15px; line-height: 1.8; color: oklch(0.4 0.02 255); margin: 0 0 16px; }
+
+  .svc-hero {
+    height: 200px;
+  }
+  .svc-hero.tall {
+    height: 300px;
+  }
+  .svc-hero-title {
+    font-size: 40px;
+  }
+  .svc-intro {
+    padding: 70px 40px;
+  }
+  .svc-intro-image {
+    height: 340px;
+  }
+  .svc-body {
+    padding: 70px 40px;
+  }
+  .svc-gallery-section {
+    padding: 0 40px 80px;
+  }
+  .svc-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .svc-gallery-image {
+    height: 200px;
+  }
+
+  @media (max-width: 860px) {
+    .svc-gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .svc-hero {
+      height: auto;
+      min-height: 220px;
+    }
+    .svc-hero.tall {
+      min-height: 320px;
+    }
+    .svc-hero-title {
+      font-size: 28px;
+      padding: 0 20px;
+    }
+    .svc-intro,
+    .svc-body {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .svc-intro {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+    .svc-intro-image {
+      height: 220px;
+    }
+    .svc-body {
+      padding-top: 48px;
+      padding-bottom: 48px;
+    }
+    .svc-gallery-section {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .svc-gallery {
+      grid-template-columns: 1fr;
+    }
+    .svc-gallery-image {
+      height: 220px;
+    }
+  }
+</style>
