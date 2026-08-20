@@ -2,6 +2,7 @@
 import ImageSlot from '../ImageSlot.astro';
 import EditableText from '../EditableText.astro';
 import { content } from '../../config/site';
+import { withBase } from '../../lib/base';
 
 const { heading, subheading, missionHeading, missionBody, missionCta, overlayOpacity = 0.6 } = content.home.stats;
 
@@ -67,7 +68,7 @@ const stats = content.home.stats.items ?? [
         multiline
         style="font-size:var(--fsBody, 16px);line-height:1.7;margin:0 0 24px;color:oklch(0.89 0.015 255);"
       />
-      <EditableText editKey="home.stats.missionCta" value={missionCta} class="btn-accent" href="#" />
+      <EditableText editKey="home.stats.missionCta" value={missionCta} class="btn-accent" href={withBase('/about')} />
     </div>
   </div>
 </div>

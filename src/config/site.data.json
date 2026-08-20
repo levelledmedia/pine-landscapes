@@ -3,8 +3,8 @@
     "tagline": "Family-owned landscaping company in Hitchin, serving Bedfordshire and Hertfordshire. Specialising in garden transformation and landscape design since 1996. Call today for a free, no-obligation quotation.",
     "phone": "07939-591-100",
     "email": "mark@pinelandscapes.co.uk",
-    "address": "123 Main Street, Suite 100<br>Your City, ST 00000",
-    "addressShort": "Maquis Hill, Shillington, Hitchin, ABC 123",
+    "address": "Marquis Hill, Shillington, Hitchin SG5 3HD",
+    "addressShort": "Marquis Hill, Shillington, Hitchin SG5 3HD",
     "hours": "8AM–7:30PM, 7 Days a Week",
     "promoBanner": "GET A QUOTE: $1,000 OFF PATIOS/DECKING | $500 OFF DRIVEWAY RESURFACING",
     "quoteCtaLabel": "Get Free Quote",
@@ -13,8 +13,7 @@
     "legalName": "Pine Landscapes",
     "mapQuery": "pine landscapes",
     "socials": {
-      "facebook": "#",
-      "instagram": "#"
+      "facebook": "https://www.facebook.com/pinelandscapesuk/"
     }
   },
   "theme": {
@@ -86,7 +85,7 @@
     "testimonialsCardBg": "white",
     "featuredProjectsBg": "primary",
     "heroOverlayColor": "black",
-    "buttonHoverAnimation": "grow",
+    "buttonHoverAnimation": "none",
     "headerWidth": "contained",
     "buttonGradient": "off",
     "heroBadgeTone": "white",
@@ -173,7 +172,7 @@
       },
       {
         "id": "svc-msmsvk83",
-        "label": "Gazebos"
+        "label": "Gazebos &amp; Pergolas"
       },
       {
         "id": "svc-msoqs2p8",
@@ -623,7 +622,7 @@
       "hero": {
         "heading": "Landscapers in Hitchin, Serving Beds & Herts",
         "headingWidth": 810,
-        "contactCta": "Request Call",
+        "contactCta": "About Us",
         "ctaBarText": "If it's outside, we're in",
         "overlayOpacity": 0.7,
         "formHeading": "Get Your Free Quote",
@@ -694,9 +693,9 @@
       },
       "ourStory": {
         "badgeText": "Our Story",
-        "heading": "Built By People Who Love The Work",
-        "body": "From patios to planting to driveways and beyond, our team handles all things landscaping. With over 25 years of experience and a strong work ethic, you can trust us with your project, big or small.<div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>",
-        "cta": "Learn More"
+        "heading": "Welcome to Pine Landscapes",
+        "body": "<p>Welcome to Pine Landscapes. Owned by Mark and backed by more than 30 years of experience in the industry, we are all about honest work, integrity and outstanding results.</p><p>We are a family-owned business based in the Hitchin area, working right across Hertfordshire and Bedfordshire. Every project is approached with care, whether it is a straightforward repair, a new patio, upgraded fencing, fresh turfing or a complete garden transformation. We treat each job as if it were our own property, and we aim to leave every customer genuinely pleased with the finished result.</p><p>Our team is skilled, motivated and committed to doing the job properly. From the <a href=\"/ground-level-calculator\">initial groundwork</a> through to the finishing details, we focus on practical workmanship, quality materials and a result that is built to last. If you want to see more of our past work and customer feedback, you can also visit <a href=\"https://www.mybuilder.com/profile/view/pine_landscapes\">our MyBuilder profile</a>.</p>",
+        "cta": "Get a Free Quote"
       },
       "stats": {
         "heading": "Over 30 Years",
@@ -716,7 +715,7 @@
           }
         ],
         "missionHeading": "Pine Landscapes",
-        "missionBody": "We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results — and expert virtual renderings to help you love the look of yours.<br><br>We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results — and expert virtual renderings to help you love the look of yours.<br><br>We're passionate about helping your garden reach its full potential. With attention to detail, we deliver the highest quality results and such.",
+        "missionBody": "Pine Landscapes brings over 30 years of industry experience to the table. We’re a family-owned outfit that’s big on integrity and top-notch results.<br><br>From small repairs to full garden makeovers, our team is skilled and committed, embodying the values that make us who we are. We use high-quality materials because we want your outdoor space to last.<br><br>Whether you’re a homeowner or running a business, we provide free, competitive quotes that aim to give you the best value. Ready to revamp your garden or property? Give us a call and let's chat.",
         "missionCta": "Learn More",
         "overlayOpacity": 0.7
       },
@@ -770,7 +769,7 @@
         "items": [
           {
             "q": "Where is Pine Landscapes based and what areas do you cover?",
-            "a": "Pine Landscapes is based in Hitchin and provides professional landscaping services throughout Hertfordshire and Bedfordshire. We regularly work with homeowners and businesses across both counties, from smaller local projects to complete garden transformations. If you are based in Hertfordshire or Bedfordshire and are unsure whether we cover your particular town or village, simply get in touch. We are happy to let you know whether we can help with your project."
+            "a": "Based in Hitchin, Pine Landscapes provides professional landscaping services throughout Hertfordshire and Bedfordshire. We regularly work with homeowners and businesses across both counties, from smaller local projects to complete garden transformations. If you are based in Hertfordshire or Bedfordshire and are unsure whether we cover your particular town or village, simply get in touch. We are happy to let you know whether we can help with your project."
           },
           {
             "q": "What landscaping services do you provide?",
@@ -806,7 +805,7 @@
           },
           {
             "q": "How do I get started with my landscaping project?",
-            "a": "The easiest way to get started is to contact Pine Landscapes and tell us a little about what you would like to achieve. Whether you already have a clear idea in mind or simply know that your garden needs improving, we can discuss your requirements and the next steps. From there, we can look at the work involved and provide a free quotation for your project. We work throughout Hertfordshire and Bedfordshire from our base in Hitchin and are happy to discuss both small landscaping jobs and larger garden transformations."
+            "a": "The easiest way to get started is to contact Pine Landscapes and tell us a little about what you would like to achieve. Whether you already have a clear idea in mind or simply know that your garden needs improving, we can discuss your requirements and the next steps. From our Hitchin base, we work throughout Hertfordshire and Bedfordshire and are happy to discuss both small landscaping jobs and larger garden transformations before providing a free quotation for your project."
           }
         ],
         "badgeText": "Common Questions"
@@ -836,12 +835,12 @@
     "about": {
       "mission": {
         "heading": "Our Mission",
-        "body": "<p>As a design-oriented business, we're passionate about making your outdoor space reach its full potential. With a strong work ethic and attention to detail, we deliver the highest quality results.</p><p>We proudly offer services in all things landscaping, from patios and paving to full garden design and more. Our expert team is committed to using the best materials and designs to deliver the best results possible. We're also capable of creating virtual renderings.</p><p>We're here to deliver the outdoor space of your dreams!</p>"
+        "body": "<p>Welcome to Pine Landscapes. Owned by Mark and backed by more than 30 years of experience in the industry, we are all about honest work, integrity and outstanding results.</p><p>We are a family-owned business working across Hertfordshire and Bedfordshire, taking on everything from small repairs to full garden makeovers. Every job is approached with care, practical know-how and a commitment to quality workmanship that lasts.</p><p>Whether you need fencing, decking, paving, turfing or broader landscaping work, our aim is always the same: deliver a finished outdoor space that looks right, functions properly and gives you lasting value.</p>"
       },
       "reasons": {
-        "heading": "Reasons to Choose Us",
-        "body": "There's lots to love when it comes to working with us, even beyond our beautiful work. Find out what makes us stand out from the crowd!",
-        "cta": "Get a Quote"
+        "heading": "Why Homeowners Choose Pine Landscapes",
+        "body": "<p>We offer a broad range of outdoor services, including fencing, decking, paving and turfing, along with the preparation and groundwork needed to complete a project properly. Whether you want to improve one part of the garden or completely rework the whole space, we tailor the job to your property, priorities and budget.</p><p>We are big on doing things properly. That means quality materials, clear communication, practical advice and workmanship that is fully guaranteed. We also provide free, competitive quotes and take just as much care on smaller jobs as we do on larger garden transformations.</p>",
+        "cta": "Get a Free Quote"
       },
       "badgesCta": "View More"
     },

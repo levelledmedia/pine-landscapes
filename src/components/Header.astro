@@ -620,7 +620,14 @@ const isActive = (href: string) => {
   .mobile-nav {
     display: flex;
     flex-direction: column;
-    padding: 8px 20px;
+    gap: 8px;
+    padding: 14px 20px 0;
+  }
+
+  .mobile-nav-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .mobile-navlink,
@@ -629,35 +636,40 @@ const isActive = (href: string) => {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 14px 4px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 16px 18px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
     background: transparent;
-    border-left: none;
-    border-right: none;
-    border-top: none;
     text-align: left;
     text-decoration: none;
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: .02em;
     cursor: pointer;
   }
 
   .main-header.light .mobile-navlink,
   .main-header.light .mobile-nav-summary {
     color: var(--color-ink);
-    border-bottom-color: rgba(0, 0, 0, 0.08);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 
   .main-header.tinted .mobile-navlink,
   .main-header.tinted .mobile-nav-summary {
     color: #fff;
-    border-bottom-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.14);
   }
 
   .mobile-navlink.active,
   .mobile-nav-summary.active {
     color: var(--header-highlight);
+    background: color-mix(in oklch, var(--color-accent) 10%, white);
+  }
+
+  .main-header.tinted .mobile-navlink.active,
+  .main-header.tinted .mobile-nav-summary.active {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .mobile-nav-chevron {
@@ -672,7 +684,8 @@ const isActive = (href: string) => {
   .mobile-nav-submenu {
     display: none;
     flex-direction: column;
-    padding: 4px 0 8px 14px;
+    gap: 6px;
+    padding: 0 8px 8px 24px;
   }
 
   .mobile-nav-submenu.open {
@@ -680,10 +693,10 @@ const isActive = (href: string) => {
   }
 
   .mobile-nav-sublink {
-    padding: 11px 4px;
+    padding: 8px 4px;
     text-decoration: none;
     font-family: var(--font-body);
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     opacity: 0.85;
   }
@@ -705,18 +718,19 @@ const isActive = (href: string) => {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    padding: 18px 20px 24px;
+    padding: 22px 20px 28px;
   }
 
   .mobile-nav-phone {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
     text-decoration: none;
     font-family: var(--font-heading);
     font-weight: 600;
-    font-size: 17px;
+    font-size: 24px;
+    padding: 6px 4px 0;
   }
 
   .main-header.light .mobile-nav-phone {
@@ -731,6 +745,8 @@ const isActive = (href: string) => {
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
 
   @media (max-width: 900px) {
