@@ -769,32 +769,44 @@
         "subheading": "Got a question about working with us? Here are the ones we hear most.",
         "items": [
           {
-            "q": "How much will my project cost?",
-            "a": "Every garden is different, so we price after a free on-site consultation rather than guessing over the phone. Request a quote and we'll get back to you with a clear, no-obligation estimate."
+            "q": "Where is Pine Landscapes based and what areas do you cover?",
+            "a": "Pine Landscapes is based in Hitchin and provides professional landscaping services throughout Hertfordshire and Bedfordshire. We regularly work with homeowners and businesses across both counties, from smaller local projects to complete garden transformations. If you are based in Hertfordshire or Bedfordshire and are unsure whether we cover your particular town or village, simply get in touch. We are happy to let you know whether we can help with your project."
           },
           {
-            "q": "Are you insured and guaranteed?",
-            "a": "Yes — we're fully insured, and every project is backed by a workmanship warranty so you're covered long after we've finished."
+            "q": "What landscaping services do you provide?",
+            "a": "We provide a comprehensive range of landscaping services for gardens and outdoor spaces, including fencing, decking, paving and turfing, along with the associated preparation and landscaping work needed to complete a project properly. Whether you are looking to improve one particular area of your garden or completely transform your outdoor space, we can tailor the work to suit your property, requirements and budget."
           },
           {
-            "q": "How long does a typical project take?",
-            "a": "Smaller jobs like fencing or turf can wrap up in a few days, while larger patio or full-garden transformations usually run one to three weeks. We'll give you a firm timeline before work starts."
+            "q": "How much experience does Pine Landscapes have?",
+            "a": "Pine Landscapes is a family-run landscaping company with more than 30 years of industry experience. Over that time, we have worked on a wide variety of gardens and outdoor spaces throughout Hertfordshire and Bedfordshire. Our experience allows us to advise customers on practical solutions as well as appearance, helping you choose materials and designs that will work well for your property and how you intend to use your outdoor space."
           },
           {
-            "q": "Do I need to be home during the work?",
-            "a": "No, as long as we have access to the outdoor space. Many of our clients are at work during the day — we'll keep you updated with photos as the project progresses."
+            "q": "Do you provide free quotes?",
+            "a": "Yes. We provide free, no-obligation quotes for landscaping projects across Hertfordshire and Bedfordshire. We can discuss what you are looking to achieve, assess the work involved and provide a quotation based on the requirements of your project. Every garden and property is different, so speaking to us about your plans is the best way to get an accurate idea of the work and costs involved."
           },
           {
-            "q": "Do you offer any warranty on your work?",
-            "a": "Yes — every project is backed by a workmanship warranty, and we'll always come back to put things right if something isn't up to standard."
+            "q": "Do you take on both small and large landscaping projects?",
+            "a": "Yes. We are happy to undertake projects of all sizes, from smaller repairs and individual improvements through to substantial landscaping projects and complete garden makeovers. You do not need to be planning an entirely new garden to contact us. If there is simply one part of your outdoor space that you would like repaired, replaced or improved, we will be happy to discuss it with you."
           },
           {
-            "q": "Can you help with garden design as well as the build?",
-            "a": "Absolutely. Many clients come to us with just an idea of what they want — we'll help design the space, then carry out the full build ourselves."
+            "q": "Can you help with a complete garden transformation?",
+            "a": "Yes. If your garden needs more than one type of landscaping work, we can help bring the different elements together as part of a wider transformation. This can be particularly useful when you want to create a more attractive, practical and usable outdoor space rather than tackling each element separately. We can discuss what you would like from the finished garden and help you consider the most suitable combination of landscaping features, materials and finishes for the property."
           },
           {
-            "q": "What forms of payment do you accept?",
-            "a": "We accept bank transfer and all major debit and credit cards. For larger projects, we can also agree a staged payment schedule tied to project milestones."
+            "q": "Can you help me decide what would work best in my garden?",
+            "a": "Yes. You do not need to have every detail decided before contacting us. If you know that you want to improve your garden but are unsure about the most suitable materials, layout or approach, we can talk through the available options with you. Our experience across a wide range of landscaping projects means we can offer practical advice based on the space you have, the look you want to achieve, how the garden will be used and your available budget."
+          },
+          {
+            "q": "Do you supply the materials as well as carry out the installation?",
+            "a": "Yes. We can supply the materials required for your landscaping project as well as carrying out the professional installation. We use quality materials selected to suit the particular job and the finish you are looking to achieve. Having the supply and installation handled together can also make the overall project much simpler, as you do not need to organise multiple contractors or source all of the materials yourself."
+          },
+          {
+            "q": "Is your landscaping work guaranteed?",
+            "a": "Yes. Pine Landscapes stands behind the quality of its workmanship, and our work is fully guaranteed. Our aim is to provide landscaping that not only looks good when the project is completed but is also professionally installed and built to last. We take pride in providing a reliable service and maintaining a high standard of workmanship throughout every stage of the project."
+          },
+          {
+            "q": "How do I get started with my landscaping project?",
+            "a": "The easiest way to get started is to contact Pine Landscapes and tell us a little about what you would like to achieve. Whether you already have a clear idea in mind or simply know that your garden needs improving, we can discuss your requirements and the next steps. From there, we can look at the work involved and provide a free quotation for your project. We work throughout Hertfordshire and Bedfordshire from our base in Hitchin and are happy to discuss both small landscaping jobs and larger garden transformations."
           }
         ],
         "badgeText": "Common Questions"
@@ -819,7 +831,7 @@
         "heading": "Ready to Transform Your Outdoor Space?",
         "body": "Request a free, no-obligation quote and we'll get back to you with a clear estimate — no pressure, no guesswork."
       },
-      "credentialLogoSize": 136
+      "credentialLogoSize": 144
     },
     "about": {
       "mission": {
