@@ -24,12 +24,12 @@
       "accent": "#5e9f59",
       "background": "oklch(0.98 0.008 255)"
     },
-    "fontPresetId": "oswald-inter",
+    "fontPresetId": "playfair-source",
     "fonts": {
-      "heading": "'Oswald', sans-serif",
-      "body": "'Inter', sans-serif",
-      "googleFontsHref": "https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap",
-      "headingCase": "uppercase"
+      "heading": "'Playfair Display', serif",
+      "body": "'Source Sans 3', sans-serif",
+      "googleFontsHref": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap",
+      "headingCase": "none"
     },
     "roundness": 8,
     "design": {
