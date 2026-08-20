@@ -1,11 +1,12 @@
 export interface AreaPage {
+  servicePath: string;
+  serviceId: string;
   slug: string;
   area: string;
   serviceLabel: string;
   pageTitle: string;
   heroTitle: string;
   pageDescription: string;
-  imageId: string;
   introHeading: string;
   introSubheading: string;
   introBody: string[];
@@ -20,6 +21,8 @@ export interface AreaPage {
 
 export const areas: AreaPage[] = [
   {
+    servicePath: 'decking',
+    serviceId: 'svc-driveways',
     slug: 'cranfield',
     area: 'Cranfield',
     serviceLabel: 'Decking',
@@ -27,7 +30,6 @@ export const areas: AreaPage[] = [
     heroTitle: 'Decking in Cranfield',
     pageDescription:
       "Decking installers in Cranfield for new decks, repairs, patios, balconies, pergolas, and more.",
-    imageId: 'svc-driveways',
     introHeading: 'Decking Company in Cranfield',
     introSubheading: 'Looking for decking installers in Cranfield?',
     introBody: [
@@ -68,6 +70,8 @@ export const areas: AreaPage[] = [
     postcodeLabel: 'Serving Cranfield (MK43)',
   },
   {
+    servicePath: 'decking',
+    serviceId: 'svc-driveways',
     slug: 'flitwick',
     area: 'Flitwick',
     serviceLabel: 'Decking',
@@ -75,7 +79,6 @@ export const areas: AreaPage[] = [
     heroTitle: 'Decking in Flitwick',
     pageDescription:
       'Decking installers in Flitwick for new garden decking, repairs, patios, balconies, and pergolas.',
-    imageId: 'svc-driveways',
     introHeading: 'Decking Company in Flitwick',
     introSubheading: 'Garden decking supplied and fitted in Flitwick',
     introBody: [
@@ -116,6 +119,8 @@ export const areas: AreaPage[] = [
     postcodeLabel: 'Serving Flitwick (MK45)',
   },
   {
+    servicePath: 'decking',
+    serviceId: 'svc-driveways',
     slug: 'hatfield',
     area: 'Hatfield',
     serviceLabel: 'Decking',
@@ -123,7 +128,6 @@ export const areas: AreaPage[] = [
     heroTitle: 'Decking in Hatfield',
     pageDescription:
       'Decking installers in Hatfield for garden decking, patios, balconies, pergolas, and low-maintenance composite decks.',
-    imageId: 'svc-driveways',
     introHeading: 'Decking Company in Hatfield',
     introSubheading: 'Decking that turns your garden into usable space',
     introBody: [
