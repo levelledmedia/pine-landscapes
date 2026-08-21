@@ -1,9 +1,16 @@
 import { defineConfig } from 'astro/config';
 
-// Served from GitHub Pages at /pine-landscapes/ — update this (or drop it
-// entirely) if you move to a custom domain or a different host.
+// GitHub Pages serves this as a project site at /pine-landscapes/, so every
+// asset/link (via the withBase() helper used throughout src/) needs that
+// prefix baked in at build time. Cloudflare Pages serves the same build at
+// its own domain root instead, with no prefix — those two hosts need
+// different base paths from the identical source, which is why this reads
+// CF_PAGES (set to "1" automatically by Cloudflare's build environment,
+// https://developers.cloudflare.com/pages/configuration/build-image/#environment-variables)
+// rather than hardcoding one host. Deploying somewhere else with its own
+// subpath will need its own check added here the same way.
 export default defineConfig({
   output: 'static',
   devToolbar: { enabled: false },
-  base: '/pine-landscapes/',
+  base: process.env.CF_PAGES ? '/' : '/pine-landscapes/',
 });
