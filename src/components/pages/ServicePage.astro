@@ -30,6 +30,7 @@ const pageHeroTall = swaps?.pageHeroTall ?? 'default';
 // what dragging a photo to reorder it on that page actually changes.
 const galleryPhotos = gallery.filter((g) => g.tag === id && images[g.id]?.src);
 const serviceContent = (content.services as Record<string, Record<string, string>> | undefined)?.[id] ?? {};
+const pageTitle = serviceContent.pageTitle ?? `${label} in Hitchin`;
 // Each of the 3 tiles remembers which gallery photo it's showing (by id, via
 // the cycle arrows below) — falling back to a positional default (1st/2nd/
 // 3rd newest matching photo) until the owner picks otherwise. A saved pick
@@ -44,7 +45,7 @@ const workSlots = [0, 1, 2].map((i) => {
 });
 ---
 
-<Layout title={`${label} | ${business.legalName}`}>
+<Layout title={`${pageTitle} | ${business.legalName}`}>
   <div class={`svc-hero ${pageHeroTall === 'tall' ? 'tall' : ''}`} style="position:relative;" data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
     <ImageSlot id={id} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
     <div
@@ -53,7 +54,7 @@ const workSlots = [0, 1, 2].map((i) => {
       style={`position:absolute;inset:0;background:rgba(15,20,35,${overlayOpacity});pointer-events:none;`}
     ></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
-      <h1 class="svc-hero-title" style="font-family:var(--font-heading);font-weight:700;text-transform:var(--heading-case);color:#fff;margin:0;letter-spacing:.03em;text-align:center;">{label}</h1>
+      <h1 class="svc-hero-title" style="font-family:var(--font-heading);font-weight:700;text-transform:var(--heading-case);color:#fff;margin:0;letter-spacing:.03em;text-align:center;">{pageTitle}</h1>
     </div>
     {import.meta.env.DEV && (
       <>
@@ -111,6 +112,7 @@ const workSlots = [0, 1, 2].map((i) => {
 
     <h2 class="svc-h" set:html={serviceContent.builtHeading ?? "Built to Last"} />
     <p class="svc-p" set:html={serviceContent.builtText ?? "We don't cut corners. Every project is built on solid fundamentals — proper preparation, quality materials, and attention to detail — so it looks great and holds up for years."} />
+    {serviceContent.builtListHtml && <ul class="svc-list" set:html={serviceContent.builtListHtml} />}
 
     <h2 class="svc-h" set:html={serviceContent.setsApartHeading ?? "What Sets Us Apart"} />
     {serviceContent.setsApartListHtml ? (

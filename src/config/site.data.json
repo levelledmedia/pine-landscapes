@@ -158,7 +158,7 @@
       },
       {
         "id": "svc-mslifeu6",
-        "label": "Patios &amp; Paths"
+        "label": "Paving &amp; Patios"
       }
     ],
     [
@@ -617,15 +617,35 @@
   "content": {
     "services": {
       "svc-fencing": {
+        "pageTitle": "Fencing Installer in Hitchin",
         "introText": "When you need to secure your property, enhance privacy or add a decorative touch, the right fencing makes all the difference. As trusted fencing contractors in Hitchin and the surrounding areas, we supply and fit fences to the highest standards, and we're on hand for fence repairs whenever you need us.",
         "whyText": "Whether it's a residential garden or a commercial property, we offer a wide range of styles to suit your needs, from traditional close board and Venetian fences through to classic larch lap designs. Every project starts with a conversation about what you actually want, and we plan, design and install with an eye for detail and a commitment to doing it right the first time.",
-        "includedHeading": "Types of fencing we offer:",
-        "includedListHtml": "<li>Decorative Fences &mdash; Venetian and wrought iron styles tailored to match your landscape</li><li>Privacy Fences &mdash; larch lap, traditional close board and overlap panel fencing built with no gaps for maximum privacy</li><li>Palisade &amp; Security Fencing &mdash; robust vertical stake and mesh fencing for commercial and industrial properties</li><li>Chain Link &amp; Weldmesh Fencing &mdash; durable, weather and vandal resistant options for secure boundaries</li><li>Post and Rail Fencing &mdash; classic rural design often used on farms and larger properties</li><li>Composite &amp; PVC Fencing &mdash; low-maintenance alternatives with the look of timber</li><li>Picket, Trellis &amp; Feather Edge Fences &mdash; timeless designs for front gardens and climbing plants</li><li>Modern/Contemporary Fences &mdash; sleek designs using up-to-date materials and layouts</li><li>Bamboo Fencing &mdash; an eco-friendly, natural-looking option for decorative use</li>",
-        "builtHeading": "Gates We Supply &amp; Fit",
-        "builtText": "As well as fencing, we supply and install a full range of gates &mdash; from entrance and driveway gates, including automatic and electric options, to garden, pedestrian, security and farm-style gates. Every gate is built to match your property and boundary fencing, giving you a secure, cohesive finish.",
+        "includedHeading": "All Types of Fencing",
+        "includedListHtml": "<li><strong>Decorative Fences</strong> &mdash; enhance your property's appearance with intricate designs like Venetian and wrought iron fencing, often tailored to match your landscape</li><li><strong>Post and Rail Fences</strong> &mdash; classic rural design, often used on farms and large properties for boundary definition</li><li><strong>Privacy Fences</strong> &mdash; including larch lap, traditional close board and overlap panel fencing, built with no gaps to provide maximum privacy and often used to enclose back gardens</li><li><strong>Modern/Contemporary Fences</strong> &mdash; sleek designs that offer a blend of function and style, using up-to-date materials and layouts</li><li><strong>Chain Link Fencing</strong> &mdash; a durable, affordable option ideal for security purposes without obstructing the view</li><li><strong>Palisade Fencing</strong> &mdash; comprising vertical metal or wooden stakes, a strong option often used around commercial properties</li><li><strong>Weldmesh Fencing</strong> &mdash; highly resistant to weather and vandalism, a great option for securing industrial and commercial areas</li><li><strong>Security Fencing</strong> &mdash; robust designs that prioritise safety, ideal for businesses or properties needing high security</li><li><strong>Bamboo Fencing</strong> &mdash; an environmentally friendly option that offers a unique, natural appearance, often used for decorative purposes</li><li><strong>Composite Fencing</strong> &mdash; crafted from a mixture of wood and plastic, it offers the appearance of wood with lower maintenance</li><li><strong>PVC Fencing</strong> &mdash; a lightweight, cost-effective option that is resistant to weather and easy to maintain</li><li><strong>Trellis Fences</strong> &mdash; often used as decorative additions or to support climbing plants, adding a garden charm</li><li><strong>Picket Fences</strong> &mdash; a timeless design featuring spaced vertical boards, often used to define front garden boundaries</li><li><strong>Feather Edge Fences</strong> &mdash; built with tapered boards that create a solid wall, providing strong boundaries and privacy</li>",
+        "builtHeading": "Gates &amp; Specialty Fencing",
+        "builtText": "As well as fencing, we supply and install a full range of gates, along with specialty fencing to complete your boundary.",
+        "builtListHtml": "<li><strong>Entrance Gates</strong> &mdash; the first impression of your property, available in various styles like decorative gates to match your aesthetic</li><li><strong>Garden Gates</strong> &mdash; secure your garden without obstructing its beauty, in designs that complement your outdoor space</li><li><strong>Driveway Gates</strong> &mdash; enhance your property's entrance, providing added security and style, including automatic and electric options</li><li><strong>Pedestrian Gates</strong> &mdash; specifically designed for foot traffic, often found near pavements or public paths</li><li><strong>Security Gates</strong> &mdash; robust construction with locks and additional security features to protect property entrances</li><li><strong>Farm-Style Gates</strong> &mdash; traditional wooden or metal designs, used to secure farm entrances or rural properties</li><li><strong>Boundary Fences</strong> &mdash; clearly define property lines, customisable to match the look of your property</li><li><strong>Noise Barrier Fences</strong> &mdash; engineered to reduce noise from traffic or other sources, improving the comfort of your property</li><li><strong>Windbreak Fences</strong> &mdash; designed to shield against strong winds, enhancing outdoor comfort</li>",
         "setsApartHeading": "About Pine Landscapes",
         "setsApartListHtml": "<li><strong>Family-Run Business</strong> &mdash; decades of honest, quality workmanship across Hitchin and the surrounding areas</li><li><strong>30+ Years' Experience</strong> &mdash; hundreds of satisfied fencing customers</li><li><strong>Tailored Approach</strong> &mdash; every job, big or small, handled with the same care and craftsmanship</li><li><strong>Free, Honest Quotes</strong> &mdash; competitive pricing with no obligation</li>",
         "finalCta": "Let us show you why we're a trusted choice for fencing in Hitchin. <strong>Get your free quote now.</strong>"
+      },
+      "svc-patios": {
+        "pageTitle": "Landscape Designer in Hitchin"
+      },
+      "svc-mslifeu6": {
+        "pageTitle": "Paving & Patios Installer in Hitchin"
+      },
+      "svc-driveways": {
+        "pageTitle": "Decking Installer in Hitchin"
+      },
+      "svc-turf": {
+        "pageTitle": "Turf & Lawn Installer in Hitchin"
+      },
+      "svc-msmsvk83": {
+        "pageTitle": "Gazebo & Pergola Installer in Hitchin"
+      },
+      "svc-msoqs2p8": {
+        "pageTitle": "Driveway Installer in Hitchin"
       }
     },
     "quoteForm": {
