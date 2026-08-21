@@ -7,7 +7,7 @@ import { pageHref, serviceHref } from '../lib/pages';
 
 const brandName = business.name || business.legalName;
 // Mirrors whatever service cards exist on the home page — no card, no page.
-const services = homeServices.flat().map((s) => ({ label: s.label, href: serviceHref(s.label) }));
+const services = homeServices.flat().map((s) => ({ label: s.label, href: serviceHref(s.label, (s as { slug?: string }).slug) }));
 const logo = images?.logo;
 // Only the copyright bar itself swaps tone with the Header background
 // setting — the rest of the footer stays on the fixed --color-primary

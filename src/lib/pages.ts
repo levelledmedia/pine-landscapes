@@ -29,7 +29,9 @@ export function slugifyLabel(text: string): string {
 // A service card's page lives at a flat, clean URL derived from its current
 // label ("/fencing"), not nested under /services/ or keyed by its internal
 // id ("/services/svc-fencing") — the "Services" nav item is just a dropdown
-// trigger, never a real page itself.
-export function serviceHref(label: string): string {
-  return '/' + slugifyLabel(label);
+// trigger, never a real page itself. A card can optionally pin a fixed slug
+// (e.g. "fencing" while the card label stays "Fencing & Gates") — pass it as
+// the second argument to use it instead of deriving one from the label.
+export function serviceHref(label: string, slug?: string): string {
+  return '/' + (slug || slugifyLabel(label));
 }

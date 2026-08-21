@@ -27,7 +27,7 @@ export function getStaticPaths() {
     .filter((p): p is NonNullable<typeof p> => p !== null);
 
   const servicePaths = homeServices.flat().map((s) => ({
-    params: { slug: slugifyLabel(s.label) },
+    params: { slug: (s as { slug?: string }).slug || slugifyLabel(s.label) },
     props: { kind: 'service' as const, id: s.id, label: s.label },
   }));
 

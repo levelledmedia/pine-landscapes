@@ -60,7 +60,7 @@ const DEFAULT_TEXT_DESCRIPTION =
                   <EditableText
                     editKey={`homeServices.${rowIndex}.${colIndex}.label`}
                     value={s.label}
-                    href={withBase(serviceHref(s.label))}
+                    href={withBase(serviceHref(s.label, (s as { slug?: string }).slug))}
                     class="services-card-text-title"
                   />
                 </h4>
@@ -76,7 +76,7 @@ const DEFAULT_TEXT_DESCRIPTION =
             </div>
           ) : (
             <div class="services-card" data-service-id={s.id}>
-              <a class="services-card-link" href={withBase(serviceHref(s.label))} aria-label={s.label} draggable="false">
+              <a class="services-card-link" href={withBase(serviceHref(s.label, (s as { slug?: string }).slug))} aria-label={s.label} draggable="false">
                 <ImageSlot id={s.id} shape="rect" style="position:absolute;inset:0;width:100%;height:100%;" />
                 <div class="services-card-overlay"></div>
               </a>
