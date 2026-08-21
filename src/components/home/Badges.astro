@@ -91,6 +91,14 @@ const logoSize = Number(content.home.credentialLogoSize) || 104;
 
 <style>
   @media (max-width: 640px) {
+    /* logoSize (content.home.credentialLogoSize) is an owner-editable
+       desktop value with no mobile-specific counterpart, and can be set
+       arbitrarily large (144px by default here) — cap it down on small
+       screens rather than letting the circles overwhelm the viewport. */
+    #badges-row {
+      --logo-size: 76px !important;
+      gap: 24px !important;
+    }
     .badges-section {
       padding: 44px 20px !important;
     }

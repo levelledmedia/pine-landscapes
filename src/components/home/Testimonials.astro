@@ -369,7 +369,7 @@ const dotInactive = isFullBg ? 'rgba(255,255,255,.3)' : 'rgba(0,0,0,.15)';
       const track = carousel.querySelector('.testimonial-track');
       if (!track) return;
       const isMobile = () => window.matchMedia('(max-width: 640px)').matches;
-      const pxPerSecond = () => (isMobile() ? 16 : 45);
+      const pxPerSecond = () => (isMobile() ? 20 : 45);
       let paused = false;
       let resumeTimer;
       let lastTime = null;

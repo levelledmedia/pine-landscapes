@@ -630,7 +630,14 @@ const isActive = (href: string) => {
     gap: 8px;
   }
 
-  .mobile-navlink,
+  /* :global() on .mobile-navlink for the same reason as .navlink above:
+     EditableText renders the actual <span>/<a> from its own component, so
+     without :global() this rule (and the color variants below) would
+     silently never match it — the link would render with none of this
+     styling while .mobile-nav-summary (a real <button> written directly in
+     this file) got all of it, which is exactly the "some links are plain
+     text, one is a big box" mismatch this fixes. */
+  .main-header :global(.mobile-navlink),
   .mobile-nav-summary {
     display: flex;
     align-items: center;
@@ -647,21 +654,22 @@ const isActive = (href: string) => {
     font-weight: 600;
     letter-spacing: .02em;
     cursor: pointer;
+    box-sizing: border-box;
   }
 
-  .main-header.light .mobile-navlink,
+  .main-header.light :global(.mobile-navlink),
   .main-header.light .mobile-nav-summary {
     color: var(--color-ink);
     border-color: rgba(0, 0, 0, 0.08);
   }
 
-  .main-header.tinted .mobile-navlink,
+  .main-header.tinted :global(.mobile-navlink),
   .main-header.tinted .mobile-nav-summary {
     color: #fff;
     border-color: rgba(255, 255, 255, 0.14);
   }
 
-  .mobile-navlink.active,
+  .main-header :global(.mobile-navlink.active),
   .mobile-nav-summary.active {
     color: var(--header-highlight);
     background: color-mix(in oklch, var(--color-accent) 10%, white);
@@ -724,7 +732,7 @@ const isActive = (href: string) => {
   .mobile-nav-phone {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 10px;
     text-decoration: none;
     font-family: var(--font-heading);
@@ -756,6 +764,17 @@ const isActive = (href: string) => {
       gap: 16px;
     }
 
+    /* .height-tall/.height-taller (two classes) otherwise outrank the plain
+       .main-header-inner rule above at every width, including mobile, so
+       the "tall"/"taller" header-height preset kept its full desktop
+       padding on small screens regardless of this media query — that's
+       what read as excess white space around the logo and hamburger. */
+    .main-header-inner.height-tall,
+    .main-header-inner.height-taller {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
     .main-nav,
     .header-actions-inline {
       display: none;
@@ -767,6 +786,10 @@ const isActive = (href: string) => {
 
     .brand-lockup {
       font-size: 18px;
+    }
+
+    .brand-logo-img {
+      max-height: 36px !important;
     }
   }
 
