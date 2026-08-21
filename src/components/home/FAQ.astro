@@ -160,9 +160,27 @@ const faqWidth = swaps?.faqWidth ?? 'default';
       padding-right: 20px !important;
     }
 
+    /* Default flex-item sizing gives the question <span> a min-width equal
+       to its own longest word rather than letting it shrink further, which
+       was enough on narrow screens to push the whole item (span + chevron)
+       past the row's width and force flex-wrap to drop the chevron onto its
+       own line, making every accordion bar taller than it needed to be.
+       Pinning the chevron to a fixed width and letting the span shrink to
+       0 (so it falls back to normal in-place text wrapping) keeps both on
+       one row, matching how this already looks on desktop. */
     .faq-bar {
       padding: 16px 18px;
       font-size: 16px;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+    }
+    .faq-bar :global(span) {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .faq-bar::after {
+      flex: none;
+      margin-top: 4px;
     }
   }
 </style>

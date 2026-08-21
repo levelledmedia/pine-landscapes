@@ -8,7 +8,7 @@ import Badge from '../Badge.astro';
 import Badges from '../home/Badges.astro';
 import SplitFeature from '../home/SplitFeature.astro';
 import ContactSection from '../home/ContactSection.astro';
-import { content } from '../../config/site';
+import { business, content } from '../../config/site';
 import { withBase } from '../../lib/base';
 
 const { reasons: reasonsIntro } = content.about;
@@ -37,13 +37,13 @@ const reasons = [
 ];
 ---
 
-<Layout title="About Us | Crestline Landscapes">
+<Layout title={`About Us | ${business.legalName}`}>
   <PageHero imageId="about-hero" title="About Us" />
   <Breadcrumb label="About Us" />
 
   <SplitFeature
     editKey="home.ourStory"
-    imageId="before-after"
+    imageId="mission-house"
     imagePlaceholder="Drop team or project photo"
     heading={content.home.ourStory.heading}
     body={content.home.ourStory.body}

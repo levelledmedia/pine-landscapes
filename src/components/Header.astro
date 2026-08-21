@@ -617,17 +617,33 @@ const isActive = (href: string) => {
     display: block;
   }
 
+  /* One connected card (rounded corners + a hairline divider between rows)
+     rather than each item as its own separate floating pill — a row of
+     disconnected boxes with gaps between them is what read as unfinished/
+     inconsistent, particularly once Services (the one row with genuinely
+     different content — a summary button plus a collapsible submenu) was
+     the only one that visually stood apart. */
   .mobile-nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 14px 20px 0;
+    margin: 14px 20px 0;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .main-header.tinted .mobile-nav {
+    border-color: rgba(255, 255, 255, 0.14);
   }
 
   .mobile-nav-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .main-header.tinted .mobile-nav-group {
+    border-bottom-color: rgba(255, 255, 255, 0.14);
   }
 
   /* :global() on .mobile-navlink for the same reason as .navlink above:
@@ -636,7 +652,7 @@ const isActive = (href: string) => {
      silently never match it — the link would render with none of this
      styling while .mobile-nav-summary (a real <button> written directly in
      this file) got all of it, which is exactly the "some links are plain
-     text, one is a big box" mismatch this fixes. */
+     text, one is a big box" mismatch this fixed last time. */
   .main-header :global(.mobile-navlink),
   .mobile-nav-summary {
     display: flex;
@@ -644,29 +660,41 @@ const isActive = (href: string) => {
     justify-content: space-between;
     width: 100%;
     padding: 16px 18px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
+    border: none;
     background: transparent;
     text-align: left;
     text-decoration: none;
     font-family: var(--font-heading);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600;
     letter-spacing: .02em;
     cursor: pointer;
     box-sizing: border-box;
   }
 
-  .main-header.light :global(.mobile-navlink),
-  .main-header.light .mobile-nav-summary {
-    color: var(--color-ink);
-    border-color: rgba(0, 0, 0, 0.08);
+  .main-header :global(.mobile-navlink) {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   }
 
-  .main-header.tinted :global(.mobile-navlink),
+  .main-header :global(.mobile-navlink:last-child) {
+    border-bottom: none;
+  }
+
+  .main-header.light :global(.mobile-navlink) {
+    color: var(--color-ink);
+  }
+
+  .main-header.tinted :global(.mobile-navlink) {
+    color: #fff;
+    border-bottom-color: rgba(255, 255, 255, 0.14);
+  }
+
+  .main-header.light .mobile-nav-summary {
+    color: var(--color-ink);
+  }
+
   .main-header.tinted .mobile-nav-summary {
     color: #fff;
-    border-color: rgba(255, 255, 255, 0.14);
   }
 
   .main-header :global(.mobile-navlink.active),
@@ -692,8 +720,12 @@ const isActive = (href: string) => {
   .mobile-nav-submenu {
     display: none;
     flex-direction: column;
-    gap: 6px;
-    padding: 0 8px 8px 24px;
+    padding: 4px 18px 10px 32px;
+    background: oklch(0.97 0.005 255);
+  }
+
+  .main-header.tinted .mobile-nav-submenu {
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .mobile-nav-submenu.open {
@@ -701,10 +733,10 @@ const isActive = (href: string) => {
   }
 
   .mobile-nav-sublink {
-    padding: 8px 4px;
+    padding: 9px 0;
     text-decoration: none;
     font-family: var(--font-body);
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
     opacity: 0.85;
   }
@@ -771,8 +803,8 @@ const isActive = (href: string) => {
        what read as excess white space around the logo and hamburger. */
     .main-header-inner.height-tall,
     .main-header-inner.height-taller {
-      padding-top: 12px;
-      padding-bottom: 12px;
+      padding-top: 17px;
+      padding-bottom: 17px;
     }
 
     .main-nav,
@@ -789,7 +821,7 @@ const isActive = (href: string) => {
     }
 
     .brand-logo-img {
-      max-height: 36px !important;
+      max-height: 48px !important;
     }
   }
 

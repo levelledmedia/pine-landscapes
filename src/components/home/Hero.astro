@@ -296,6 +296,7 @@ const TRUST_ICONS = [
             <div class="hero-trust-plus-item">
               <div style="display:flex;align-items:center;gap:10px;">
                 <span
+                  class="hero-trust-icon"
                   style="flex:none;width:25px;height:25px;color:var(--color-icon);display:flex;align-items:center;justify-content:center;"
                   set:html={TRUST_ICONS[i % TRUST_ICONS.length]}
                 />
@@ -434,6 +435,12 @@ const TRUST_ICONS = [
     :global(.hero-trust-text) {
       white-space: normal !important;
       text-align: left;
+      font-size: 15px !important;
+    }
+
+    .hero-trust-icon {
+      width: 20px !important;
+      height: 20px !important;
     }
   }
 

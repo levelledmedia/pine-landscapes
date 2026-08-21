@@ -16,7 +16,7 @@ const phoneHref = `tel:${business.phone.replace(/\D/g, '')}`;
 const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
 ---
 
-<Layout title="Contact Us | Crestline Landscapes">
+<Layout title={`Contact Us | ${business.legalName}`}>
   <PageHero imageId="contact-hero" title="Contact Us" />
   <Breadcrumb label="Contact" />
 

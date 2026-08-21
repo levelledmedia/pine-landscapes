@@ -4,7 +4,7 @@ import PageHero from '../PageHero.astro';
 import Breadcrumb from '../Breadcrumb.astro';
 import ImageSlot from '../ImageSlot.astro';
 import ContactSection from '../home/ContactSection.astro';
-import { homeServices, gallery, images } from '../../config/site';
+import { business, homeServices, gallery, images } from '../../config/site';
 
 // Filter chips mirror the home page's Services cards exactly — same ids and
 // labels, so adding/removing a service card updates this list on the next
@@ -30,7 +30,7 @@ const tagsWithPhotos = new Set(photos.map((p) => p.tag).filter((t): t is string 
 const visibleTags = import.meta.env.DEV ? PROJECT_TAGS : PROJECT_TAGS.filter((t) => t.id === 'all' || tagsWithPhotos.has(t.id));
 ---
 
-<Layout title="Gallery | Crestline Landscapes">
+<Layout title={`Gallery | ${business.legalName}`}>
   <PageHero imageId="photos-hero" title="Gallery" />
   <Breadcrumb label="Gallery" />
 

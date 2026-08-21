@@ -4,13 +4,13 @@ import PageHero from '../components/PageHero.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import EditableText from '../components/EditableText.astro';
 import Badge from '../components/Badge.astro';
-import { content } from '../config/site';
+import { business, content } from '../config/site';
 
 const { badgeText, heading, body } = content.schedule;
 const embedCode = content.schedule?.embedCode ?? '';
 ---
 
-<Layout title="Schedule a Call | Crestline Landscapes">
+<Layout title={`Schedule a Call | ${business.legalName}`}>
   <PageHero imageId="schedule-hero" title="Schedule a Call" />
   <Breadcrumb label="Schedule" />
 

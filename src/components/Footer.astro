@@ -14,7 +14,16 @@ const logo = images?.logo;
 // background regardless.
 const isLightBar = (swaps?.headerBackground ?? 'white') === 'white';
 const hasAnySocial = Object.values(business.socials ?? {}).some(Boolean) || !!business.email;
-const quickLinks = [...footerQuickLinks, { label: 'Areas', href: '/areas' }];
+// "Areas" isn't one of the header's nav items, so it has no natural slot in
+// footerQuickLinks — it's inserted here, right before Contact, to match the
+// order requested for the footer specifically (Home, Services, Our Work,
+// About Us, Areas, Contact) without adding a page to the header nav itself.
+const contactIndex = footerQuickLinks.findIndex((l) => l.navKey === 'contact');
+const areasLink = { label: 'Areas', href: '/areas' };
+const quickLinks =
+  contactIndex === -1
+    ? [...footerQuickLinks, areasLink]
+    : [...footerQuickLinks.slice(0, contactIndex), areasLink, ...footerQuickLinks.slice(contactIndex)];
 ---
 
 <footer style="background:var(--color-primary-dark);color:oklch(0.75 0.02 255);">

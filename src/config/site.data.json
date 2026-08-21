@@ -131,11 +131,6 @@
       "href": "/#services"
     },
     {
-      "navKey": "contact",
-      "label": "Contact",
-      "href": "/contact"
-    },
-    {
       "navKey": "projects",
       "label": "Our Work",
       "href": "/photos"
@@ -144,6 +139,11 @@
       "navKey": "about",
       "label": "About Us",
       "href": "/about"
+    },
+    {
+      "navKey": "contact",
+      "label": "Contact",
+      "href": "/contact"
     }
   ],
   "homeServices": [
@@ -795,7 +795,7 @@
       "ourStory": {
         "badgeText": "Our Story",
         "heading": "Welcome to Pine Landscapes",
-        "body": "<p>Welcome to Pine Landscapes. Owned by Mark and backed by more than 30 years of experience in the industry, we are all about honest work, integrity and outstanding results.</p><p>We are a family-owned business based in the Hitchin area, working right across Hertfordshire and Bedfordshire. Every project is approached with care, whether it is a straightforward repair, a new patio, upgraded fencing, fresh turfing or a complete garden transformation. We treat each job as if it were our own property, and we aim to leave every customer genuinely pleased with the finished result.</p><p>Our team is skilled, motivated and committed to doing the job properly. From the <a href=\"/ground-level-calculator\">initial groundwork</a> through to the finishing details, we focus on practical workmanship, quality materials and a result that is built to last. If you want to see more of our past work and customer feedback, you can also visit <a href=\"https://www.mybuilder.com/profile/view/pine_landscapes\">our MyBuilder profile</a>.</p>",
+        "body": "<p>Welcome to Pine Landscapes. Owned by Mark and backed by more than 30 years of experience in the industry, we are all about honest work, integrity and outstanding results.</p><p>We are a family-owned business based in the Hitchin area, working right across Hertfordshire and Bedfordshire. Every project is approached with care, whether it is a straightforward repair, a new patio, upgraded fencing, fresh turfing or a complete garden transformation. We treat each job as if it were our own property, and we aim to leave every customer genuinely pleased with the finished result.</p><p>Our team is skilled, motivated and committed to doing the job properly. From the initial groundwork through to the finishing details, we focus on practical workmanship, quality materials and a result that is built to last.</p>",
         "cta": "Get a Free Quote"
       },
       "stats": {
