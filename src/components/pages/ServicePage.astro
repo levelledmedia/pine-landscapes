@@ -89,13 +89,13 @@ const workSlots = [0, 1, 2].map((i) => {
         <p class="svc-p">{serviceContent.introText ?? `Our experienced team delivers ${label.toLowerCase()} built around how you actually use your outdoor space — quality materials, careful planning, and craftsmanship that holds up for years to come.`}</p>
         <p class="svc-p">{serviceContent.introText2 ?? "We're a family-run team with decades of experience, and we treat every job — big or small — with the same care and attention to detail."}</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="svc-outline-btn" href={withBase("/#contact")} global />
           <span class="btn-accent svc-phone-btn" style="display:inline-flex;align-items:center;gap:10px;">
             <svg aria-hidden="true" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
               <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
             </svg>
             <EditableText editKey="business.phone" value={business.phone} as="span" href={phoneTelHref} global style="color:inherit;text-decoration:none;" />
           </span>
-          <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="svc-outline-btn" href={withBase("/#contact")} global />
         </div>
       </div>
       <ImageSlot id={id} shape="rect" class="svc-intro-image" style="flex:1 1 400px;" />
@@ -174,13 +174,17 @@ const workSlots = [0, 1, 2].map((i) => {
 
 <style>
   .svc-list { margin: 0 0 20px; padding-left: 20px; }
-  .svc-list li { font-size: 16px; line-height: 1.8; color: oklch(0.4 0.02 255); }
+  .svc-list li { font-size: 17px; line-height: 1.8; color: oklch(0.4 0.02 255); }
   .svc-h { font-family: var(--font-heading); font-weight: 700; font-size: 26px; color: var(--color-ink); margin: 36px 0 12px; }
   .svc-h3 { font-family: var(--font-heading); font-weight: 600; font-size: 19px; color: var(--color-ink); margin: 24px 0 10px; }
-  .svc-p { font-size: 16px; line-height: 1.8; color: oklch(0.4 0.02 255); margin: 0 0 16px; }
+  .svc-p { font-size: 17px; line-height: 1.8; color: oklch(0.4 0.02 255); margin: 0 0 16px; }
   .svc-subhero-h2 { font-size: 30px; }
 
-  .svc-outline-btn {
+  /* :global() is required here — EditableText renders its own <a>, a child
+     component's output, which never receives this file's scoped
+     data-astro-cid attribute, so an unscoped selector would silently never
+     match (see Header.astro's identical .header-outline-btn for precedent). */
+  .svc-intro :global(.svc-outline-btn) {
     display: inline-flex;
     align-items: center;
     background: transparent;
@@ -195,7 +199,7 @@ const workSlots = [0, 1, 2].map((i) => {
     border-radius: var(--radius-btn);
     text-transform: var(--heading-case);
   }
-  .svc-outline-btn:hover {
+  .svc-intro :global(.svc-outline-btn:hover) {
     background: var(--color-primary);
     color: #fff;
   }

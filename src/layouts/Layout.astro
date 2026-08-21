@@ -172,9 +172,20 @@ const htmlClasses = [
        custom desktop size. One shared rule here means every font preset and
        every component gets proportional mobile scaling automatically —
        nothing to hand-tune per preset or per component.
-       Sizes: h1 40px, h2 28px, h3 18px, body 15px, small 13px, button 15px. */
+       Sizes: h1 40px, h2 28px, h3 18px, body 15px, small 13px, button 15px.
+
+       Targets `*` (every element), not just `:root`: when typographyScale
+       is 'new', define:vars (above) writes the desktop values as an inline
+       style on <html>, <body>, AND the font/color/overflow wrapper div just
+       inside <body> (Astro inlines define:vars onto each top-level element
+       of the component template, not only the outermost one) — and since
+       each of those carries its own explicit, inline --fsH1 etc., anything
+       inside inherits from the nearest one rather than from :root, no
+       matter how the :root rule is weighted. Only a universal-selector
+       override reaches every element's own local copy directly. */
     @media (max-width: 640px) {
-      :root {
+      :root,
+      * {
         --fsH1: 34px !important;
         --fsH2: 24px !important;
         --fsH3: 17px !important;

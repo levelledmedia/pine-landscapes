@@ -823,32 +823,32 @@
       "whyChooseUs": {
         "badgeText": "Why Choose Us",
         "heading": "Landscaping Done Right, Always.",
-        "body": "We're not just another crew with shovels. Every project gets a dedicated designer, a clear timeline, and a team that treats your garden like their own.",
+        "body": "We're a family-run team based in Hitchin, and every project is handled by our own people from start to finish — no subcontractors, no shortcuts, just honest work we're happy to put our name to.",
         "ctaLabel": "Get a Free Quote",
         "items": [
           {
-            "title": "25+ Years Of Experience",
-            "body": "Nearly three decades of hands-on landscaping across every kind of property, from small courtyards to full estate grounds. Nearly three decades of hands-on landscaping across."
+            "title": "30+ Years' Experience",
+            "body": "Three decades of hands-on landscaping across Hitchin and the surrounding area, from small garden repairs to full outdoor transformations."
           },
           {
-            "title": "Fully Insured & Guaranteed",
-            "body": "Every project is backed by comprehensive insurance and a workmanship warranty, so you're covered long after we've packed up. Every project is backed."
+            "title": "Family-Run & Fully Insured",
+            "body": "A family business built on honest work and integrity, fully insured and backed by a workmanship guarantee on every job."
           },
           {
-            "title": "Transparent, Upfront Pricing",
-            "body": "A clear, itemised quote before any work begins — no hidden fees or surprise costs once the job is under way. A clear, itemised quote before any work begins."
+            "title": "Free, Honest Quotes",
+            "body": "A clear, no-obligation quote before any work begins, with no hidden costs or surprises once the job is under way."
           },
           {
-            "title": "Licensed Local Team",
-            "body": "No subcontractors passed between jobs — the same licensed, background-checked crew shows up from quote to completion. No subcontractors passed between jobs."
+            "title": "No Subcontractors",
+            "body": "The same experienced team sees your project through from quote to completion — never passed between subcontractors."
           },
           {
-            "title": "A Team That Listens",
-            "body": "Real conversations about your space and your budget, not a sales script — we design around what actually works for you. Real conversations about your space and your budget."
+            "title": "Hundreds of Happy Customers",
+            "body": "A long list of satisfied homeowners and businesses across Hitchin, Hertfordshire and Bedfordshire, built up over 30+ years."
           },
           {
             "title": "Built Around Your Property",
-            "body": "We design for how you actually use your outdoor space, not a one-size-fits-all template pulled off the shelf. We design for how you actually use your outdoor space."
+            "body": "We design and build around how you actually use your outdoor space, not a one-size-fits-all template."
           }
         ]
       },
@@ -869,15 +869,15 @@
         "subheading": "Got a question about working with us? Here are the ones we hear most.",
         "items": [
           {
-            "q": "Where is Pine Landscapes based and what areas do you cover?",
+            "q": "Where are you based, and what areas do you cover?",
             "a": "Based in Hitchin, Pine Landscapes provides professional landscaping services throughout Hertfordshire and Bedfordshire. We regularly work with homeowners and businesses across both counties, from smaller local projects to complete garden transformations. If you are based in Hertfordshire or Bedfordshire and are unsure whether we cover your particular town or village, simply get in touch. We are happy to let you know whether we can help with your project."
           },
           {
-            "q": "What landscaping services do you provide?",
+            "q": "What services do you offer?",
             "a": "We provide a comprehensive range of landscaping services for gardens and outdoor spaces, including fencing, decking, paving and turfing, along with the associated preparation and landscaping work needed to complete a project properly. Whether you are looking to improve one particular area of your garden or completely transform your outdoor space, we can tailor the work to suit your property, requirements and budget."
           },
           {
-            "q": "How much experience does Pine Landscapes have?",
+            "q": "How much experience do you have?",
             "a": "Pine Landscapes is a family-run landscaping company with more than 30 years of industry experience. Over that time, we have worked on a wide variety of gardens and outdoor spaces throughout Hertfordshire and Bedfordshire. Our experience allows us to advise customers on practical solutions as well as appearance, helping you choose materials and designs that will work well for your property and how you intend to use your outdoor space."
           },
           {
@@ -885,19 +885,19 @@
             "a": "Yes. We provide free, no-obligation quotes for landscaping projects across Hertfordshire and Bedfordshire. We can discuss what you are looking to achieve, assess the work involved and provide a quotation based on the requirements of your project. Every garden and property is different, so speaking to us about your plans is the best way to get an accurate idea of the work and costs involved."
           },
           {
-            "q": "Do you take on both small and large landscaping projects?",
+            "q": "Do you take on small jobs as well as large projects?",
             "a": "Yes. We are happy to undertake projects of all sizes, from smaller repairs and individual improvements through to substantial landscaping projects and complete garden makeovers. You do not need to be planning an entirely new garden to contact us. If there is simply one part of your outdoor space that you would like repaired, replaced or improved, we will be happy to discuss it with you."
           },
           {
-            "q": "Can you help with a complete garden transformation?",
+            "q": "Can you handle a full garden transformation?",
             "a": "Yes. If your garden needs more than one type of landscaping work, we can help bring the different elements together as part of a wider transformation. This can be particularly useful when you want to create a more attractive, practical and usable outdoor space rather than tackling each element separately. We can discuss what you would like from the finished garden and help you consider the most suitable combination of landscaping features, materials and finishes for the property."
           },
           {
-            "q": "Can you help me decide what would work best in my garden?",
+            "q": "Can you help me plan my garden?",
             "a": "Yes. You do not need to have every detail decided before contacting us. If you know that you want to improve your garden but are unsure about the most suitable materials, layout or approach, we can talk through the available options with you. Our experience across a wide range of landscaping projects means we can offer practical advice based on the space you have, the look you want to achieve, how the garden will be used and your available budget."
           },
           {
-            "q": "Do you supply the materials as well as carry out the installation?",
+            "q": "Do you supply materials as well as install them?",
             "a": "Yes. We can supply the materials required for your landscaping project as well as carrying out the professional installation. We use quality materials selected to suit the particular job and the finish you are looking to achieve. Having the supply and installation handled together can also make the overall project much simpler, as you do not need to organise multiple contractors or source all of the materials yourself."
           },
           {
@@ -905,7 +905,7 @@
             "a": "Yes. Pine Landscapes stands behind the quality of its workmanship, and our work is fully guaranteed. Our aim is to provide landscaping that not only looks good when the project is completed but is also professionally installed and built to last. We take pride in providing a reliable service and maintaining a high standard of workmanship throughout every stage of the project."
           },
           {
-            "q": "How do I get started with my landscaping project?",
+            "q": "How do I get started?",
             "a": "The easiest way to get started is to contact Pine Landscapes and tell us a little about what you would like to achieve. Whether you already have a clear idea in mind or simply know that your garden needs improving, we can discuss your requirements and the next steps. From our Hitchin base, we work throughout Hertfordshire and Bedfordshire and are happy to discuss both small landscaping jobs and larger garden transformations before providing a free quotation for your project."
           }
         ],
@@ -914,16 +914,24 @@
       "areasWeCover": {
         "badgeText": "<span style=\"letter-spacing: 1.68px;\">Areas Covered</span>",
         "heading": "Proudly Serving Hitchin &amp; Surrounding Areas",
-        "body": "Based in Hitchin, we take on projects across North Hertfordshire, Bedfordshire and the surrounding towns within about a 20-mile radius. Not sure if you're in range? Get in touch with your postcode and we'll confirm we can help before you book anything in.<div><br></div><div>Based in Hitchin, we take on projects across North Hertfordshire, Bedfordshire and the surrounding towns within about a 20-mile radius. Not sure if you're in range? Get in touch with your postcode and we'll confirm we can help before you book anything in.</div>",
+        "body": "<p>Based in Hitchin, we work across North Hertfordshire and the surrounding Bedfordshire towns, generally within about a 20&ndash;30 minute drive of our base.</p><p>Not sure if you're in range? Get in touch with your postcode and we'll confirm we can help before you book anything in.</p>",
         "towns": [
           "Hitchin",
           "Letchworth Garden City",
           "Baldock",
-          "Stevenage",
-          "Luton",
-          "Welwyn Garden City",
+          "Ickleford",
           "Knebworth",
-          "Royston"
+          "Stevenage",
+          "Codicote",
+          "Arlesey",
+          "Shefford",
+          "Royston",
+          "Welwyn",
+          "Welwyn Garden City",
+          "Henlow",
+          "Biggleswade",
+          "Harpenden",
+          "Luton"
         ]
       },
       "contactCta": {
