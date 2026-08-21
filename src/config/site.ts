@@ -31,7 +31,7 @@ export const footerQuickLinks = data.footerQuickLinks;
 // interpolates it as plain text, so the escaped entity would otherwise show
 // up on the page literally as "&amp;". Decode once here so every consumer
 // gets plain text.
-function decodeEntities(str: string): string {
+export function decodeEntities(str: string): string {
   return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
 }
 export const homeServices: { id: string; label: string }[][] = data.homeServices.map((row) =>

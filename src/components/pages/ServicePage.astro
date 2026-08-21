@@ -7,7 +7,7 @@ import Breadcrumb from '../Breadcrumb.astro';
 import ImageSlot from '../ImageSlot.astro';
 import EditableText from '../EditableText.astro';
 import ContactSection from '../home/ContactSection.astro';
-import { business, content, swaps, gallery, images } from '../../config/site';
+import { business, content, swaps, gallery, images, decodeEntities } from '../../config/site';
 import { withBase } from '../../lib/base';
 import { pageHref } from '../../lib/pages';
 
@@ -30,8 +30,9 @@ const pageHeroTall = swaps?.pageHeroTall ?? 'default';
 // what dragging a photo to reorder it on that page actually changes.
 const galleryPhotos = gallery.filter((g) => g.tag === id && images[g.id]?.src);
 const serviceContent = (content.services as Record<string, Record<string, string>> | undefined)?.[id] ?? {};
-const pageTitle = serviceContent.pageTitle ?? `${label} in Hitchin`;
-const subHeroHeading = serviceContent.subHeroHeading ?? `Looking for ${label} Contractors in Hitchin?`;
+const pageTitle = decodeEntities(serviceContent.pageTitle ?? `${label} in Hitchin`);
+const subHeroHeading = decodeEntities(serviceContent.subHeroHeading ?? `Looking for ${label} Contractors in Hitchin?`);
+const includedHeading = decodeEntities(serviceContent.includedHeading ?? "What's included:");
 const phoneTelHref = `tel:${business.phone.replace(/[^0-9+]/g, '')}`;
 // Each of the 3 tiles remembers which gallery photo it's showing (by id, via
 // the cycle arrows below) — falling back to a positional default (1st/2nd/
@@ -89,7 +90,7 @@ const workSlots = [0, 1, 2].map((i) => {
         <p class="svc-p">{serviceContent.introText ?? `Our experienced team delivers ${label.toLowerCase()} built around how you actually use your outdoor space — quality materials, careful planning, and craftsmanship that holds up for years to come.`}</p>
         <p class="svc-p">{serviceContent.introText2 ?? "We're a family-run team with decades of experience, and we treat every job — big or small — with the same care and attention to detail."}</p>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
-          <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="svc-outline-btn" href={withBase("/#contact")} global />
+          <EditableText editKey="business.quoteCtaLabel" value={business.quoteCtaLabel} class="svc-outline-btn" href="#contact" global />
           <span class="btn-accent svc-phone-btn" style="display:inline-flex;align-items:center;gap:10px;">
             <svg aria-hidden="true" viewBox="0 0 512 512" width="16" height="16" fill="currentColor">
               <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
@@ -106,7 +107,7 @@ const workSlots = [0, 1, 2].map((i) => {
     <h2 class="svc-h" style="margin-top:0;">Why Choose Us for {label}</h2>
     <p class="svc-p">{serviceContent.whyText ?? "Every project starts with a conversation about what you actually want from your outdoor space. From there, we plan, design, and build with an eye for detail and a commitment to doing it right the first time."}</p>
 
-    <h3 class="svc-h3">{serviceContent.includedHeading ?? "What's included:"}</h3>
+    <h3 class="svc-h3">{includedHeading}</h3>
     {serviceContent.includedListHtml ? (
       <ul class="svc-list" set:html={serviceContent.includedListHtml} />
     ) : (
