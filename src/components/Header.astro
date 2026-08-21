@@ -58,6 +58,7 @@ const isActive = (href: string) => {
 };
 ---
 
+<div class="mobile-sticky-shell">
 {topBarVisible !== 'hide' && (
   <div id="top-bar" class="top-bar" style={`position:relative;background:var(--color-accent);color:#fff;display:flex;justify-content:space-between;align-items:center;padding-top:${TOP_BAR_PADDING[topBar]}px;padding-bottom:${TOP_BAR_PADDING[topBar]}px;font-size:var(--fsSmall, 13px);`} data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
     <span style="display:flex;align-items:center;gap:6px;min-width:0;">
@@ -304,6 +305,7 @@ const isActive = (href: string) => {
     </div>
   )}
 </header>
+</div>
 
 {swaps?.offerBar !== 'hide' && (
   <div style="background:var(--color-primary);color:#fff;text-align:center;padding:16px;font-family:var(--font-heading);font-weight:600;font-size:14px;letter-spacing:.03em;">
@@ -314,9 +316,13 @@ const isActive = (href: string) => {
 <style>
   .main-header {
     position: sticky;
-    top: var(--mobile-top-bar-offset, 0px);
+    top: 0;
     z-index: 50;
     background: var(--header-bg);
+  }
+
+  .mobile-sticky-shell {
+    position: static;
   }
 
   .top-bar {
@@ -790,21 +796,30 @@ const isActive = (href: string) => {
   }
 
   @media (max-width: 900px) {
-    .top-bar {
-      position: sticky !important;
+    .mobile-sticky-shell {
+      position: sticky;
       top: 0;
       z-index: 60;
-      font-size: 14px !important;
+    }
+
+    .main-header {
+      position: relative;
+      top: auto;
+      z-index: 1;
+    }
+
+    .top-bar {
+      font-size: 13.5px !important;
     }
 
     .top-bar-phone-icon {
-      width: 14px;
-      height: 14px;
+      width: 13.5px;
+      height: 13.5px;
     }
 
     .top-bar .social-icon-link svg {
-      width: 16px;
-      height: 16px;
+      width: 15px;
+      height: 15px;
     }
 
     .main-header-inner {
@@ -820,8 +835,8 @@ const isActive = (href: string) => {
        what read as excess white space around the logo and hamburger. */
     .main-header-inner.height-tall,
     .main-header-inner.height-taller {
-      padding-top: 17px;
-      padding-bottom: 17px;
+      padding-top: 14px;
+      padding-bottom: 14px;
     }
 
     .main-nav,
@@ -838,7 +853,7 @@ const isActive = (href: string) => {
     }
 
     .brand-logo-img {
-      max-height: 48px !important;
+      max-height: 44px !important;
     }
   }
 
@@ -855,16 +870,6 @@ const isActive = (href: string) => {
 </style>
 
 <script>
-  function syncMobileTopBarOffset() {
-    const topBar = document.getElementById('top-bar');
-    if (!topBar || window.innerWidth > 900) {
-      document.documentElement.style.setProperty('--mobile-top-bar-offset', '0px');
-      return;
-    }
-
-    document.documentElement.style.setProperty('--mobile-top-bar-offset', `${topBar.offsetHeight}px`);
-  }
-
   function initMobileNav(header: HTMLElement) {
     const toggle = header.querySelector<HTMLButtonElement>('.mobile-menu-toggle');
     const panel = header.querySelector<HTMLElement>('#mobile-nav-panel');
@@ -897,9 +902,7 @@ const isActive = (href: string) => {
     });
   }
 
-  syncMobileTopBarOffset();
   document.querySelectorAll<HTMLElement>('.main-header').forEach(initMobileNav);
-  window.addEventListener('resize', syncMobileTopBarOffset);
 </script>
 
 <style is:global>
