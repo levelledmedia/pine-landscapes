@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import WhatsAppWidget from '../components/WhatsAppWidget.astro';
 import { theme, swaps, content } from '../config/site';
 import { withBase } from '../lib/base';
 
@@ -353,6 +354,7 @@ const htmlClasses = [
     <Header />
     <slot />
     <Footer />
+    <WhatsAppWidget />
   </div>
   <script>
     import '../scripts/quote-embed.js';

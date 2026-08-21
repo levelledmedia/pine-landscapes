@@ -13,7 +13,8 @@
     "legalName": "Pine Landscapes",
     "mapQuery": "pine landscapes",
     "socials": {
-      "facebook": "https://www.facebook.com/pinelandscapesuk/"
+      "facebook": "https://www.facebook.com/pinelandscapesuk/",
+      "whatsapp": "https://api.whatsapp.com/send/?phone=447939591100&text&type=phone_number&app_absent=0"
     }
   },
   "theme": {

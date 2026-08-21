@@ -58,10 +58,11 @@ const isActive = (href: string) => {
 };
 ---
 
+<div class="mobile-sticky-shell">
 {topBarVisible !== 'hide' && (
   <div id="top-bar" class="top-bar" style={`position:relative;background:var(--color-accent);color:#fff;display:flex;justify-content:space-between;align-items:center;padding-top:${TOP_BAR_PADDING[topBar]}px;padding-bottom:${TOP_BAR_PADDING[topBar]}px;font-size:var(--fsSmall, 13px);`} data-dev-hover-zone={import.meta.env.DEV ? true : undefined}>
     <span style="display:flex;align-items:center;gap:6px;min-width:0;">
-      <svg aria-hidden="true" viewBox="0 0 512 512" width="13" height="13" fill="currentColor" style="flex:none;">
+      <svg aria-hidden="true" viewBox="0 0 512 512" width="13" height="13" fill="currentColor" class="top-bar-phone-icon" style="flex:none;">
         <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C11.7 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-11.7 39.6-29.6l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L184.8 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
       </svg>
       <EditableText editKey="business.phone" value={business.phone} as="span" global style="white-space:nowrap;" />
@@ -304,6 +305,7 @@ const isActive = (href: string) => {
     </div>
   )}
 </header>
+</div>
 
 {swaps?.offerBar !== 'hide' && (
   <div style="background:var(--color-primary);color:#fff;text-align:center;padding:16px;font-family:var(--font-heading);font-weight:600;font-size:14px;letter-spacing:.03em;">
@@ -317,6 +319,10 @@ const isActive = (href: string) => {
     top: 0;
     z-index: 50;
     background: var(--header-bg);
+  }
+
+  .mobile-sticky-shell {
+    position: static;
   }
 
   .top-bar {
@@ -790,6 +796,32 @@ const isActive = (href: string) => {
   }
 
   @media (max-width: 900px) {
+    .mobile-sticky-shell {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+    }
+
+    .main-header {
+      position: relative;
+      top: auto;
+      z-index: 1;
+    }
+
+    .top-bar {
+      font-size: 13.5px !important;
+    }
+
+    .top-bar-phone-icon {
+      width: 13.5px;
+      height: 13.5px;
+    }
+
+    .top-bar .social-icon-link svg {
+      width: 15px;
+      height: 15px;
+    }
+
     .main-header-inner {
       grid-template-columns: auto auto;
       padding: 14px 20px;
@@ -803,8 +835,8 @@ const isActive = (href: string) => {
        what read as excess white space around the logo and hamburger. */
     .main-header-inner.height-tall,
     .main-header-inner.height-taller {
-      padding-top: 17px;
-      padding-bottom: 17px;
+      padding-top: 14px;
+      padding-bottom: 14px;
     }
 
     .main-nav,
@@ -821,7 +853,7 @@ const isActive = (href: string) => {
     }
 
     .brand-logo-img {
-      max-height: 48px !important;
+      max-height: 44px !important;
     }
   }
 
