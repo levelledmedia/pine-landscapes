@@ -31,9 +31,61 @@ const faqSchema = {
     },
   })),
 };
+
+// The production domain — always the real site regardless of which host
+// (GitHub Pages vs Cloudflare Pages) the build's own base path targets,
+// since this must match the Google Business Profile listing exactly.
+const SITE_URL = 'https://pinelandscapes.co.uk';
+
+// LandscapingBusiness structured data — homepage only, since that's the
+// page the Google Business Profile listing points at, and duplicating the
+// same NAP entity across multiple pages just risks a confused canonical.
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LandscapingBusiness',
+  '@id': `${SITE_URL}/#business`,
+  name: business.legalName,
+  description: business.tagline,
+  url: SITE_URL,
+  telephone: '+44 7426 100633',
+  email: business.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Marquis Hill, Shillington',
+    addressLocality: 'Hitchin',
+    addressRegion: 'Hertfordshire',
+    postalCode: 'SG5 3HD',
+    addressCountry: 'GB',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 51.9968855,
+    longitude: -0.3533491,
+  },
+  areaServed: content.home.areasWeCover.towns.map((town) => ({
+    '@type': 'City',
+    name: town,
+  })),
+  foundingDate: '1996',
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '08:00',
+    closes: '19:30',
+  },
+  image: [`${SITE_URL}/images/logo.png`, `${SITE_URL}/images/proj-1.jpg`, `${SITE_URL}/images/proj-2.jpg`, `${SITE_URL}/images/proj-3.jpg`],
+  logo: `${SITE_URL}/images/logo.png`,
+  sameAs: [
+    business.socials.facebook,
+    'https://www.checkatrade.com/trades/pinelandscapes',
+    'https://www.mybuilder.com/profile/pine_landscapes',
+    'https://www.google.com/maps/place/Pine+Landscapes/data=!4m2!3m1!1s0x0:0x5ba25ea92c6ad154',
+  ].filter(Boolean),
+};
 ---
 
 <Layout title={pageTitle} description={business.tagline}>
+  <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <Hero />
   <Services />
