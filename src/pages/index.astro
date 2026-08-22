@@ -37,21 +37,30 @@ const faqSchema = {
 // since this must match the Google Business Profile listing exactly.
 const SITE_URL = 'https://pinelandscapes.co.uk';
 
-// LandscapingBusiness structured data — homepage only, since that's the
-// page the Google Business Profile listing points at, and duplicating the
-// same NAP entity across multiple pages just risks a confused canonical.
+// LandscapingBusiness isn't real schema.org vocabulary (Google's Rich
+// Results validator flags it as an unknown type) — HomeAndConstructionBusiness
+// is the closest type schema.org actually defines, and it's still a
+// LocalBusiness subtype specific enough for GBP matching.
+//
+// telephone deliberately uses the secondary number, not the primary — see
+// business.phoneSecondary below.
+const secondaryPhoneIntl = `+44 ${business.phoneSecondary.replace(/^0/, '').replace(/-/g, ' ')}`;
+
+// Local business structured data — homepage only, since that's the page
+// the Google Business Profile listing points at, and duplicating the same
+// NAP entity across multiple pages just risks a confused canonical.
 const localBusinessSchema = {
   '@context': 'https://schema.org',
-  '@type': 'LandscapingBusiness',
+  '@type': 'HomeAndConstructionBusiness',
   '@id': `${SITE_URL}/#business`,
   name: business.legalName,
   description: business.tagline,
   url: SITE_URL,
-  telephone: '+44 7426 100633',
+  telephone: secondaryPhoneIntl,
   email: business.email,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Marquis Hill, Shillington',
+    streetAddress: `${business.legalName}, Marquis Hill, Shillington`,
     addressLocality: 'Hitchin',
     addressRegion: 'Hertfordshire',
     postalCode: 'SG5 3HD',
