@@ -9,7 +9,7 @@ import { withAsyncScripts } from '../../lib/embed';
 
 const { badgeText, heading, body, formHeading } = content.contact;
 const mapQuery = business.mapQuery || 'London';
-const phoneHref = `tel:${business.phone.replace(/\D/g, '')}`;
+const phoneHref = `tel:${business.phoneSecondary.replace(/\D/g, '')}`;
 
 // Same sitewide embed value as the hero and footer CTA quote forms — see
 // Hero.astro's comment and CLAUDE.md for why this is one shared value.
@@ -41,7 +41,7 @@ const quoteEmbedCode = withAsyncScripts(content.quoteForm?.embedCode ?? '');
         <div style="display:flex;flex-direction:column;gap:20px;margin-bottom:32px;">
           <div>
             <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Phone</div>
-            <EditableText editKey="business.phone" value={business.phone} as="a" href={phoneHref} global style="font-size:var(--fsBody, 18px);color:var(--color-ink);text-decoration:none;font-weight:600;" />
+            <EditableText editKey="business.phoneSecondary" value={business.phoneSecondary} as="a" href={phoneHref} global style="font-size:var(--fsBody, 18px);color:var(--color-ink);text-decoration:none;font-weight:600;" />
           </div>
           <div>
             <div style="font-family:var(--font-heading);font-weight:600;font-size:13px;text-transform:var(--heading-case);color:oklch(0.55 0.02 255);margin-bottom:4px;">Email</div>
