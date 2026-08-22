@@ -6,6 +6,8 @@ import { withBase } from '../lib/base';
 import { pageHref, serviceHref } from '../lib/pages';
 
 const brandName = business.name || business.legalName;
+const phoneTelHref = `tel:${business.phone.replace(/[^0-9+]/g, '')}`;
+const phoneSecondaryTelHref = `tel:${business.phoneSecondary.replace(/[^0-9+]/g, '')}`;
 // Mirrors whatever service cards exist on the home page — no card, no page.
 const services = homeServices.flat().map((s) => ({ label: s.label, href: serviceHref(s.label, (s as { slug?: string }).slug) }));
 const logo = images?.logo;
@@ -54,7 +56,8 @@ const quickLinks =
     </div>
     <div>
       <h4 style="color:#fff;font-family:var(--font-heading);font-weight:600;font-size:16px;margin:0 0 18px;">Get In Touch</h4>
-      <EditableText editKey="business.phoneSecondary" value={business.phoneSecondary} as="p" global style="font-size:15px;line-height:1.9;margin:0 0 10px;" />
+      <EditableText editKey="business.phone" value={business.phone} as="a" href={phoneTelHref} global style="display:block;font-size:15px;line-height:1.9;color:inherit;text-decoration:none;" />
+      <EditableText editKey="business.phoneSecondary" value={business.phoneSecondary} as="a" href={phoneSecondaryTelHref} global style="display:block;font-size:15px;line-height:1.9;margin:0 0 10px;color:inherit;text-decoration:none;" />
       <EditableText editKey="business.email" value={business.email} as="p" global style="font-size:15px;line-height:1.9;margin:0 0 10px;" />
       <EditableText editKey="business.address" value={business.address} as="p" global style="font-size:15px;line-height:1.9;margin:0 0 10px;" />
       <EditableText editKey="business.hours" value={business.hours} as="p" global style="font-size:15px;line-height:1.9;margin:0;" />
