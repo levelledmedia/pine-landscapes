@@ -15,9 +15,26 @@ import ContactSection from '../components/home/ContactSection.astro';
 
 const brandName = business.name || business.legalName;
 const pageTitle = `${content.home.hero.heading} | ${brandName}`;
+
+// FAQPage structured data — mirrors the FAQ section's own content.home.faq.items
+// exactly, since Google's structured-data guidelines require markup to match
+// what's actually visible on the page.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: content.home.faq.items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
 ---
 
-<Layout title={pageTitle}>
+<Layout title={pageTitle} description={business.tagline}>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   <Hero />
   <Services />
   <CallToday />
